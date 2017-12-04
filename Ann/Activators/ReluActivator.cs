@@ -6,12 +6,12 @@ namespace Ann.Activators
     {
         public double CalculateDeriviative(double input)
         {
-            throw new NotImplementedException();
+            return input < 0 ? 0 : 1;
         }
 
         public double CalculateValue(double input)
         {
-            throw new NotImplementedException();
+            return Math.Max(0, input);
         }
     }
 }

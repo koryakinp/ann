@@ -6,12 +6,12 @@ namespace Ann.Activators
     {
         public double CalculateDeriviative(double input)
         {
-            throw new NotImplementedException();
+            return 1 - Math.Pow(Math.Tanh(input), 2);
         }
 
         public double CalculateValue(double input)
         {
-            throw new NotImplementedException();
+            return Math.Tanh(input);
         }
     }
 }
