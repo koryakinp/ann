@@ -1,4 +1,5 @@
 ﻿using Ann.Activators;
+using Ann.Configuration;
 using Ann.Connections;
 using Ann.Layers;
 using Ann.Neurons;
@@ -20,6 +21,8 @@ namespace Ann
         {
             _config = config;
             _layers = CreateLayers(config.LayerConfiguration);
+
+            ValidateNetworkConfiguration();
         }
 
 

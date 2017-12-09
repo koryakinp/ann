@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ann.Configuration;
+using System;
 
 namespace Ann.Client
 {
@@ -9,7 +10,7 @@ namespace Ann.Client
             var layerConfig = new LayerConfiguration();
 
             layerConfig
-                .AddInputLayer(1)
+                .AddInputLayer(10)
                 .AddHiddenLayer(10, ActivatorType.LogisticActivator)
                 .AddHiddenLayer(20, ActivatorType.LogisticActivator)
                 .AddHiddenLayer(20, ActivatorType.LogisticActivator)
