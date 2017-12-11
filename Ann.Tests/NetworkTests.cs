@@ -68,7 +68,7 @@ namespace Ann.Tests
         }
 
         [Fact]
-        public void ShouldLoadNetworkConfigurationWeithWeights()
+        public void ShouldLoadNetworkConfigurationWithWeights()
         {
             Network network = new Network("configuration.json");
 
@@ -94,7 +94,7 @@ namespace Ann.Tests
 
 
         [Fact]
-        public void ShouldLoadNetworkConfigurationWeithBiases()
+        public void ShouldLoadNetworkConfigurationWithBiases()
         {
             Network network = new Network("configuration.json");
 
