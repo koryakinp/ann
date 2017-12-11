@@ -1,4 +1,5 @@
 using Ann.Activators;
+using Ann.Neurons;
 using System;
 using Xunit;
 

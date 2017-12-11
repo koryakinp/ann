@@ -34,7 +34,6 @@ namespace Ann.Layers
             }
         }
 
-
         public virtual void RandomizeWeights()
         {
             foreach (var neuron in Neurons)

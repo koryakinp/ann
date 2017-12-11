@@ -79,6 +79,24 @@ namespace Ann.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid network configuration. Learning rate value must be between 0 and 1..
+        /// </summary>
+        internal static string InvalidLearningRate {
+            get {
+                return ResourceManager.GetString("InvalidLearningRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid network configuration. Momentum value must be between 0 and 1..
+        /// </summary>
+        internal static string InvalidMomentum {
+            get {
+                return ResourceManager.GetString("InvalidMomentum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid network configuration. Network must have at least one Hidden Layer..
         /// </summary>
         internal static string InvalidNumberOfHiddenLayers {

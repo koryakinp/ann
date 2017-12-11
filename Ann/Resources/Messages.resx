@@ -123,6 +123,12 @@
   <data name="InvalidInputArguments" xml:space="preserve">
     <value>Number of input values must be equal to a number of neurons in the Input Layer.</value>
   </data>
+  <data name="InvalidLearningRate" xml:space="preserve">
+    <value>Invalid network configuration. Learning rate value must be between 0 and 1.</value>
+  </data>
+  <data name="InvalidMomentum" xml:space="preserve">
+    <value>Invalid network configuration. Momentum value must be between 0 and 1.</value>
+  </data>
   <data name="InvalidNumberOfHiddenLayers" xml:space="preserve">
     <value>Invalid network configuration. Network must have at least one Hidden Layer.</value>
   </data>

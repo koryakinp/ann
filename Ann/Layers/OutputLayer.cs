@@ -22,5 +22,13 @@ namespace Ann.Layers
                 .OfType<OutputNeuron>()
                 .Sum(q => q.GetError());
         }
+
+        public List<double> GetOutputValues()
+        {
+            return Neurons
+                .OrderBy(q => q.NeuronIndex)
+                .Select(q => q.Value)
+                .ToList();
+        }
     }
 }

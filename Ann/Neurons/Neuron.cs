@@ -1,5 +1,7 @@
 ﻿using Ann.Activators;
+using Ann.Configuration;
 using Ann.Connections;
+using Ann.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,12 +9,12 @@ namespace Ann.Neurons
 {
     public class Neuron
     {
-        protected readonly List<ForwardConnection> ForwardConnections;
-        protected readonly List<BackwardConnection> BackwardConnections;
+        internal readonly List<NeuronConnection> ForwardConnections;
+        internal readonly List<NeuronConnection> BackwardConnections;
         public double Value { get; protected set; }
         public double Delta { get; protected set; }
         public double Bias { get; protected set; }
-        protected readonly IActivator Activator;
+        internal readonly IActivator Activator;
         private readonly IWeightInitializer _weightInitializer;
         public readonly int NeuronIndex;
 
@@ -22,8 +24,8 @@ namespace Ann.Neurons
             IWeightInitializer weightInitializer)
         {
             NeuronIndex = neuronIndex;
-            ForwardConnections = new List<ForwardConnection>();
-            BackwardConnections = new List<BackwardConnection>();
+            ForwardConnections = new List<NeuronConnection>();
+            BackwardConnections = new List<NeuronConnection>();
             Activator = activator;
             _weightInitializer = weightInitializer;
         }
@@ -31,16 +33,16 @@ namespace Ann.Neurons
         protected Neuron(int neuronIndex)
         {
             NeuronIndex = neuronIndex;
-            ForwardConnections = new List<ForwardConnection>();
-            BackwardConnections = new List<BackwardConnection>();
+            ForwardConnections = new List<NeuronConnection>();
+            BackwardConnections = new List<NeuronConnection>();
         }
 
-        public virtual void SetForwardConnections(List<ForwardConnection> connections)
+        public virtual void SetForwardConnections(List<NeuronConnection> connections)
         {
             ForwardConnections.AddRange(connections);
         }
 
-        public virtual void SetBackwardConnections(List<BackwardConnection> connections)
+        public virtual void SetBackwardConnections(List<NeuronConnection> connections)
         {
             BackwardConnections.AddRange(connections);
         }
@@ -57,14 +59,14 @@ namespace Ann.Neurons
             Delta = sum * Activator.CalculateDeriviative(Value);
         }
 
-        public void UpdateWeights(NetworkMeta meta)
+        public void UpdateWeights(NetworkConfiguration meta)
         {
             foreach (var connection in BackwardConnections)
             {
                 double value = Delta * connection.GetValue();
                 connection.UpdateWeight(meta.LearningRate * value);
             }
-
+            
             Bias = Bias - Delta * meta.LearningRate;
         }
 
@@ -79,6 +81,24 @@ namespace Ann.Neurons
                     .InitializeWeight(numberOfInputs, numberOfOutputs);
                 connection.SetWeight(weight);
             }
+        }
+
+        internal virtual NeuronModel ToNeuronModel()
+        {
+            return new NeuronModel
+            {
+                Bias = Bias,
+                NeuronIndex = NeuronIndex,
+                Activator = Activator.GetType().AssemblyQualifiedName,
+                Weights = ForwardConnections
+                    .Select(q => q.GetWeight())
+                    .ToList()
+            };
+        }
+
+        internal void SetBias(double bias)
+        {
+            Bias = bias;
         }
     }
 }
