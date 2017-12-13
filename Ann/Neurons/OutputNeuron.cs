@@ -20,7 +20,7 @@ namespace Ann.Neurons
 
         public override void CalculateDelta()
         {
-            Delta = Value - Target;
+            Delta = (Value - Target) * Activator.CalculateDeriviative(Value);
         }
 
         public double GetError()

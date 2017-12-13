@@ -49,6 +49,7 @@ namespace Ann
         public List<double> UseModel(List<double> inputs)
         {
             ValidateData(inputs);
+            InputLayer.SetInputs(inputs);
             ForwardPass();
             return OutputLayer.GetOutputValues();
         }
@@ -93,7 +94,6 @@ namespace Ann
         private void ForwardPass()
         {
             foreach (var layer in _layers
-                .Where(q => !(q is InputLayer))
                 .OrderBy(q => q.LayerIndex)
                 .ToList())
             {
@@ -113,7 +113,6 @@ namespace Ann
         private void UpdateWeights()
         {
             foreach (var layer in _layers
-                .Where(q => !(q is OutputLayer))
                 .OrderByDescending(q => q.LayerIndex)
                 .ToList())
             {

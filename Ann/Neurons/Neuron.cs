@@ -67,7 +67,7 @@ namespace Ann.Neurons
                 connection.UpdateWeight(meta.LearningRate * value);
             }
             
-            Bias = Bias - Delta * meta.LearningRate;
+            Bias -= Delta * meta.LearningRate;
         }
 
         public void RandomizeWeights()

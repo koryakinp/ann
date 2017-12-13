@@ -9,4 +9,12 @@
     <ProjectReference Include="..\Ann\Ann.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="RevStackCore-ImageSharp" Version="0.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="images\" />
+  </ItemGroup>
+
 </Project>

@@ -35,7 +35,7 @@ namespace Ann.Connections
 
         public void UpdateWeight(double weight)
         {
-            _connection.Weight = _connection.Weight - weight;
+            _connection.Weight -= weight;
         }
 
         public void SetWeight(double weight)

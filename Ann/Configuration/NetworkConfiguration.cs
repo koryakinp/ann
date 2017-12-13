@@ -15,7 +15,7 @@ namespace Ann.Configuration
         /// <param name="layerConfiguration">Layer configuration</param>
         /// <param name="learningRate">Learning rate</param>
         /// <param name="momentum">Momentum</param>
-        public NetworkConfiguration(LayerConfiguration layerConfiguration, double learningRate = 0.05, double momentum = 0.9)
+        public NetworkConfiguration(LayerConfiguration layerConfiguration, double learningRate = 0.10, double momentum = 0.9)
         {
             if(learningRate <= 0 || learningRate > 1)
             {
