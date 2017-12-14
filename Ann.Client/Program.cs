@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ImageSharp;
-using ImageIng = ImageSharp.Image;
 
 namespace Ann.Client
 {

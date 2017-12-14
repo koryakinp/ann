@@ -1,0 +1,13 @@
+﻿#canvas {
+    border: 1px solid black;
+}
+
+.wrapper {
+    width: 200px;
+    margin: 20px auto;
+    display: block;
+}
+
+.button-wrapper button {
+    width: 50%;
+}
