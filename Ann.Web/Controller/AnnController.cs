@@ -11,15 +11,19 @@ namespace Ann.Web.Controller
     [Produces("application/json")]
     public class AnnController
     {
+
+        private readonly RecognitionResult _rr;
+
+        public AnnController(RecognitionResult rr)
+        {
+            _rr = rr;
+        }
+
         [HttpGet]
         [Route("ann/recognize")]
         public RecognitionResult Recognize(string data)
         {
-            return new RecognitionResult
-            {
-                Confidence = 10,
-                Number = 2
-            };
+            return _rr;
         }
     }
 }

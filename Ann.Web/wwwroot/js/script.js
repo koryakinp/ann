@@ -1,22 +1,20 @@
 ﻿var ctx = document.getElementById('canvas').getContext("2d");
 
-$('#canvas').mousedown(function (e) {
-    var mouseX = e.pageX - this.offsetLeft;
-    var mouseY = e.pageY - this.offsetTop;
+var clickX = new Array();
+var clickY = new Array();
+var clickDrag = new Array();
+var paint;
 
+reset();
+
+$('#canvas').mousedown(function (e) {
     paint = true;
     addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
     redraw();
 });
 
-$('#recognize').click(function(){
-    sendImage();
-});
-
-$('#clear').click(function () {
-    reset();
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-});
+$('#recognize').click(sendImage);
+$('#clear').click(reset);
 
 $('#canvas').mousemove(function (e) {
     if (paint) {
@@ -25,24 +23,17 @@ $('#canvas').mousemove(function (e) {
     }
 });
 
-$('#canvas').mouseup(function (e) {
-    paint = false;
-});
-
-$('#canvas').mouseleave(function (e) {
-    paint = false;
-});
+$('#canvas').mouseup(function (e) { paint = false; });
+$('#canvas').mouseleave(function (e) { paint = false; });
 
 function reset() {
     clickX = new Array();
     clickY = new Array();
     clickDrag = new Array();
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
-
-var clickX = new Array();
-var clickY = new Array();
-var clickDrag = new Array();
-var paint;
 
 function addClick(x, y, dragging) {
     clickX.push(x);
@@ -51,9 +42,9 @@ function addClick(x, y, dragging) {
 }
 
 function redraw() {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clears the canvas
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.strokeStyle = 'white';
     ctx.lineJoin = "round";
     ctx.lineWidth = 5;

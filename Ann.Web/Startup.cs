@@ -1,4 +1,5 @@
 ﻿using Ann.Configuration;
+using Ann.Web.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +17,14 @@ namespace Ann.Web
             //NetworkConfiguration nc = new NetworkConfiguration(lc);
             //Network n = new Network(nc);
 
+
             services.AddMvc();
-            //services.AddSingleton(typeof(Network),nc);
+            //services.AddSingleton(typeof(LayerConfiguration),lc);
+            services.AddSingleton(new RecognitionResult
+            {
+                Confidence = 10,
+                Number = 42
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
