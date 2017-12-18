@@ -1,33 +1,37 @@
-﻿using Ann.Resources;
-using System;
+﻿using Ann.Decayers;
 
 namespace Ann.Configuration
 {
     public class NetworkConfiguration
     {
+        /// <summary>
+        /// Layer Configuration
+        /// </summary>
         public readonly LayerConfiguration LayerConfiguration;
-        public readonly double LearningRate;
-        public readonly double Momentum;
 
         /// <summary>
-        /// Creates a NetworkConfiguration object based in provided LayerConfiguration and optional learning rate and momentum
+        /// Learning Rate. Default value 0.1.
+        /// </summary>
+        public double LearningRate { get; set; }
+
+        /// <summary>
+        /// Momentum. Default value 0.
+        /// </summary>
+        public double Momentum { get; set; }
+
+        /// <summary>
+        /// Learning Rate Decay strategy. If not provided a flat learning rate will be used.
+        /// </summary>
+        public ILearningRateDecayer LearningRateDecayer { get; set; }
+
+        /// <summary>
+        /// Creates a NetworkConfiguration object based in provided LayerConfiguration
         /// </summary>
         /// <param name="layerConfiguration">Layer configuration</param>
-        /// <param name="learningRate">Learning rate</param>
-        /// <param name="momentum">Momentum</param>
-        public NetworkConfiguration(LayerConfiguration layerConfiguration, double learningRate = 0.10, double momentum = 0.9)
+        public NetworkConfiguration(LayerConfiguration layerConfiguration)
         {
-            if(learningRate <= 0 || learningRate > 1)
-            {
-                throw new Exception(Messages.InvalidLearningRate);
-            }
-            else if(momentum < 0 || momentum > 1)
-            {
-                throw new Exception(Messages.InvalidMomentum);
-            }
-            LearningRate = learningRate;
-            Momentum = momentum;
-
+            LearningRate = 0.1;
+            Momentum = 0;
             LayerConfiguration = layerConfiguration;
         }
     }

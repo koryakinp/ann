@@ -120,6 +120,9 @@
   <data name="ActivatorNotSupported" xml:space="preserve">
     <value>Activator type is not supported.</value>
   </data>
+  <data name="InvalidDecayRate" xml:space="preserve">
+    <value>Invalid network configuration. Learning rate decay value must be between 0 and 1.</value>
+  </data>
   <data name="InvalidInputArguments" xml:space="preserve">
     <value>Number of input values must be equal to a number of neurons in the Input Layer.</value>
   </data>

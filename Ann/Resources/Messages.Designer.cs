@@ -70,6 +70,15 @@ namespace Ann.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid network configuration. Learning rate decay value must be between 0 and 1..
+        /// </summary>
+        internal static string InvalidDecayRate {
+            get {
+                return ResourceManager.GetString("InvalidDecayRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of input values must be equal to a number of neurons in the Input Layer..
         /// </summary>
         internal static string InvalidInputArguments {

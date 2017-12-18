@@ -15,6 +15,8 @@ namespace Ann
     {
         internal readonly List<Layer> _layers;
         internal readonly NetworkConfiguration _config;
+        private int _epoch = 1;
+        private readonly double _initialLearningRate;
 
         /// <summary>
         /// Creates a Network objectd based on provided NetworkConfiguration
@@ -27,6 +29,7 @@ namespace Ann
             CreateConnections();
             ValidateNetworkConfiguration();
             RandomizeWeights();
+            _initialLearningRate = _config.LearningRate;
         }
 
         public Network(string filepath)
@@ -35,6 +38,7 @@ namespace Ann
             LayerConfiguration layerConfiguration = CreateLayerConfiguration(model);
             _config = new NetworkConfiguration(layerConfiguration);
             _layers = CreateLayers(layerConfiguration);
+            _initialLearningRate = _config.LearningRate;
             CreateConnections();
             AssignWeightValues(model);
             AssignBiasesValues(model);
@@ -69,6 +73,8 @@ namespace Ann
             ForwardPass();
             BackwardPass();
             UpdateWeights();
+            _epoch++;
+            UpdateLearningRate();
             return OutputLayer.GetTotalError();
         }
 
@@ -150,7 +156,19 @@ namespace Ann
         }
         private void ValidateNetworkConfiguration()
         {
-            if (_layers.OfType<InputLayer>().Count() != 1)
+            if (_config.LearningRateDecayer == null)
+            {
+                if(_config.LearningRate < 0 || _config.LearningRate > 1)
+                {
+                    throw new Exception(Messages.InvalidLearningRate);
+                }
+            }
+
+            if (_config.Momentum < 0 || _config.Momentum > 1)
+            {
+                throw new Exception(Messages.InvalidMomentum);
+            }
+            else if (_layers.OfType<InputLayer>().Count() != 1)
             {
                 throw new Exception(Messages.InvalidNumberOfInputLayers);
             }
@@ -321,6 +339,14 @@ namespace Ann
             }
 
             return layerConfiguration;
+        }
+
+        private void UpdateLearningRate()
+        {
+            if(_config.LearningRateDecayer != null)
+            {
+                _config.LearningRate = _config.LearningRateDecayer.Decay(_epoch);
+            }
         }
         #endregion
     }

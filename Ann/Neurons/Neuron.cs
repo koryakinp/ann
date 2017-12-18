@@ -17,12 +17,14 @@ namespace Ann.Neurons
         internal readonly IActivator Activator;
         private readonly IWeightInitializer _weightInitializer;
         public readonly int NeuronIndex;
+        private double _velocity;
 
         public Neuron(
             int neuronIndex,
             IActivator activator, 
             IWeightInitializer weightInitializer)
         {
+            _velocity = 0;
             NeuronIndex = neuronIndex;
             ForwardConnections = new List<NeuronConnection>();
             BackwardConnections = new List<NeuronConnection>();
@@ -63,11 +65,13 @@ namespace Ann.Neurons
         {
             foreach (var connection in BackwardConnections)
             {
+
                 double value = Delta * connection.GetValue();
-                connection.UpdateWeight(meta.LearningRate * value);
+                connection.UpdateWeight(value, meta);
             }
-            
-            Bias -= Delta * meta.LearningRate;
+
+            _velocity = meta.Momentum * _velocity - Delta * meta.LearningRate;
+            Bias += _velocity;
         }
 
         public void RandomizeWeights()

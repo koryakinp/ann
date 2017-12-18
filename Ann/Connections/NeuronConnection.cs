@@ -1,4 +1,5 @@
-﻿using Ann.Neurons;
+﻿using Ann.Configuration;
+using Ann.Neurons;
 
 namespace Ann.Connections
 {
@@ -6,9 +7,11 @@ namespace Ann.Connections
     {
         private readonly Connection _connection;
         private readonly Neuron _neuron;
+        private double _velocity;
 
         public NeuronConnection(Connection connection, Neuron neuron)
         {
+            _velocity = 0;
             _connection = connection;
             _neuron = neuron;
         }
@@ -33,9 +36,10 @@ namespace Ann.Connections
             return _neuron.Value;
         }
 
-        public void UpdateWeight(double weight)
+        public void UpdateWeight(double gradient, NetworkConfiguration meta)
         {
-            _connection.Weight -= weight;
+            _velocity = meta.Momentum * _velocity - meta.LearningRate * gradient;
+            _connection.Weight += _velocity;
         }
 
         public void SetWeight(double weight)
