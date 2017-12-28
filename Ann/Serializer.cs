@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Ann
 {
-    public static class Serializer
+    internal static class Serializer
     {
         public static void WriteToJsonFile<T>(string filePath, T objectToWrite, bool append = false) where T : new()
         {

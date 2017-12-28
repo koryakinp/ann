@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Ann.Neurons
 {
-    public class InputNeuron : Neuron
+    internal class InputNeuron : Neuron
     {
         public InputNeuron(int neuronIndex) 
             : base(neuronIndex) {}

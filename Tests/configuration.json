@@ -1,0 +1,183 @@
+{
+  "Layers": [
+    {
+      "Neurons": [
+        {
+          "Activator": "",
+          "NeuronIndex": 1,
+          "Weights": [
+            -0.06,
+            0.17,
+            -0.44
+          ],
+          "Bias": 0
+        },
+        {
+          "Activator": "",
+          "NeuronIndex": 2,
+          "Weights": [
+            0.11,
+            0.04,
+            0.37
+          ],
+          "Bias": 0
+        }
+      ],
+      "LayerIndex": 1
+    },
+    {
+      "Neurons": [
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 1,
+          "Weights": [
+            0.88,
+            0.76,
+            -0.66
+          ],
+          "Bias": 0.84
+        },
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 2,
+          "Weights": [
+            0.54,
+            -0.66,
+            -0.22
+          ],
+          "Bias": 0.99
+        },
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 3,
+          "Weights": [
+            0.53,
+            -0.33,
+            0.50
+          ],
+          "Bias": 0.69
+        }
+      ],
+      "LayerIndex": 2
+    },
+    {
+      "Neurons": [
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 1,
+          "Weights": [
+            -0.36,
+            -0.75,
+            0.98
+          ],
+          "Bias": -0.10
+        },
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 2,
+          "Weights": [
+            -0.85,
+            0.41,
+            -0.26
+          ],
+          "Bias": -0.32
+        },
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 3,
+          "Weights": [
+            -0.70,
+            -0.40,
+            0.40
+          ],
+          "Bias": -0.23
+        }
+      ],
+      "LayerIndex": 3
+    },
+    {
+      "Neurons": [
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 1,
+          "Weights": [
+            -0.98,
+            -0.33,
+            -0.17
+          ],
+          "Bias": 0.51
+        },
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 2,
+          "Weights": [
+            -0.13,
+            -0.18,
+            0.26
+          ],
+          "Bias": -0.89
+        },
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 3,
+          "Weights": [
+            0.53,
+            0.55,
+            -0.91
+          ],
+          "Bias": 0.37
+        }
+      ],
+      "LayerIndex": 4
+    },
+    {
+      "Neurons": [
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 1,
+          "Weights": [
+            0.46,
+            1.00
+          ],
+          "Bias": -0.92
+        },
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 2,
+          "Weights": [
+            -0.10,
+            0.54
+          ],
+          "Bias": 0.94
+        },
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 3,
+          "Weights": [
+            -0.47,
+            0.34
+          ],
+          "Bias": -0.12
+        }
+      ],
+      "LayerIndex": 5
+    },
+    {
+      "Neurons": [
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 1,
+          "Weights": [],
+          "Bias": 0.63
+        },
+        {
+          "Activator": "Ann.Activators.LogisticActivator, Ann, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "NeuronIndex": 2,
+          "Weights": [],
+          "Bias": -0.05
+        }
+      ],
+      "LayerIndex": 6
+    }
+  ]
+}

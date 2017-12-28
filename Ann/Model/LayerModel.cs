@@ -2,7 +2,7 @@
 
 namespace Ann.Model
 {
-    public class LayerModel
+    internal class LayerModel
     {
         public List<NeuronModel> Neurons { get; set; }
         public int LayerIndex { get; set; }

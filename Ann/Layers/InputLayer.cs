@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Ann.Layers
 {
-    public class InputLayer : Layer
+    internal class InputLayer : Layer
     {
         public InputLayer(List<InputNeuron> neurons) : base(neurons) {}
 

@@ -6,7 +6,7 @@ using Ann.Model;
 
 namespace Ann.Neurons
 {
-    public class OutputNeuron : Neuron
+    internal class OutputNeuron : Neuron
     {
         public OutputNeuron(int neuronIndex, IActivator activator, IWeightInitializer weightInitializer) 
             : base(neuronIndex,activator,weightInitializer) {}

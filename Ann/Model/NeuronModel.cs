@@ -2,7 +2,7 @@
 
 namespace Ann.Model
 {
-    public class NeuronModel
+    internal class NeuronModel
     {
         public string Activator { get; set; }
         public int NeuronIndex { get; set; }

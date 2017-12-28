@@ -1,6 +1,6 @@
 ﻿namespace Ann.Connections
 {
-    public class Coordinate
+    internal class Coordinate
     {
         public readonly int NeuronIndex;
         public readonly int LayerIndex;

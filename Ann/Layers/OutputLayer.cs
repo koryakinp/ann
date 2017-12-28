@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Ann.Layers
 {
-    public class OutputLayer : Layer
+    internal class OutputLayer : Layer
     {
         public OutputLayer(List<OutputNeuron> neurons, int layerIndex) : base(neurons, layerIndex) {}
 

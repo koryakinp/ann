@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ann.Layers
 {
-    public class Layer
+    internal class Layer
     {
         public readonly List<Neuron> Neurons;
         public readonly int LayerIndex;

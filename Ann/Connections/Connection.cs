@@ -1,6 +1,6 @@
 ﻿namespace Ann.Connections
 {
-    public class Connection
+    internal class Connection
     {
         public readonly Coordinate Prev;
         public readonly Coordinate Next;

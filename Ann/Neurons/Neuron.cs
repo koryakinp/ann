@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Ann.Neurons
 {
-    public class Neuron
+    internal class Neuron
     {
         internal readonly List<NeuronConnection> ForwardConnections;
         internal readonly List<NeuronConnection> BackwardConnections;

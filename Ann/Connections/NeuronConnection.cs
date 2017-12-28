@@ -3,7 +3,7 @@ using Ann.Neurons;
 
 namespace Ann.Connections
 {
-    public class NeuronConnection
+    internal class NeuronConnection
     {
         private readonly Connection _connection;
         private readonly Neuron _neuron;
