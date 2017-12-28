@@ -65,12 +65,12 @@ NetworkConfiguration nc = new NetworkConfiguration(lc)
     LearningRateDecayer = new StepDecayer(0.1, 0.8, 1000),
 };
 ```
-For further customization you can provide custom implementation of `ILearningRateDecayer`.
+For further customization you can provide custom implementation of the `ILearningRateDecayer` interface.
 ## Authors
 Pavel koryakin <koryakinp@koryakinp.com>
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/koryakinp/ann/blob/master/LICENSE) for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/koryakinp/ann/blob/master/LICENSE) for details.
 ## Acknowledgments
-- [Leon Bottou, Stochastic Gradient Descent Tricks](https://www.microsoft.com/en-us/research/publication/stochastic-gradient-tricks/).
-- [Matt Mazur, A Step by Step Backpropagation Example](https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/).
-- [Grant Sanderson, But what *is* a Neural Network?](https://youtu.be/aircAruvnKk).
+- [Leon Bottou, Stochastic Gradient Descent Tricks](https://www.microsoft.com/en-us/research/publication/stochastic-gradient-tricks/)
+- [Matt Mazur, A Step by Step Backpropagation Example](https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/)
+- [Grant Sanderson, But what *is* a Neural Network?](https://youtu.be/aircAruvnKk)
