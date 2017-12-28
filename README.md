@@ -39,7 +39,7 @@ The weights and biases will be adjasted using Stochastic Gradient Descent with B
 List<double> output = UseModel(new List<double> { 0.35, 0.45 });
 ```
 `UseModel()` accepts input values and performs forward-only pass, returns prediction of the model.
-### Advanced Configuration
+## Advanced Configuration
 `AddHiddenLayer()` and `AddOutputLayer()` have usefull overloads which allow for customization of the Activation function. Out of the box following activation functions supported: Logistic Sigmoid, Hyperbolic Tangent and Rectified Linear Unit.
 `AddHiddenLayer(10, ActivatorType.ReluActivator)` adds hidden layer with 10 neurons and Rectified Linear Unit activation function. If activation type is not provided the layer will use Logistic Sigmoid by default.
 For further customization an implementation of the `IActivator` interface can be provided.
