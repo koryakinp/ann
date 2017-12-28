@@ -6,7 +6,7 @@ Machine Learning library for .NET Core.
 ```
 PM> Install-Package Ann.koryakinp
 ```
-## Usage
+## Basic Usage
 ### Configure a Network by defining the structure and meta-parametres
 ```
 var layerConfig = new LayerConfiguration()
@@ -31,7 +31,6 @@ double err1 = model.TrainModel(new List<double> { 0.25, 0.50 }, new List<double>
 double err2 = model.TrainModel(new List<double> { 0.75, 0.15 }, new List<double> { 0 });
 double err3 = model.TrainModel(new List<double> { 0.60, 0.40 }, new List<double> { 1 });
 ```
-Feed network with training data. 
 First argument of the `TrainModel` method accepts input values.
 Second argument accepts output target values for a given training example.
 The weights and biases will be adjasted using Gradient Descent with Back Propagation alghorith after each training example.
@@ -40,4 +39,4 @@ An error for that particular training data will be returned.
 ```
 List<double> output = UseModel(new List<double> { 0.35, 0.45 });
 ```
-`UseModel()` Feeds input values forward only and returns predictions of the model.
+`UseModel()` accepts input values and performs forward-only pass, returns prediction of the model.
