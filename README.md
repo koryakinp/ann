@@ -39,6 +39,12 @@ The weights and biases will be adjasted using Stochastic Gradient Descent with B
 List<double> output = UseModel(new List<double> { 0.35, 0.45 });
 ```
 `UseModel()` accepts input values and performs forward-only pass, returns prediction of the model.
+### Save Model
+After you done with trainig you can save the model in JSON file for a later use:
+```
+network.SaveModelToJson("network-configuration.json");
+var network2 = new Network("network-configuration.json");
+```
 ## Advanced Configuration
 `AddHiddenLayer()` and `AddOutputLayer()` have usefull overloads which allow for customization of the Activation function. Out of the box following activation functions supported: Logistic Sigmoid, Hyperbolic Tangent and Rectified Linear Unit.
 `AddHiddenLayer(10, ActivatorType.ReluActivator)` adds hidden layer with 10 neurons and Rectified Linear Unit activation function. If activation type is not provided the layer will use Logistic Sigmoid by default.
