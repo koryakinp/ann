@@ -33,7 +33,7 @@ double err3 = model.TrainModel(new List<double> { 0.60, 0.40 }, new List<double>
 ```
 First argument of the `TrainModel` method accepts input values.
 Second argument accepts output target values for a given training example.
-The weights and biases will be adjasted using Stochastic Gradient Descent with Back Propagation alghorith.
+Weights and biases will be adjasted using Stochastic Gradient Descent with Back Propagation alghorith.
 ### Use Model
 ```
 List<double> output = UseModel(new List<double> { 0.35, 0.45 });
