@@ -33,10 +33,13 @@ double err3 = model.TrainModel(new List<double> { 0.60, 0.40 }, new List<double>
 ```
 First argument of the `TrainModel` method accepts input values.
 Second argument accepts output target values for a given training example.
-The weights and biases will be adjasted using Gradient Descent with Back Propagation alghorith after each training example.
-An error for that particular training data will be returned.
+The weights and biases will be adjasted using Stochastic Gradient Descent with Back Propagation alghorith.
 ### Use Model
 ```
 List<double> output = UseModel(new List<double> { 0.35, 0.45 });
 ```
 `UseModel()` accepts input values and performs forward-only pass, returns prediction of the model.
+### Advanced Configuration
+`AddHiddenLayer()` and `AddOutputLayer()` have usefull overloads which allow for customization of the Activation function. Out of the box supported following activation functions: Logistic Sigmoid, Hyperbolic Tangent and Rectified Linear Unit.
+`AddHiddenLayer(10, ActivatorType.ReluActivator)` adds hidden layer with 10 neurons and Rectified Linear Unit activation function. 
+For further customization an implementation of the `IActivator` interface can be provided.
