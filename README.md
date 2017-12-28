@@ -18,11 +18,7 @@ var layerConfig = new LayerConfiguration()
 `AddInputLayer()`,`AddOutputLayer()` and `AddHiddenLayer()`  add layers to the network configuration with specified number of neurons.
 A network must have one input, one output and any number of hidden layers.
 ```
-var networkConfig = new NetworkConfiguration(layerConfig)
-{
-    Momentum = 0.9,
-    LearningRate = 0.1
-};
+var networkConfig = new NetworkConfiguration(layerConfig);
 var model = new Network(networkConfig);
 ```
 ### Train Model
