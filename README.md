@@ -36,7 +36,7 @@ Second argument accepts output target values for a given training example.
 Weights and biases will be adjasted using Stochastic Gradient Descent with Back Propagation alghorith.
 ### Use Model
 ```
-List<double> output = UseModel(new List<double> { 0.35, 0.45 });
+List<double> output = network.UseModel(new List<double> { 0.35, 0.45 });
 ```
 `UseModel()` accepts input values and performs forward-only pass, returns prediction of the model.
 ### Save Model
