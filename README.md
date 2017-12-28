@@ -69,7 +69,7 @@ For further customization you can provide custom implementation of `ILearningRat
 ## Authors
 Pavel koryakin <koryakinp@koryakinp.com>
 ## License
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/koryakinp/ann/blob/master/LICENSE) for details
 ## Acknowledgments
 - [Leon Bottou, Stochastic Gradient Descent Tricks](https://www.microsoft.com/en-us/research/publication/stochastic-gradient-tricks/).
 - [Matt Mazur, A Step by Step Backpropagation Example](https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/).
