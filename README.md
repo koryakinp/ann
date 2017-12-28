@@ -23,7 +23,7 @@ var networkConfig = new NetworkConfiguration(layerConfig)
     Momentum = 0.9,
     LearningRate = 0.1
 };
-var network = new Network(networkConfig);
+var model = new Network(networkConfig);
 ```
 ### Train Model
 ```
@@ -36,14 +36,14 @@ Second argument accepts output target values for a given training example.
 Weights and biases will be adjasted using Stochastic Gradient Descent with Back Propagation alghorith.
 ### Use Model
 ```
-List<double> output = network.UseModel(new List<double> { 0.35, 0.45 });
+List<double> output = model.UseModel(new List<double> { 0.35, 0.45 });
 ```
 `UseModel()` accepts input values and performs forward-only pass, returns prediction of the model.
 ### Save Model
 After you done with trainig you can save the model in JSON file for a later use:
 ```
-network.SaveModelToJson("network-configuration.json");
-var network2 = new Network("network-configuration.json");
+model.SaveModelToJson("network-configuration.json");
+var model2 = new Network("network-configuration.json");
 ```
 ## Advanced Configuration
 `AddHiddenLayer()` and `AddOutputLayer()` have usefull overloads which allow for customization of the Activation function. Out of the box following activation functions supported: Logistic Sigmoid, Hyperbolic Tangent and Rectified Linear Unit.
