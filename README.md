@@ -46,6 +46,23 @@ model.SaveModelToJson("network-configuration.json");
 var model2 = new Network("network-configuration.json");
 ```
 ## Advanced Configuration
+### Customizing activation function for agiven layer
 `AddHiddenLayer()` and `AddOutputLayer()` have usefull overloads which allow for customization of the Activation function. Out of the box following activation functions supported: Logistic Sigmoid, Hyperbolic Tangent and Rectified Linear Unit.
 `AddHiddenLayer(10, ActivatorType.ReluActivator)` adds hidden layer with 10 neurons and Rectified Linear Unit activation function. If activation type is not provided the layer will use Logistic Sigmoid by default.
 For further customization an implementation of the `IActivator` interface can be provided.
+### Customizing Learning Rate, Momentum and Learning Rate Decay
+If no custom configuration was provided a Network will fallback to 0.1 flat learning rate, with no momentum.
+There are two learning rate decay strategy supported out of the box: Exponential decay and Step decay.
+Step decay reduces the learning rate by some factor every few epochs.
+Exponential decay gradually reduces the learning rate in an exponential fashion. 
+More info regarding the learning rate decy can be found here: http://cs231n.github.io/neural-networks-3/#anneal
+
+An example of custom Network Configuration:
+```
+NetworkConfiguration nc = new NetworkConfiguration(lc)
+{
+    Momentum = 0.9
+    LearningRateDecayer = new StepDecayer(0.1, 0.8, 1000),
+};
+```
+For further customization you can provide custom implementation of `ILearningRateDecayer`.
