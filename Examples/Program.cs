@@ -1,7 +1,8 @@
-﻿using Ann.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ShellProgressBar;
+using Ann.Activators;
+using Ann.CostFunctions;
 
 namespace Ann.Mnist
 {
@@ -18,21 +19,16 @@ namespace Ann.Mnist
 
         private static Network CreateModel()
         {
-            var layerConfig = new LayerConfiguration();
+            var network = new Network(CostFunctionType.Quadratic, 784);
+            network.AddFullyConnectedLayer(
+                16, ActivatorType.Sigmoid, LearningRateAnnealerType.Adagrad);
+            network.AddFullyConnectedLayer(
+                16, ActivatorType.Sigmoid, LearningRateAnnealerType.Adagrad);
+            network.AddFullyConnectedLayer(
+                10, ActivatorType.Sigmoid, LearningRateAnnealerType.Adagrad);
 
-            layerConfig
-                .AddInputLayer(784)
-                .AddHiddenLayer(16, ActivatorType.LogisticActivator)
-                .AddHiddenLayer(16, ActivatorType.LogisticActivator)
-                .AddOutputLayer(10, ActivatorType.LogisticActivator);
+            return network;
 
-            var config = new NetworkConfiguration(layerConfig)
-            {
-                Momentum = 0.9,
-                LearningRate = 0.1
-            };
-
-            return new Network(config);
         }
 
         private static void TrainModel(Network model)
@@ -45,7 +41,7 @@ namespace Ann.Mnist
                 {
                     List<double> data = Helper.CreateInput(image.Data);
                     List<double> target = Helper.CreateTarget(image.Label);
-                    model.TrainModel(data, target);
+                    model.TrainModel(data.ToArray(), target.ToArray());
                     pbar.Tick($"Training Model: {++current} of {total}");
                 }
             }
@@ -63,8 +59,8 @@ namespace Ann.Mnist
                 foreach (var image in MnistReader.ReadTestData())
                 {
                     List<double> data = Helper.CreateInput(image.Data);
-                    var res = model.UseModel(data);
-                    int predicted = Helper.IntegerFromOutput(res);
+                    var res = model.UseModel(data.ToArray());
+                    int predicted = Helper.IntegerFromOutput(new List<double>(res));
 
                     if (predicted == image.Label)
                     {

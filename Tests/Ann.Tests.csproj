@@ -16,10 +16,4 @@
     <ProjectReference Include="..\Ann\Ann.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="configuration.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

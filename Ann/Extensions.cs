@@ -13,5 +13,17 @@ namespace Ann
                 yield return items[i];
             }
         }
+
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T, int> action)
+        {
+            var i = 0;
+            foreach (var e in source) action(e, i++);
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (T element in source)
+                action(element);
+        }
     }
 }
