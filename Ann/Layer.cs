@@ -59,14 +59,19 @@ namespace Ann
             return deltas;
         }
 
-        public void UpdateWeights()
+        public void UpdateWeights(double[] values)
         {
-            Neurons.ForEach(q => q.UpdateWeights());
+            Neurons.ForEach(q => q.UpdateWeights(values));
         }
 
         public void UpdateBiases()
         {
             Neurons.ForEach(q => q.UpdateBias());
+        }
+
+        public void RandomizeWeights()
+        {
+            Neurons.ForEach(q => q.RandomizeWeights());
         }
     }
 }

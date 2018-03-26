@@ -27,6 +27,8 @@ namespace Ann.Mnist
             network.AddFullyConnectedLayer(
                 10, ActivatorType.Sigmoid, LearningRateAnnealerType.Adagrad);
 
+            network.FinalizeModel();
+
             return network;
 
         }

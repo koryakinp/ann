@@ -22,7 +22,7 @@ namespace Ann
         {
             var output = PassForward(input);
             PassBackward(ComputeCost(output, target));
-            Learn();
+            Learn(input);
             return ComputeError(output, target);
         }
 
@@ -39,6 +39,11 @@ namespace Ann
                 _layers.Any() ? _layers.Last().Neurons.Count() : _numberOfInputs,
                 lrat,
                 _layers.Any() ? _layers.Last().LayerIndex + 1 : 1));
+        }
+
+        public void FinalizeModel()
+        {
+            RandomizeWeights();
         }
 
         #region private methods
@@ -63,18 +68,27 @@ namespace Ann
                 .ForEach(q => value = q.PassBackward(value));
         }
 
+        private void RandomizeWeights()
+        {
+            _layers.ForEach(q => q.RandomizeWeights());
+        }
+
         private double[] PassForward(double[] value)
         {
             _layers.ForEach(q => value = q.PassForward(value));
             return value;
         }
 
-        private void Learn()
+        private void Learn(double[] input)
         {
-            foreach (var layer in _layers)
+            for (int i = 0; i < _layers.Count; i++)
             {
-                layer.UpdateWeights();
-                layer.UpdateBiases();
+                var prevLayerOutput = _layers[i].LayerIndex == 1
+                    ? input
+                    : _layers[i - 1].Neurons.Select(q => q.Output).ToArray();
+
+                _layers[i].UpdateWeights(prevLayerOutput);
+                _layers[i].UpdateBiases();
             }
         }
         #endregion

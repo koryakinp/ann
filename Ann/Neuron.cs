@@ -44,9 +44,9 @@ namespace Ann
             Delta = weightedDelta * _activator.CalculateDeriviative(Output);
         }
 
-        public void UpdateWeights()
+        public void UpdateWeights(double[] values)
         {
-            Weights.ForEach((q, i) => Weights[i].Update(Delta));
+            Weights.ForEach((q, i) => Weights[i].Update(Delta * values[i]));
         }
 
         public void UpdateBias()
