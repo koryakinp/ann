@@ -6,21 +6,19 @@ namespace Ann
 {
     internal class Neuron
     {
-        public double Output { get; private set; }
-        public double Delta { get; private set; }
-        private readonly Activator _activator;
+        public double Output { get; set; }
+        public double Delta { get; set; }
+
         public readonly Optimizer[] Weights;
         public readonly Optimizer Bias;
 
         public Neuron(
-            Activator activator,
             int numberOfConnections,
             LearningRateAnnealerType lrat)
         {
             Weights = new Optimizer[numberOfConnections];
             Weights.ForEach((q, i) => Weights[i] = LearningRateAnnealerFactory.Produce(lrat));
             Bias = LearningRateAnnealerFactory.Produce(lrat);
-            _activator = activator;
         }
 
         public void RandomizeWeights()
@@ -32,16 +30,6 @@ namespace Ann
         public void SetWeights(double[] weights)
         {
             Weights.ForEach((q, i) => Weights[i].SetValue(weights[i]));
-        }
-
-        public void ComputeOutput(double weightedSum)
-        {
-            Output = _activator.CalculateValue(weightedSum + Bias.Value);
-        }
-
-        public void ComputeDelta(double weightedDelta)
-        {
-            Delta = weightedDelta * _activator.CalculateDeriviative(Output);
         }
 
         public void UpdateWeights(double[] values)
