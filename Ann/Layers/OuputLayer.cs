@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace Ann.Layers
 {
-    internal class OuputLayer : Layer
+    internal class OutputLayer : Layer
     {
-        public OuputLayer(
+        public OutputLayer(
             int numberOfNeurons, 
             int numberOfNeuronsInPreviouseLayer, 
             LearningRateAnnealerType lrat, 
@@ -17,8 +17,19 @@ namespace Ann.Layers
 
         public override double[] PassBackward(double[] value)
         {
+            var jacobian = new double[Neurons.Count, Neurons.Count];
+            
+            jacobian.ForEach((i, j) =>
+            {
+                jacobian[i, j] = i == j 
+                    ? Neurons[i].Output * (1 - Neurons[i].Output) 
+                    : -Neurons[i].Output * Neurons[j].Output;
+            });
+
+            Neurons.ForEach((q, i) => q.Delta = 0);
+            jacobian.ForEach((i, j) => Neurons[i].Delta += jacobian[i, j] * value[j]);
+
             double[] deltas = new double[NumberOfNeuronsInPreviouseLayer];
-            Neurons.ForEach((q, i) => q.Delta = value[i] * Neurons[i].Output * (1 - Neurons[i].Output));
             Neurons.ForEach(q => q.Weights.ForEach((w, i) => deltas[i] += w.Value * q.Delta));
             return deltas;
         }

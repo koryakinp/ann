@@ -1,5 +1,6 @@
 ﻿using Ann.Activators;
-using Ann.CostFunctions;
+using Ann.Layers;
+using Ann.LossFunctions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,17 +9,21 @@ namespace Ann
     public partial class Network
     {
         private readonly List<Layer> _layers;
-        private readonly ICostFunction _costFunction;
+        private readonly LossFunction _lossFunction;
+        private readonly LearningRateAnnealerType _lrat;
         private readonly int _numberOfInputs;
+        private readonly int _numberOfOutputs;
 
-        public Network(CostFunctionType costFunctionType, int numberOfInputs)
+        public Network(LossFunctionType lft, LearningRateAnnealerType lrat, int numberOfInputs, int numberOfOutputs)
         {
+            _lossFunction = LossFunctionFactory.Produce(lft);
+            _lrat = lrat;
             _numberOfInputs = numberOfInputs;
-            _costFunction = CostFunctionFactory.Produce(costFunctionType);
+            _numberOfOutputs = numberOfOutputs;
             _layers = new List<Layer>();
         }
 
-        public double TrainModel(double[] input, double[] target)
+        public double TrainModel(double[] input, bool[] target)
         {
             var output = PassForward(input);
             PassBackward(ComputeCost(output, target));
@@ -31,14 +36,19 @@ namespace Ann
             return PassForward(input);
         }
 
-        public void AddFullyConnectedLayer(int numberOfNeurons, ActivatorType activatorType, LearningRateAnnealerType lrat)
+        public void AddHiddenLayer(int numberOfNeurons, ActivatorType activatorType)
         {
-            _layers.Add(new Layer(
+            _layers.Add(new HiddenLayer(
                 ActivatorFactory.Produce(activatorType),
                 numberOfNeurons,
                 _layers.Any() ? _layers.Last().Neurons.Count() : _numberOfInputs,
-                lrat,
+                _lrat,
                 _layers.Any() ? _layers.Last().LayerIndex + 1 : 1));
+        }
+
+        public void AddOutputLayer()
+        {
+            _layers.Add(new OutputLayer(_numberOfOutputs, _layers.Last().Neurons.Count(), _lrat, _layers.Last().LayerIndex + 1));
         }
 
         public void FinalizeModel()
@@ -47,18 +57,14 @@ namespace Ann
         }
 
         #region private methods
-        private double[] ComputeCost(double[] output, double[] target)
+        private double[] ComputeCost(double[] output, bool[] target)
         {
-            return output
-                .Select((q, i) => _costFunction.ComputeDeriviative(target[i], q))
-                .ToArray();
+            return _lossFunction.ComputeDeriviative(target, output);
         }
 
-        private double ComputeError(double[] output, double[] target)
+        private double ComputeError(double[] output, bool[] target)
         {
-            return output
-                .Select((q, i) => _costFunction.ComputeValue(target[i], q))
-                .Sum();
+            return _lossFunction.ComputeLoss(target, output);
         }
 
         private void PassBackward(double[] value)

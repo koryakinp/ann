@@ -1,6 +1,5 @@
 ﻿using Gdo;
 using System;
-using Activator = Ann.Activators.Activator;
 
 namespace Ann
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ShellProgressBar;
 using Ann.Activators;
-using Ann.CostFunctions;
+using Ann.LossFunctions;
 
 namespace Ann.Mnist
 {
@@ -13,24 +13,20 @@ namespace Ann.Mnist
             var network = CreateModel();
             TrainModel(network);
             var res = TestModel(network);
-            Console.WriteLine($"Success: {res.success} | Fail: {res.fail}");
+            var ratio = res.success / (res.success + res.fail);
+            Console.WriteLine($"Success: {res.success} | Fail: {res.fail} | {ratio * 100}% ");
             Console.ReadLine();
         }
 
         private static Network CreateModel()
         {
-            var network = new Network(CostFunctionType.Quadratic, 784);
-            network.AddFullyConnectedLayer(
-                16, ActivatorType.Sigmoid, LearningRateAnnealerType.Adagrad);
-            network.AddFullyConnectedLayer(
-                16, ActivatorType.Sigmoid, LearningRateAnnealerType.Adagrad);
-            network.AddFullyConnectedLayer(
-                10, ActivatorType.Sigmoid, LearningRateAnnealerType.Adagrad);
-
+            var network = new Network(LossFunctionType.CrossEntropy, LearningRateAnnealerType.Adagrad, 784, 10);
+            network.AddHiddenLayer(16, ActivatorType.Sigmoid);
+            network.AddHiddenLayer(16, ActivatorType.Sigmoid);
+            network.AddOutputLayer();
             network.FinalizeModel();
 
             return network;
-
         }
 
         private static void TrainModel(Network model)
@@ -41,9 +37,9 @@ namespace Ann.Mnist
             {
                 foreach (var image in MnistReader.ReadTrainingData())
                 {
-                    List<double> data = Helper.CreateInput(image.Data);
-                    List<double> target = Helper.CreateTarget(image.Label);
-                    model.TrainModel(data.ToArray(), target.ToArray());
+                    var data = Helper.CreateInput(image.Data);
+                    var target = Helper.CreateTarget(image.Label);
+                    model.TrainModel(data, target);
                     pbar.Tick($"Training Model: {++current} of {total}");
                 }
             }
@@ -60,9 +56,9 @@ namespace Ann.Mnist
             {
                 foreach (var image in MnistReader.ReadTestData())
                 {
-                    List<double> data = Helper.CreateInput(image.Data);
-                    var res = model.UseModel(data.ToArray());
-                    int predicted = Helper.IntegerFromOutput(new List<double>(res));
+                    var data = Helper.CreateInput(image.Data);
+                    var res = model.UseModel(data);
+                    int predicted = Helper.IntegerFromOutput(res);
 
                     if (predicted == image.Label)
                     {

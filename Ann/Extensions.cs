@@ -25,5 +25,27 @@ namespace Ann
             foreach (T element in source)
                 action(element);
         }
+
+        public static void ForEach<T>(this T[,] source, Action<T, int, int> action)
+        {
+            for (int w = 0; w < source.GetLength(0); w++)
+            {
+                for (int h = 0; h < source.GetLength(1); h++)
+                {
+                    action(source[w, h], w, h);
+                }
+            }
+        }
+
+        public static void ForEach<T>(this T[,] source, Action<int, int> action)
+        {
+            for (int w = 0; w < source.GetLength(0); w++)
+            {
+                for (int h = 0; h < source.GetLength(1); h++)
+                {
+                    action(w, h);
+                }
+            }
+        }
     }
 }

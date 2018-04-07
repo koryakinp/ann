@@ -1,30 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Ann.Mnist
 {
     public static class Helper
     {
-        public static List<double> CreateTarget(byte value)
+        public static bool[] CreateTarget(byte value)
         {
-            List<double> res = new List<double>();
-
-            for (int i = 0; i <= 9; i++)
-            {
-                res.Add(i == value ? 1 : 0);
-            }
-
+            var res = new bool[10];
+            res.ForEach((q, i) => res[i] = i == value);
             return res;
         }
 
-        public static List<double> CreateInput(byte[] values)
+        public static double[] CreateInput(byte[] values)
         {
-            return values.Select(q => (double)q / 255).ToList();
+            return values.Select(q => (double)q / 255).ToArray();
         }
 
-        public static byte IntegerFromOutput(List<double> values)
+        public static byte IntegerFromOutput(double[] values)
         {
-            return (byte)(values.IndexOf(values.Max()));
+            return (byte)(values.ToList().IndexOf(values.Max()));
         }
     }
 }
