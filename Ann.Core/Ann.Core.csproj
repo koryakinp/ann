@@ -5,7 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ann.Core\Ann.Core.csproj" />
+    <Compile Remove="RandomGenerator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ann.Activators.koryakinp" Version="1.0.0" />
+    <PackageReference Include="Gdo.koryakinp" Version="2.1.4" />
+    <PackageReference Include="MathNet.Numerics" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Ann.Utils\Ann.Utils.csproj" />
   </ItemGroup>
 

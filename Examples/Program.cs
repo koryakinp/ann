@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using ShellProgressBar;
 using Ann.Activators;
-using Ann.LossFunctions;
+using Ann.Core;
+using Ann.Core.LossFunctions;
+using Gdo.Optimizers;
+using ShellProgressBar;
 
 namespace Ann.Mnist
 {
@@ -13,18 +14,20 @@ namespace Ann.Mnist
             var network = CreateModel();
             TrainModel(network);
             var res = TestModel(network);
-            var ratio = res.success / (res.success + res.fail);
+            var ratio = Decimal.Divide(res.success,res.success + res.fail);
             Console.WriteLine($"Success: {res.success} | Fail: {res.fail} | {ratio * 100}% ");
             Console.ReadLine();
         }
 
         private static Network CreateModel()
         {
-            var network = new Network(LossFunctionType.CrossEntropy, LearningRateAnnealerType.Adagrad, 784, 10);
-            network.AddHiddenLayer(16, ActivatorType.Sigmoid);
-            network.AddHiddenLayer(16, ActivatorType.Sigmoid);
-            network.AddOutputLayer();
-            network.FinalizeModel();
+            var network = new Network(LossFunctionType.CrossEntropy, 10);
+
+            network.AddInputLayer(28, 1);
+            network.AddHiddenLayer(16, ActivatorType.Sigmoid, Optimizers.Flat(0.1));
+            network.AddHiddenLayer(16, ActivatorType.Sigmoid, Optimizers.Flat(0.1));
+            network.AddSoftMaxLayer(Optimizers.Flat(0.1));
+            network.RandomizeWeights();
 
             return network;
         }
@@ -39,7 +42,7 @@ namespace Ann.Mnist
                 {
                     var data = Helper.CreateInput(image.Data);
                     var target = Helper.CreateTarget(image.Label);
-                    model.TrainModel(data, target);
+                    model.TrainModel(new Message(data), target);
                     pbar.Tick($"Training Model: {++current} of {total}");
                 }
             }
@@ -57,7 +60,7 @@ namespace Ann.Mnist
                 foreach (var image in MnistReader.ReadTestData())
                 {
                     var data = Helper.CreateInput(image.Data);
-                    var res = model.UseModel(data);
+                    var res = model.UseModel(new Message(data));
                     int predicted = Helper.IntegerFromOutput(res);
 
                     if (predicted == image.Label)

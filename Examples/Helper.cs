@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Ann.Utils;
+using System.Linq;
 
 namespace Ann.Mnist
 {

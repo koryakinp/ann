@@ -1,15 +1,14 @@
 ﻿using Ann.Core;
-using Ann.Core.Layers;
 using Ann.Core.LossFunctions;
 using Ann.Core.WeightInitializers;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ann
+namespace Ann.Network
 {
-    public partial class Network
+    public class Network
     {
-        internal readonly List<Layer> _layers;
+        internal readonly List<ILayer> _layers;
         private readonly LossFunction _lossFunction;
         internal readonly int _numberOfClasses;
 
@@ -17,7 +16,12 @@ namespace Ann
         {
             _numberOfClasses = numberOfClasses;
             _lossFunction = LossFunctionFactory.Produce(lossFunctionType);
-            _layers = new List<Layer>();
+            _layers = new List<ILayer>();
+        }
+
+        public void AddLayer(LayerConfiguration layerInitializer)
+        {
+            _layers.Add(layerInitializer.CreateLayer(this));
         }
 
         public double TrainModel(Message input, bool[] labels)
