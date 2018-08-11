@@ -48,7 +48,7 @@ namespace Ann.Core.Tests
 
         public void ForwardPassTest()
         {
-            var input = new Message(TestValues.MultiDimensionalInput);
+            var input = TestValues.MultiDimensionalInput;
             var actual = _layer.PassForward(input);
             int inputSize = TestValues.MultiDimensionalInput.GetLength(1);
             int outputSize = inputSize - _kernelSize + 1;

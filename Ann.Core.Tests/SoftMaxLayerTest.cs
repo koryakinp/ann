@@ -51,7 +51,7 @@ namespace Ann.Core.Tests
         [TestMethod]
         public void PassForwardTest()
         {
-            var actual = _layer.PassForward(new Message(_input));
+            var actual = _layer.PassForward(_input);
             var expected = new double[_layer.Neurons.Count];
             var temp = new double[_layer.Neurons.Count];
             for (int i = 0; i < _layer.Neurons.Count; i++)
@@ -65,13 +65,13 @@ namespace Ann.Core.Tests
             }
 
             Assert.AreEqual(1, expected.Sum(), Math.Pow(0.1, 10));
-            CollectionAssert.AreEqual(expected, actual.ToSingle(), _comparer);
+            CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
         [TestMethod]
         public void PassBackwardTest()
         {
-            _layer.PassForward(new Message(_input));
+            _layer.PassForward(_input);
 
             var expected = new double[_input.Length];
 
@@ -96,8 +96,8 @@ namespace Ann.Core.Tests
                 }
             }
 
-            var actual = _layer.PassBackward(new Message(_error));
-            CollectionAssert.AreEqual(expected, actual.ToSingle(), _comparer);
+            var actual = _layer.PassBackward(_error);
+            CollectionAssert.AreEqual(expected, actual, _comparer);
         }
     }
 }

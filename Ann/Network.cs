@@ -2,6 +2,7 @@
 using Ann.Core.Layers;
 using Ann.Core.LossFunctions;
 using Ann.Core.WeightInitializers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,10 +21,10 @@ namespace Ann
             _layers = new List<Layer>();
         }
 
-        public double TrainModel(Message input, bool[] labels)
+        public double TrainModel(double[,] input, bool[] labels)
         {
-            var output = PassForward(input);
-            Message error = new Message(_lossFunction.ComputeDeriviative(labels, output));
+            double[] output = PassForward(input).Cast<double>().ToArray();
+            double[] error = _lossFunction.ComputeDeriviative(labels, output);
 
             PassBackward(error);
             Learn();
@@ -31,22 +32,22 @@ namespace Ann
             return _lossFunction.ComputeLoss(labels, output);
         }
 
-        public double[] UseModel(Message input)
+        public double[] UseModel(double[,] input)
         {
-            return PassForward(input);
+            return PassForward(input).Cast<double>().ToArray();
         }
 
-        private double[] PassForward(Message input)
+        private Array PassForward(Array input)
         {
             for (int i = 0; i < _layers.Count; i++)
             {
                 input = _layers[i].PassForward(input);
             }
 
-            return input.ToSingle();
+            return input;
         }
 
-        private void PassBackward(Message error)
+        private void PassBackward(Array error)
         {
             for (int i = _layers.Count - 1; i >= 0; i--)
             {

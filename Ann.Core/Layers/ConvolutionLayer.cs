@@ -42,28 +42,17 @@ namespace Ann.Core.Layers
             _numberOfKernels = numberOfKernels;
         }
 
-        public override Message PassBackward(Message input)
+        public override Array PassForward(Array input)
         {
-            var data = input.ToMulti(GetOutputMessageShape().Depth, GetOutputMessageShape().Width);
-            data.ForEach((q, i, j, k) => data[i, j, k] = q * _activator.CalculateDeriviative(_cache[i,j,k]));
-
-
-            throw new System.NotImplementedException();
+            var res = MatrixHelper2.Convolution(input, _kernels.Values());
+            res.ForEach((q, i, j, k) => res[i, j, k] = _activator.CalculateValue(q + _biases[i].Value));
+            _cache = res;
+            return res;
         }
 
-        public override Message PassForward(Message input)
+        public override Array PassBackward(Array input)
         {
-            if(!input.IsMulti)
-            {
-                throw new Exception(Consts.ConvolutionalInputIsNotValid);
-            }
-
-            var data = input.ToMulti(InputMessageShape.Depth, InputMessageShape.Width);
-            var res = MatrixHelper.Convolution(data, _kernels.Values());
-            res.ForEach((q, i, j, k) => res[i, j, k] += _biases[i].Value);
-            res.ForEach((q, i, j, k) => res[i, j, k] = _activator.CalculateValue(q));
-            _cache = res;
-            return new Message(res);
+            throw new System.NotImplementedException();
         }
 
         public void RandomizeWeights(IWeightInitializer weightInitializer)

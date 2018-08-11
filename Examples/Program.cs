@@ -40,9 +40,9 @@ namespace Ann.Mnist
             {
                 foreach (var image in MnistReader.ReadTrainingData())
                 {
-                    var data = Helper.CreateInput(image.Data);
+                    var data = Helper.Create2DInput(image.Data);
                     var target = Helper.CreateTarget(image.Label);
-                    model.TrainModel(new Message(data), target);
+                    model.TrainModel(data, target);
                     pbar.Tick($"Training Model: {++current} of {total}");
                 }
             }
@@ -59,8 +59,8 @@ namespace Ann.Mnist
             {
                 foreach (var image in MnistReader.ReadTestData())
                 {
-                    var data = Helper.CreateInput(image.Data);
-                    var res = model.UseModel(new Message(data));
+                    var data = Helper.Create2DInput(image.Data);
+                    var res = model.UseModel(data);
                     int predicted = Helper.IntegerFromOutput(res);
 
                     if (predicted == image.Label)

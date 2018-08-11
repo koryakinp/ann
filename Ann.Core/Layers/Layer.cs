@@ -12,7 +12,7 @@ namespace Ann.Core.Layers
         }
 
         public abstract MessageShape GetOutputMessageShape();
-        public abstract Message PassForward(Message input);
-        public abstract Message PassBackward(Message input);
+        public abstract Array PassForward(Array input);
+        public abstract Array PassBackward(Array input);
     }
 }

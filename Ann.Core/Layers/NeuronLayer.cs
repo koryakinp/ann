@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo;
@@ -8,7 +10,7 @@ namespace Ann.Core.Layers
     public abstract class NeuronLayer : Layer, ILearnable
     {
         public readonly IReadOnlyList<Neuron> Neurons;
-        protected double[] PrevLayerOutput;
+        protected Array PrevLayerOutput;
 
         public NeuronLayer(
             int numberOfNeurons,
@@ -31,7 +33,7 @@ namespace Ann.Core.Layers
 
         public void UpdateWeights()
         {
-            Neurons.ForEach(q => q.UpdateWeights(PrevLayerOutput));
+            Neurons.ForEach(q => q.UpdateWeights(PrevLayerOutput.Cast<double>().ToArray()));
         }
 
         public void UpdateBiases()

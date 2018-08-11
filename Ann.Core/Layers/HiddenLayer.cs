@@ -3,6 +3,7 @@ using Gdo;
 using System.Linq;
 using Activator = Ann.Activators.Activator;
 using static Ann.Utils.Extensions;
+using System;
 
 namespace Ann.Core.Layers
 {
@@ -20,27 +21,37 @@ namespace Ann.Core.Layers
             _activator = activator;
         }
 
-        public override Message PassForward(Message input)
+        public override Array PassForward(Array input)
         {
-            PrevLayerOutput = input.ToSingle();
+            PrevLayerOutput = input;
 
-            Neurons.ForEach(q =>
+            foreach (var neuron in Neurons)
             {
-                var weightedInput = q.Weights.Select((w, j) => PrevLayerOutput[j] * w.Value).Sum();
-                q.Output = _activator.CalculateValue(weightedInput + q.Bias.Value);
-            });
+                var weightedInput = neuron
+                    .Weights
+                    .Select((w, j) => (double)input.GetValue(j) * w.Value)
+                    .Sum();
+                neuron.Output = _activator.CalculateValue(weightedInput + neuron.Bias.Value);
+            }
 
-            return new Message(Neurons.Select(q => q.Output).ToArray());
+            return Neurons.Select(q => q.Output).ToArray();
         }
 
-        public override Message PassBackward(Message error)
+        public override Array PassBackward(Array error)
         {
-            var value = error.ToSingle();
-
             double[] deltas = new double[InputMessageShape.Height];
-            Neurons.ForEach((q, i) => q.Delta = value[i] * _activator.CalculateDeriviative(q.Output));
-            Neurons.ForEach(q => q.Weights.ForEach((w, i) => deltas[i] += w.Value * q.Delta));
-            return new Message(deltas);
+            for (int i = 0; i < Neurons.Count; i++)
+            {
+                var neuron = Neurons[i];
+                neuron.Delta = (double)error.GetValue(i) * _activator.CalculateDeriviative(neuron.Output);
+
+                for (int j = 0; j < neuron.Weights.Length; j++)
+                {
+                    var weight = neuron.Weights[j];
+                    deltas[j] += weight.Value * neuron.Delta;
+                }
+            }
+            return deltas;
         }
     }
 }

@@ -13,9 +13,8 @@ namespace Ann.Core.Layers
             Optimizer optimizer) 
             : base(numberOfNeurons, inputMessageShape, optimizer) {}
 
-        public override Message PassBackward(Message input)
+        public override Array PassBackward(Array errors)
         {
-            var errors = input.ToSingle();
             Neurons.ForEach((q, i) => q.Delta = 0);
             for (int i = 0; i < Neurons.Count; i++)
             {
@@ -23,29 +22,51 @@ namespace Ann.Core.Layers
                 {
                     var o1 = Neurons[i].Output;
                     var o2 = Neurons[j].Output;
-                    var er = errors[j];
-                    var ds = i == j ? o1 * (1 - o1) : -o1*o2;
+                    var er = (double)errors.GetValue(j);
+                    var ds = i == j ? o1 * (1 - o1) : -o1 * o2;
                     Neurons[i].Delta += er * ds;
                 }
             }
 
             double[] output = new double[InputMessageShape.Height];
-            Neurons.ForEach(q => q.Weights.ForEach((w, i) => output[i] += w.Value * q.Delta));
-            return new Message(output);
+            for (int i = 0; i < Neurons.Count; i++)
+            {
+                var neuron = Neurons[i];
+                for (int j = 0; j < neuron.Weights.Length; j++)
+                {
+                    var weight = neuron.Weights[j];
+                    output[j] += weight.Value * neuron.Delta;
+                }
+            }
+
+            return output;
         }
 
-        public override Message PassForward(Message input)
+        public override Array PassForward(Array input)
         {
             var temp = new double[Neurons.Count];
-            PrevLayerOutput = input.ToSingle();
 
             for (int i = 0; i < Neurons.Count; i++)
             {
-                temp[i] = Math.Exp(Neurons[i].Weights.Select((q, j) => q.Value * PrevLayerOutput[j]).Sum());
+                var neuron = Neurons[i];
+                double weightedSum = 0;
+
+                for (int j = 0; j < neuron.Weights.Length; j++)
+                {
+                    var weight = neuron.Weights[j];
+                    weightedSum += weight.Value * (double)input.GetValue(j);
+                }
+
+                temp[i] = Math.Exp(weightedSum);
             }
 
-            Neurons.ForEach((q, i) => q.Output = temp[i] / temp.Sum());
-            return new Message(Neurons.Select(q => q.Output).ToArray());
+            var sum = temp.Sum();
+            for (int i = 0; i < Neurons.Count; i++)
+            {
+                Neurons[i].Output = temp[i] / sum;
+            }
+
+            return Neurons.Select(q => q.Output).ToArray();
         }
     }
 }

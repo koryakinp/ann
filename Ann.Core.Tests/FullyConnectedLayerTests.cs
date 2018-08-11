@@ -61,7 +61,7 @@ namespace Ann.Core.Tests
         [TestMethod]
         public void PassForwardTest()
         {
-            var actual = _layer.PassForward(new Message(_input));
+            var actual = _layer.PassForward(_input);
             var expected = new double[_layer.Neurons.Count];
 
             for (int i = 0; i < _layer.Neurons.Count; i++)
@@ -70,14 +70,14 @@ namespace Ann.Core.Tests
                 expected[i] = 1 / (1 + Math.Exp(-sum));
             }
 
-            CollectionAssert.AreEqual(expected, actual.ToSingle(), _comparer);
+            CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
         [TestMethod]
         public void PassBackwardTest()
         {
-            _layer.PassForward(new Message(_input));
-            var actual = _layer.PassBackward(new Message(_error));
+            _layer.PassForward(_input);
+            var actual = _layer.PassBackward(_error);
             var expected = new double[_input.Length];
 
             for (int i = 0; i < _layer.Neurons.Count; i++)
@@ -96,13 +96,13 @@ namespace Ann.Core.Tests
                 }
             }
 
-            CollectionAssert.AreEqual(expected, actual.ToSingle(), _comparer);
+            CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
         [TestMethod]
         public void UpdateWeightsTest()
         {
-            _layer.PassForward(new Message(_input));
+            _layer.PassForward(_input);
             _layer.Neurons.ForEach((q, i) => _layer.Neurons[i].Delta = 2);
             _layer.UpdateWeights();
             var actual = new List<double[]>();
