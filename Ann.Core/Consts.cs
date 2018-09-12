@@ -2,6 +2,20 @@
 {
     internal class Consts
     {
+        public class MatrixHelperMessages
+        {
+            public const string TransposeDimensionsInvalid = "Can not transpose kernels. Dimensions are not valid.";
+            public const string TransposeNoKernelsFound = "Can not transpose kernels. No kernels found.";
+            public const string ConvolutionKernelDimensionsInvalid = "Can not compute convolution. Kernel dimensions are not valid.";
+            public const string ConvolutionVolumeDimensionsInvalid = "Can not compute convolution. Volume dimensions are not valid.";
+            public const string ConvolutionDeptheInvalid = "Can not compute convolution. Kernel depth and Volume depth do not match.";
+            public const string ConvolutionVolumeSizeTooSmall = "Can not compute convolution. Volume size is less than kernel size.";
+            public const string RotateKernelDimensionsInvalid = "Can not rotate kernel. Kernel dimensions are not valid.";
+            public const string PadPaddingValueInvalid = "Can not apply padding. Padding value is not valid.";
+            public const string MaxPoolingStrideInvalid = "Can not compute Max-Pooling result. Stride value is invalid.";
+            public const string MaxPoolingDimensionsInvalid = "Can not compute Max-Pooling result. Input dimensions do not match.";
+        }
+
         public const string CanNotConvertMessage = "Can not convert single dimensional message to multi dimensional message";
         public const string CanNotSetWeights = "Can not set weights. Number of weights do not match.";
         public const string CanNotUpdateWeights = "Can not update weights. Number of weights do not match.";

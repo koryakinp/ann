@@ -1,124 +1,123 @@
-﻿using Ann.Utils;
+﻿using Ann.Core.Misc;
 using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ann.Core
 {
     public static class MatrixHelper
     {
-        public static List<double[]> GetReceptiveFieldVectors(double[,,] source, int size, int x, int y)
+        public static double[][,,] Transpose(double[][,,] kernels)
         {
-            var output = new List<double[]>(source.GetLength(0));
-            for (int c = 0; c < source.GetLength(0); c++)
+            if(!kernels.Any())
             {
-                var temp = new double[size * size];
-                for (int i = 0; i < size; i++)
+                throw new Exception(Consts.MatrixHelperMessages.TransposeNoKernelsFound);
+            }
+            else if(kernels.Any(q => q.GetLength(0) != kernels[0].GetLength(0)))
+            {
+                throw new Exception(Consts.MatrixHelperMessages.TransposeDimensionsInvalid);
+            }
+
+            double[][,,] output = new double[kernels[0].GetLength(0)][,,];
+
+            for (int i = 0; i < output.Length; i++)
+            {
+                output[i] = new double[kernels.Length, kernels[0].GetLength(1), kernels[0].GetLength(2)];
+                for (int d = 0; d < output[i].GetLength(0); d++)
                 {
-                    for (int j = 0; j < size; j++)
+                    for (int w = 0; w < output[i].GetLength(1); w++)
                     {
-                        temp[i * size + j] = source[c, y + i, x + j];
-                    }
-                }
-                output.Add(temp);
-            }
-
-            return output;
-        }
-
-        public static List<double[]> GetKernelVectors(double[,,,] source, int kernel)
-        {
-            var output = new List<double[]>(source.GetLength(1));
-            var size = source.GetLength(3);
-            for (int c = 0; c < source.GetLength(1); c++)
-            {
-                var temp = new double[size * size];
-                for (int i = 0; i < size; i++)
-                {
-                    for (int j = 0; j < size; j++)
-                    {
-                        temp[i * size + j] = source[kernel, c, i, j];
-                    }
-                }
-                output.Add(temp);
-            }
-
-            return output;
-        }
-
-        public static double ComputeConvolution(List<double[]> receptiveFields, List<double[]> kernels)
-        {
-            if(receptiveFields.Count != kernels.Count)
-            {
-                throw new Exception(Consts.KernelDepthIsNotValid);
-            }
-
-            double output = 0;
-
-            for (int i = 0; i < receptiveFields.Count; i++)
-            {
-                var vector1 = new DenseVector(receptiveFields[i]);
-                var vector2 = new DenseVector(kernels[i]);
-
-                output += vector1.DotProduct(vector2);
-            }
-
-            return output;
-        }
-
-        public static double[,,] Convolution(double[,,] featureMaps, double[,,,] kernels)
-        {
-            int numberOfKernels = kernels.GetLength(0);
-            int kernelSize = kernels.GetLength(3);
-            int featureMapSize = featureMaps.GetLength(2);
-            int outputSize = featureMapSize - kernelSize + 1;
-
-            if(featureMapSize < kernelSize)
-            {
-                throw new Exception(Consts.FeatureMapSmallerThanKernel);
-            }
-
-            var output = new double[numberOfKernels, outputSize, outputSize];
-
-            for (int k = 0; k < kernels.GetLength(0); k++)
-            {
-                var kervelVectors = GetKernelVectors(kernels, k);
-                for (int i = 0; i < outputSize; i++)
-                {
-                    for (int j = 0; j < outputSize; j++)
-                    {
-                        var receptiveFieldVectors = GetReceptiveFieldVectors(featureMaps, kernelSize, j, i);
-                        output[k, i, j] = ComputeConvolution(receptiveFieldVectors, kervelVectors);
-                    }
-                }
-            }
-
-            return output;
-        }
-
-        public static double[,,,] FilpKernels(double[,,,] kernels)
-        {
-            if(kernels.GetLength(2) != kernels.GetLength(3))
-            {
-                throw new Exception(Consts.CanNotFlipKernels);
-            }
-
-            var output = (double[,,,])kernels.Clone();
-
-            Array kernel = new double[2];
-
-            int n = kernels.GetLength(2);
-
-            for (int k = 0; k < kernels.GetLength(0); k++)
-            {
-                for (int d = 0; d < kernels.GetLength(1); d++)
-                {
-                    for (int w = 0; w < n; ++w)
-                    {
-                        for (int h = 0; h < n; ++h)
+                        for (int h = 0; h < output[i].GetLength(2); h++)
                         {
-                            output[k, d, h, n - w - 1] = kernels[k, d, n - h - 1, w];
+                            output[i][d, w, h] = kernels[d][i, w, h];
                         }
+                    }
+                }
+            }
+
+            return output;
+        }
+
+        private static void ValidateConvolution(double[,,] volume, double[,,] kernel)
+        {
+            if (kernel.GetLength(1) != kernel.GetLength(2))
+            {
+                throw new Exception(Consts.MatrixHelperMessages.ConvolutionKernelDimensionsInvalid);
+            }
+            else if (volume.GetLength(1) != volume.GetLength(2))
+            {
+                throw new Exception(Consts.MatrixHelperMessages.ConvolutionVolumeDimensionsInvalid);
+            }
+            else if (volume.GetLength(0) != kernel.GetLength(0))
+            {
+                throw new Exception(Consts.MatrixHelperMessages.ConvolutionDeptheInvalid);
+            }
+            else if (volume.GetLength(1) < kernel.GetLength(1))
+            {
+                throw new Exception(Consts.MatrixHelperMessages.ConvolutionVolumeSizeTooSmall);
+            }
+        }
+
+        public static double[,] Convolution(double[,,] volume, double[,,] kernel)
+        {
+            ValidateConvolution(volume, kernel);
+            int size = kernel.GetLength(1);
+            int x = 0;
+            int y = 0;
+            var output = new double[size, size];
+            double[] kernelVector = new double[kernel.Length];
+            double[] volumeVector = new double[kernel.Length];
+
+            Buffer.BlockCopy(kernel, 0, kernelVector, 0, kernel.Length);
+            var vector1 = new DenseVector(kernelVector);
+
+            for (int xx = 0; xx < size; xx++)
+            {
+                for (int yy = 0; yy < size; yy++)
+                {
+                    var temp = new List<double>();
+                    for (int k = 0; k < volume.GetLength(0); k++)
+                    {
+                        for (int j = x; j < x + size; j++)
+                        {
+                            for (int i = y; i < y + size; i++)
+                            {
+                                temp.Add(volume[k, j, i]);
+                            }
+                        }
+                    }
+                    volumeVector = temp.ToArray();
+                    var vector2 = new DenseVector(volumeVector);
+
+                    output[x,y] = vector1.DotProduct(vector2);
+                }
+            }
+
+            return output;
+        }
+
+        public static double[,,] Rotate(double[,,] input)
+        {
+            if(input.GetLength(1) != input.GetLength(2))
+            {
+                throw new Exception(Consts.MatrixHelperMessages.RotateKernelDimensionsInvalid);
+            }
+
+            var output = new double[
+                input.GetLength(0),
+                input.GetLength(1),
+                input.GetLength(2)];
+
+            int n = input.GetLength(1);
+
+            for (int d = 0; d < input.GetLength(0); d++)
+            {
+                for (int w = 0; w < input.GetLength(1); w++)
+                {
+                    for (int h = 0; h < input.GetLength(2); h++)
+                    {
+                        output[d, h, n - w - 1] = input[d, n - h - 1, w];
                     }
                 }
             }
@@ -128,14 +127,78 @@ namespace Ann.Core
 
         public static double[,,] Pad(double[,,] input, int size)
         {
+            if(size < 0)
+            {
+                throw new Exception(Consts.MatrixHelperMessages.PadPaddingValueInvalid);
+            }
+
             var output = new double[
                 input.GetLength(0),
                 input.GetLength(1) + size * 2,
                 input.GetLength(2) + size * 2];
 
-            input.ForEach((q, k, i, j) => output[k, i + size, j + size] = q);
+            for (int k = 0; k < input.GetLength(0); k++)
+            {
+                for (int i = 0; i < input.GetLength(1); i++)
+                {
+                    for (int j = 0; j < input.GetLength(2); j++)
+                    {
+                        output[k, i + size, j + size] = (double)input.GetValue(k, i, j);
+                    }
+                }
+            }
 
             return output;
+        }
+
+        public static MaxPoolResult MaxPool(double[,,] input, int stride)
+        {
+            if (stride < 2)
+            {
+                throw new Exception(Consts.MatrixHelperMessages.MaxPoolingStrideInvalid);
+            }
+            else if(input.GetLength(1) != input.GetLength(2))
+            {
+                throw new Exception(Consts.MatrixHelperMessages.MaxPoolingDimensionsInvalid);
+            }
+
+            int size = input.GetLength(1) % stride == 0
+                ? input.GetLength(1) / stride
+                : (input.GetLength(1) / stride) + 1;
+
+            var values = new double[input.GetLength(0), size, size];
+            var cache = new byte[input.GetLength(0), input.GetLength(1), input.GetLength(2)];
+
+            for (int i = 0; i < values.GetLength(0); i++)
+            {
+                for (int j = 0; j < values.GetLength(1); j++)
+                {
+                    for (int k = 0; k < values.GetLength(2); k++)
+                    {
+                        int curX = 0;
+                        int curY = 0;
+                        double max = double.MinValue;
+
+                        for (int x = j * stride; x < (j + 1) * stride && x < input.GetLength(1); x++)
+                        {
+                            for (int y = k * stride; y < (k + 1) * stride && y < input.GetLength(2); y++)
+                            {
+                                if(input[i,x,y] > max)
+                                {
+                                    curX = x;
+                                    curY = y;
+                                    max = input[i, x, y];
+                                }
+                            }
+                        }
+
+                        values[i, j, k] = max;
+                        cache[i, curX, curY] = 1;
+                    }
+                }
+            }
+
+            return new MaxPoolResult(values, cache);
         }
     }
 }

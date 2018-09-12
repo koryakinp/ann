@@ -1,6 +1,7 @@
 ﻿using Gdo;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ann.Utils
 {
@@ -136,6 +137,18 @@ namespace Ann.Utils
                 source.GetLength(3)];
 
             source.ForEach((q,i,j,k,p) => output[i,j,k,p] = q.Value);
+            return output;
+        }
+
+        public static double[,,,] ValuesTransposed(this Optimizer[,,,] source)
+        {
+            var output = new double[
+                source.GetLength(1),
+                source.GetLength(0),
+                source.GetLength(2),
+                source.GetLength(3)];
+
+            source.ForEach((q, i, j, k, p) => output[j, i, k, p] = q.Value);
             return output;
         }
     }

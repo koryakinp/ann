@@ -1,5 +1,6 @@
 using Ann.Activators;
 using Ann.Core.Layers;
+using Ann.Core.Tests.Utils;
 using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo.Optimizers;
@@ -25,7 +26,6 @@ namespace Ann.Core.Tests
 
         public FullyConnectedLayerTests()
         {
-            _comparer = new DoubleComparer(10);
             _comparer = new DoubleComparer(10);
             _weights = TestValues.Weights;
             _input = TestValues.Input;

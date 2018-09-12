@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ann.Core.Tests
+namespace Ann.Core.Tests.Utils
 {
     public class DoubleComparer : Comparer<double>
     {
