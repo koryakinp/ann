@@ -1,9 +1,8 @@
-﻿using Ann.Utils;
-using Gdo;
+﻿using Gdo;
 using System.Linq;
 using Activator = Ann.Activators.Activator;
-using static Ann.Utils.Extensions;
 using System;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace Ann.Core.Layers
 {
@@ -23,14 +22,15 @@ namespace Ann.Core.Layers
 
         public override Array PassForward(Array input)
         {
+            ValidateForwardInput(input);
+
             PrevLayerOutput = input;
 
             foreach (var neuron in Neurons)
             {
-                var weightedInput = neuron
-                    .Weights
-                    .Select((w, j) => (double)input.GetValue(j) * w.Value)
-                    .Sum();
+                var vector1 = new DenseVector(input.OfType<double>().ToArray());
+                var vector2 = new DenseVector(neuron.Weights.Select(q => q.Value).ToArray());
+                var weightedInput = vector1.DotProduct(vector2);
                 neuron.Output = _activator.CalculateValue(weightedInput + neuron.Bias.Value);
             }
 
@@ -39,6 +39,8 @@ namespace Ann.Core.Layers
 
         public override Array PassBackward(Array error)
         {
+            ValidateBackwardInput(error);
+
             double[] deltas = new double[InputMessageShape.Height];
             for (int i = 0; i < Neurons.Count; i++)
             {

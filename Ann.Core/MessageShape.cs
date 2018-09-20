@@ -13,6 +13,8 @@
             Depth = depth;
         }
 
+        public MessageShape(int size) : this(1, size, 1) { }
+
         public int GetLength()
         {
             return Width * Height * Depth;

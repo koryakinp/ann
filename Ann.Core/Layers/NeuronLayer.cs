@@ -50,5 +50,29 @@ namespace Ann.Core.Layers
         {
             return new MessageShape(1, Neurons.Count, 1);
         }
+
+        protected void ValidateForwardInput(Array input)
+        {
+            if(input.Rank != 1)
+            {
+                throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
+            }
+            else if(input.Length != InputMessageShape.Height)
+            {
+                throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
+            }
+        }
+
+        protected void ValidateBackwardInput(Array input)
+        {
+            if (input.Rank > 1)
+            {
+                throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
+            }
+            else if (input.Length != Neurons.Count)
+            {
+                throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
+            }
+        }
     }
 }
