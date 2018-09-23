@@ -11,7 +11,7 @@ namespace Ann
     {
         public void AddInputLayer(int size, int channels)
         {
-            _layers.Add(new InputLayer(new MessageShape(size, size, channels)));
+            _layers.Add(new InputLayer(new MessageShape(size, channels)));
         }
 
         public void AddHiddenLayer(int numberOfNeurons, ActivatorType activator, Optimizer optimizer)
@@ -30,7 +30,7 @@ namespace Ann
                 numberOfNeurons,
                 ActivatorFactory.Produce(activator),
                 optimizer,
-                new MessageShape(1, numberOfInputs, 1));
+                new MessageShape(numberOfInputs));
 
             _layers.Add(layer);
         }
@@ -45,7 +45,7 @@ namespace Ann
 
             var layer = new SoftMaxLayer(
                 _numberOfClasses,
-                new MessageShape(1, numberOfInputs, 1),
+                new MessageShape(numberOfInputs),
                 optimizer);
 
             _layers.Add(layer);

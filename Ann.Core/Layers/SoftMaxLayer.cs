@@ -28,7 +28,7 @@ namespace Ann.Core.Layers
                 }
             }
 
-            double[] output = new double[InputMessageShape.Height];
+            double[] output = new double[InputMessageShape.Size];
             for (int i = 0; i < Neurons.Count; i++)
             {
                 var neuron = Neurons[i];

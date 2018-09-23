@@ -20,8 +20,8 @@ namespace Ann.Core.Layers
             List<Neuron> nList = new List<Neuron>();
             for (int i = 0; i < numberOfNeurons; i++)
             {
-                Optimizer[] weights = new Optimizer[InputMessageShape.Height];
-                for (int j = 0; j < InputMessageShape.Height; j++)
+                Optimizer[] weights = new Optimizer[InputMessageShape.Size];
+                for (int j = 0; j < InputMessageShape.Size; j++)
                 {
                     weights[j] = optimizer.Clone() as Optimizer;
                 }
@@ -48,7 +48,7 @@ namespace Ann.Core.Layers
 
         public override MessageShape GetOutputMessageShape()
         {
-            return new MessageShape(1, Neurons.Count, 1);
+            return new MessageShape(Neurons.Count);
         }
 
         protected void ValidateForwardInput(Array input)
@@ -57,7 +57,7 @@ namespace Ann.Core.Layers
             {
                 throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
             }
-            else if(input.Length != InputMessageShape.Height)
+            else if(input.Length != InputMessageShape.Size)
             {
                 throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
             }

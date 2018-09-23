@@ -59,7 +59,7 @@ namespace Ann.Core.Tests
             var _layer = new ConvolutionLayer(
                 _numberOfKernels,
                 _kernelSize,
-                new MessageShape(_featureMapSize, _featureMapSize, _featureMapDepth),
+                new MessageShape(_featureMapSize, _featureMapDepth),
                 new Flat(TestValues.LR),
                 ActivatorType.Relu);
 

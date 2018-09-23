@@ -24,16 +24,12 @@ namespace Ann.Core.Layers
             Optimizer optimizer,
             ActivatorType activator) : base(inputMessageShape)
         {
-            if(InputMessageShape.Width != inputMessageShape.Height)
-            {
-                throw new Exception(Consts.MessageShapeIsNotValid);
-            }
 
             _biases = new Optimizer[numberOfKernels];
             _biases.ForEach((q,i) => _biases[i] = optimizer.Clone() as Optimizer);
             _activator = ActivatorFactory.Produce(activator);
             _kernels = new Optimizer[numberOfKernels, InputMessageShape.Depth, kernelSize, kernelSize];
-            _cache = new double[InputMessageShape.Depth, InputMessageShape.Width, InputMessageShape.Height];
+            _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
             _gradients = new double[_numberOfKernels, _kernelSize, _kernelSize];
             _kernels.ForEach((i, j, k, p) => _kernels[i, j, k, p] = optimizer.Clone() as Optimizer);
             _kernelSize = kernelSize;
@@ -82,8 +78,8 @@ namespace Ann.Core.Layers
 
         public override MessageShape GetOutputMessageShape()
         {
-            int size = InputMessageShape.Width - _kernelSize + 1;
-            return new MessageShape(size, size, _numberOfKernels);
+            int size = InputMessageShape.Size - _kernelSize + 1;
+            return new MessageShape(size, _numberOfKernels);
         }
     }
 }

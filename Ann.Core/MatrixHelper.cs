@@ -1,4 +1,5 @@
 ﻿using Ann.Core.Misc;
+using Ann.Utils;
 using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Collections.Generic;
@@ -167,36 +168,31 @@ namespace Ann.Core
                 : (input.GetLength(1) / stride) + 1;
 
             var values = new double[input.GetLength(0), size, size];
-            var cache = new byte[input.GetLength(0), input.GetLength(1), input.GetLength(2)];
+            var cache = new bool[input.GetLength(0), input.GetLength(1), input.GetLength(2)];
 
-            for (int i = 0; i < values.GetLength(0); i++)
+            values.ForEach((i, j, k) =>
             {
-                for (int j = 0; j < values.GetLength(1); j++)
+                int curX = 0;
+                int curY = 0;
+                double max = double.MinValue;
+
+                for (int x = j * stride; x < (j + 1) * stride && x < input.GetLength(1); x++)
                 {
-                    for (int k = 0; k < values.GetLength(2); k++)
+                    for (int y = k * stride; y < (k + 1) * stride && y < input.GetLength(2); y++)
                     {
-                        int curX = 0;
-                        int curY = 0;
-                        double max = double.MinValue;
-
-                        for (int x = j * stride; x < (j + 1) * stride && x < input.GetLength(1); x++)
+                        if (input[i, x, y] > max)
                         {
-                            for (int y = k * stride; y < (k + 1) * stride && y < input.GetLength(2); y++)
-                            {
-                                if(input[i,x,y] > max)
-                                {
-                                    curX = x;
-                                    curY = y;
-                                    max = input[i, x, y];
-                                }
-                            }
+                            curX = x;
+                            curY = y;
+                            max = input[i, x, y];
                         }
-
-                        values[i, j, k] = max;
-                        cache[i, curX, curY] = 1;
                     }
                 }
-            }
+
+                values[i, j, k] = max;
+                cache[i, curX, curY] = true;
+
+            });
 
             return new MaxPoolResult(values, cache);
         }

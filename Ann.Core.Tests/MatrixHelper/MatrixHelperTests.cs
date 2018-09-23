@@ -15,71 +15,61 @@ namespace Ann.Core.Tests.MatrixHelper
         }
 
         [TestMethod]
-        public void RotateTest()
+        [TestDataSource(0, 2)]
+        public void RotateTest(int i)
         {
-            for (int i = 0; i < MatrixHelperTestData.RotateInput.Length; i++)
-            {
-                var actual = Rotate(MatrixHelperTestData.RotateInput[i]);
-                var expected = MatrixHelperTestData.RotateOutput[i];
+            var actual = Rotate(MatrixHelperTestData.RotateInput[i]);
+            var expected = MatrixHelperTestData.RotateOutput[i];
 
-                CollectionAssert.AreEqual(expected, actual);
+            CollectionAssert.AreEqual(expected, actual, _comparer);
+        }
+
+        [TestMethod]
+        [TestDataSource(0, 2)]
+        public void TransposeTest(int i)
+        {
+            var actual = Transpose(MatrixHelperTestData.TransposeInput[i]);
+            var expected = MatrixHelperTestData.TransposeOutput[i];
+
+            Assert.AreEqual(actual.Length, expected.Length);
+            for (int j = 0; j < actual.Length; j++)
+            {
+                CollectionAssert.AreEqual(expected[j], actual[j]); 
             }
         }
 
         [TestMethod]
-        public void TransposeTest()
+        [TestDataSource(0, 2)]
+        public void PadTest(int i)
         {
-            for (int i = 0; i < MatrixHelperTestData.TransposeInput.Length; i++)
-            {
-                var actual = Transpose(MatrixHelperTestData.TransposeInput[i]);
-                var expected = MatrixHelperTestData.TransposeOutput[i];
+            var actual = Pad(MatrixHelperTestData.PadInput[i], 2);
+            var expected = MatrixHelperTestData.PadOutput[i];
 
-                Assert.AreEqual(actual.Length, expected.Length);
-                for (int j = 0; j < actual.Length; j++)
-                {
-                    CollectionAssert.AreEqual(expected[j], actual[j]); 
-                }
-            }
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void PadTest()
+        [TestDataSource(0, 5)]
+        public void MaxPoolEvenTest(int i)
         {
-            for (int i = 0; i < MatrixHelperTestData.PadInput.Length; i++)
-            {
-                var actual = Pad(MatrixHelperTestData.PadInput[i], 2);
-                var expected = MatrixHelperTestData.PadOutput[i];
+            var actual = MaxPool(MatrixHelperTestData.MaxPoolEvenInput[i], 2);
+            var expectedValues = MatrixHelperTestData.MaxPoolEvenOutput[i];
+            var expectedCache = MatrixHelperTestData.MaxPoolEvenCacheOutput[i];
 
-                CollectionAssert.AreEqual(expected, actual);
-            }
+            CollectionAssert.AreEqual(expectedValues, actual.Values, _comparer);
+            CollectionAssert.AreEqual(expectedCache, actual.Cache);
         }
 
         [TestMethod]
-        public void MaxPoolEvenTest()
+        [TestDataSource(0, 5)]
+        public void MaxPoolOddTest(int i)
         {
-            for (int i = 0; i < MatrixHelperTestData.MaxPoolEvenInput.Length; i++)
-            {
-                var actual = MaxPool(MatrixHelperTestData.MaxPoolEvenInput[i], 2);
-                var expectedValues = MatrixHelperTestData.MaxPoolEvenOutput[i];
-                var expectedCache = MatrixHelperTestData.MaxPoolEvenCacheOutput[i];
+            var actual = MaxPool(MatrixHelperTestData.MaxPoolOddInput[i], 2);
+            var expectedValues = MatrixHelperTestData.MaxPoolOddOutput[i];
+            var expectedCache = MatrixHelperTestData.MaxPoolOddCacheOutput[i];
 
-                CollectionAssert.AreEqual(expectedValues, actual.Values, _comparer);
-                CollectionAssert.AreEqual(expectedCache, actual.Cache);
-            }
-        }
-
-        [TestMethod]
-        public void MaxPoolOddTest()
-        {
-            for (int i = 0; i < MatrixHelperTestData.MaxPoolOddInput.Length; i++)
-            {
-                var actual = MaxPool(MatrixHelperTestData.MaxPoolOddInput[i], 2);
-                var expectedValues = MatrixHelperTestData.MaxPoolOddOutput[i];
-                var expectedCache = MatrixHelperTestData.MaxPoolOddCacheOutput[i];
-
-                CollectionAssert.AreEqual(expectedValues, actual.Values, _comparer);
-                CollectionAssert.AreEqual(expectedCache, actual.Cache);
-            }
+            CollectionAssert.AreEqual(expectedValues, actual.Values, _comparer);
+            CollectionAssert.AreEqual(expectedCache, actual.Cache);
         }
     }
 }

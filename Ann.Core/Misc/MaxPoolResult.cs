@@ -7,9 +7,9 @@ namespace Ann.Core.Misc
     public class MaxPoolResult
     {
         public readonly double[,,] Values;
-        public readonly byte[,,] Cache;
+        public readonly bool[,,] Cache;
 
-        public MaxPoolResult(double[,,] values, byte[,,] cache)
+        public MaxPoolResult(double[,,] values, bool[,,] cache)
         {
             Values = values;
             Cache = cache;

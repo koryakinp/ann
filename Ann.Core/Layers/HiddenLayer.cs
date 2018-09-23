@@ -41,7 +41,7 @@ namespace Ann.Core.Layers
         {
             ValidateBackwardInput(error);
 
-            double[] deltas = new double[InputMessageShape.Height];
+            double[] deltas = new double[InputMessageShape.Size];
             for (int i = 0; i < Neurons.Count; i++)
             {
                 var neuron = Neurons[i];

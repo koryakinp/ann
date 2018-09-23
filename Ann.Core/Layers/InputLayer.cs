@@ -19,10 +19,7 @@ namespace Ann.Core.Layers
 
         public override MessageShape GetOutputMessageShape()
         {
-            return new MessageShape(
-                InputMessageShape.Width, 
-                InputMessageShape.Height, 
-                InputMessageShape.Depth);
+            return new MessageShape(InputMessageShape.Size, InputMessageShape.Depth);
         }
     }
 }

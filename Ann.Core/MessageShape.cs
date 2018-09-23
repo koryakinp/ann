@@ -2,22 +2,20 @@
 {
     public class MessageShape
     {
-        public readonly int Width;
-        public readonly int Height;
+        public readonly int Size;
         public readonly int Depth;
 
-        public MessageShape(int width, int height, int depth)
+        public MessageShape(int size, int depth)
         {
-            Width = width;
-            Height = height;
+            Size = size;
             Depth = depth;
         }
 
-        public MessageShape(int size) : this(1, size, 1) { }
+        public MessageShape(int size) : this(size, 1) { }
 
         public int GetLength()
         {
-            return Width * Height * Depth;
+            return Size * Depth;
         }
     }
 }
