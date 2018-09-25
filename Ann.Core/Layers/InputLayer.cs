@@ -5,7 +5,7 @@ namespace Ann.Core.Layers
     public class InputLayer : Layer
     {
         public InputLayer(MessageShape inputMessageShape) 
-            : base(inputMessageShape) {}
+            : base(inputMessageShape, inputMessageShape) {}
 
         public override Array PassBackward(Array input)
         {
@@ -17,9 +17,14 @@ namespace Ann.Core.Layers
             return input;
         }
 
-        public override MessageShape GetOutputMessageShape()
+        public override void ValidateForwardInput(Array input)
         {
-            return new MessageShape(InputMessageShape.Size, InputMessageShape.Depth);
+            throw new NotImplementedException();
+        }
+
+        public override void ValidateBackwardInput(Array input)
+        {
+            throw new NotImplementedException();
         }
     }
 }

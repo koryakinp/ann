@@ -23,7 +23,7 @@ namespace Ann
 
             var numberOfInputs = _layers
                 .Last()
-                .GetOutputMessageShape()
+                .OutputMessageShape
                 .GetLength();
 
             var layer = new HiddenLayer(
@@ -40,7 +40,7 @@ namespace Ann
 
             var numberOfInputs = _layers
                 .Last()
-                .GetOutputMessageShape()
+                .OutputMessageShape
                 .GetLength();
 
             var layer = new SoftMaxLayer(

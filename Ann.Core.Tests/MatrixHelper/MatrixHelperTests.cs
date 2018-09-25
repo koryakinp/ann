@@ -71,5 +71,17 @@ namespace Ann.Core.Tests.MatrixHelper
             CollectionAssert.AreEqual(expectedValues, actual.Values, _comparer);
             CollectionAssert.AreEqual(expectedCache, actual.Cache);
         }
+
+        [TestMethod]
+        [TestDataSource(0, 2)]
+        public void ConvolutionTest(int i)
+        {
+            var actual = Convolution(
+                MatrixHelperTestData.ConvolutionInput[i],
+                MatrixHelperTestData.ConvolutionWeights[i]);
+
+            CollectionAssert.AreEqual(MatrixHelperTestData.ConvolutionOutput[i], actual, _comparer);
+
+        }
     }
 }

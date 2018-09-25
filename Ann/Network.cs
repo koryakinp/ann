@@ -41,6 +41,7 @@ namespace Ann
         {
             for (int i = 0; i < _layers.Count; i++)
             {
+                _layers[i].ValidateForwardInput(input);
                 input = _layers[i].PassForward(input);
             }
 
@@ -51,6 +52,7 @@ namespace Ann
         {
             for (int i = _layers.Count - 1; i >= 0; i--)
             {
+                _layers[i].ValidateBackwardInput(error);
                 error = _layers[i].PassBackward(error);
             }
         }

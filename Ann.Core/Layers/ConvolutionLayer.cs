@@ -7,13 +7,12 @@ using Activator = Ann.Activators.Activator;
 
 namespace Ann.Core.Layers
 {
-    public class ConvolutionLayer : Layer, ILearnable
+    public class ConvolutionLayer : KernelLayer, ILearnable
     {
-        private readonly Optimizer[,,,] _kernels;
+        private readonly Kernel[] _kernels;
         private readonly int _kernelSize;
         private readonly int _numberOfKernels;
         private readonly Activator _activator;
-        private readonly Optimizer[] _biases;
         private readonly double[,,] _cache;
         private readonly double[,,] _gradients;
 
@@ -22,27 +21,32 @@ namespace Ann.Core.Layers
             int kernelSize, 
             MessageShape inputMessageShape,
             Optimizer optimizer,
-            ActivatorType activator) : base(inputMessageShape)
+            ActivatorType activator) : base(
+                inputMessageShape, 
+                BuildOutputMessageShape(inputMessageShape, kernelSize, numberOfKernels))
         {
-
-            _biases = new Optimizer[numberOfKernels];
-            _biases.ForEach((q,i) => _biases[i] = optimizer.Clone() as Optimizer);
             _activator = ActivatorFactory.Produce(activator);
-            _kernels = new Optimizer[numberOfKernels, InputMessageShape.Depth, kernelSize, kernelSize];
+            _kernels = new Kernel[numberOfKernels];
+            _kernels.UpdateForEach<Kernel>(q => new Kernel(kernelSize, inputMessageShape.Depth, optimizer));
             _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
             _gradients = new double[_numberOfKernels, _kernelSize, _kernelSize];
-            _kernels.ForEach((i, j, k, p) => _kernels[i, j, k, p] = optimizer.Clone() as Optimizer);
             _kernelSize = kernelSize;
             _numberOfKernels = numberOfKernels;
         }
 
         public override Array PassForward(Array input)
         {
-            //_cache.UpdateForEach<double>((q,idx) => (double)input.GetValue(idx));
-            //var res = MatrixHelper.Convolution(input as double[,,], _kernels.Values());
-            //res.UpdateForEach<double>((q,idx) => _activator.CalculateValue(q + _biases[idx[0]].Value));
-            //return res;
-            throw new NotImplementedException();
+            var output = new double[OutputMessageShape.Depth, OutputMessageShape.Size, OutputMessageShape.Size];
+            _cache.UpdateForEach<double>((q,idx) => (double)input.GetValue(idx));
+
+            for (int i = 0; i < _kernels.Length; i++)
+            {
+                double[,] temp = MatrixHelper.Convolution(input as double[,,], _kernels[i].Weights.Values());
+                temp.UpdateForEach<double>((q, idx) => _activator.CalculateValue(q + _kernels[i].Bias.Value));
+                temp.ForEach((q, j, k) => output[i, j, k] = q);
+            }
+
+            return output;
         }
 
         public override Array PassBackward(Array input)
@@ -62,8 +66,34 @@ namespace Ann.Core.Layers
 
         public void RandomizeWeights(IWeightInitializer weightInitializer)
         {
-            double magnitude = 1 / (_kernelSize * _kernelSize * InputMessageShape.Depth);
-            _kernels.ForEach((q,k,d,i,j) => q.SetValue(weightInitializer.GenerateRandom(magnitude)));
+            _kernels.ForEach(q => q.RandomizeWeights(weightInitializer));
+        }
+
+        public void SetWeights(Array weights)
+        {
+            if(weights.Length != _numberOfKernels)
+            {
+                throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
+            }
+
+            _kernels.ForEach((q,kernel) =>
+            {
+                if(!(weights.GetValue(kernel) is double[,,]))
+                {
+                    throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
+                }
+
+                var temp = (double[,,])weights.GetValue(kernel);
+                if(temp.Rank != 3 
+                    || temp.GetLength(0) != InputMessageShape.Depth
+                    || temp.GetLength(1) != _kernelSize
+                    || temp.GetLength(2) != _kernelSize)
+                {
+                    throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
+                }
+
+                q.Weights.ForEach((w, i, j, k) => w.SetValue(temp[i, j, k]));
+            });
         }
 
         public void UpdateBiases()
@@ -76,10 +106,13 @@ namespace Ann.Core.Layers
             throw new System.NotImplementedException();
         }
 
-        public override MessageShape GetOutputMessageShape()
+        public static MessageShape BuildOutputMessageShape(
+            MessageShape inputMessageShape, 
+            int kernelSize,
+            int numberOfKernels)
         {
-            int size = InputMessageShape.Size - _kernelSize + 1;
-            return new MessageShape(size, _numberOfKernels);
+            int size = inputMessageShape.Size - kernelSize + 1;
+            return new MessageShape(size, numberOfKernels);
         }
     }
 }

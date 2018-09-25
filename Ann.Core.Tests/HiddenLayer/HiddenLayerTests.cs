@@ -91,31 +91,31 @@ namespace Ann.Core.Tests.HiddenLayer
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), Consts.HiddenLayerMessages.MessageDimenionsInvalid)]
+        [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.MessageDimenionsInvalid)]
         public void ShouldThrowIfForwardInputMessageDimenionsNotValid()
         {
-            _layer.PassForward(new double[4, 4]);
+            _layer.ValidateForwardInput(new double[4, 4]);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), Consts.HiddenLayerMessages.MessageDimenionsInvalid)]
+        [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.MessageDimenionsInvalid)]
         public void ShouldThrowIfForwardInputMessageDimenionsNotValid2()
         {
-            _layer.PassForward(new double[10]);
+            _layer.ValidateForwardInput(new double[10]);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), Consts.HiddenLayerMessages.MessageDimenionsInvalid)]
+        [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.MessageDimenionsInvalid)]
         public void ShouldThrowIfBackwardMessageDimenionsNotValid()
         {
-            _layer.PassBackward(new double[4, 4]);
+            _layer.ValidateBackwardInput(new double[4, 4]);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), Consts.HiddenLayerMessages.MessageDimenionsInvalid)]
+        [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.MessageDimenionsInvalid)]
         public void ShouldThrowIfBackwardMessageDimenionsNotValid2()
         {
-            _layer.PassBackward(new double[10]);
+            _layer.ValidateBackwardInput(new double[10]);
         }
 
         [TestMethod]

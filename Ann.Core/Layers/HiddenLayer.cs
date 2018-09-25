@@ -22,8 +22,6 @@ namespace Ann.Core.Layers
 
         public override Array PassForward(Array input)
         {
-            ValidateForwardInput(input);
-
             PrevLayerOutput = input;
 
             foreach (var neuron in Neurons)
@@ -39,8 +37,6 @@ namespace Ann.Core.Layers
 
         public override Array PassBackward(Array error)
         {
-            ValidateBackwardInput(error);
-
             double[] deltas = new double[InputMessageShape.Size];
             for (int i = 0; i < Neurons.Count; i++)
             {

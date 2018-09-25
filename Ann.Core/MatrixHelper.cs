@@ -64,18 +64,20 @@ namespace Ann.Core
         {
             ValidateConvolution(volume, kernel);
             int size = kernel.GetLength(1);
-            int x = 0;
-            int y = 0;
             var output = new double[size, size];
             double[] kernelVector = new double[kernel.Length];
             double[] volumeVector = new double[kernel.Length];
 
-            Buffer.BlockCopy(kernel, 0, kernelVector, 0, kernel.Length);
+            int height = kernel.GetLength(0);
+            int width = kernel.GetLength(1);
+
+            kernel.ForEach((q,k,j,i) => kernelVector[i + width * (j + height * k)] = q);
+
             var vector1 = new DenseVector(kernelVector);
 
-            for (int xx = 0; xx < size; xx++)
+            for (int x = 0; x < size; x++)
             {
-                for (int yy = 0; yy < size; yy++)
+                for (int y = 0; y < size; y++)
                 {
                     var temp = new List<double>();
                     for (int k = 0; k < volume.GetLength(0); k++)

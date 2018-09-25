@@ -3,13 +3,13 @@ using System;
 
 namespace Ann.Core.Layers
 {
-    public class MaxPoolingLayer : Layer
+    public class PoolingLayer : KernelLayer
     {
         private readonly int _stride;
         private bool[,,] _cache;
 
-        public MaxPoolingLayer(int kernelSize, MessageShape inputMessageShape) 
-            : base(inputMessageShape)
+        public PoolingLayer(int kernelSize, MessageShape inputMessageShape) 
+            : base(inputMessageShape, BuildOutputMessageShape(inputMessageShape, kernelSize))
         {
             _cache = new bool[
                 InputMessageShape.Size, 
@@ -18,13 +18,13 @@ namespace Ann.Core.Layers
             _stride = kernelSize;
         }
 
-        public override MessageShape GetOutputMessageShape()
+        public static MessageShape BuildOutputMessageShape(MessageShape inputMessageShape, int stride)
         {
-            int size = InputMessageShape.Size % _stride == 0
-                ? InputMessageShape.Size / _stride
-                : (InputMessageShape.Size / _stride) + 1;
+            int size = inputMessageShape.Size % stride == 0
+                ? inputMessageShape.Size / stride
+                : (inputMessageShape.Size / stride) + 1;
 
-            return new MessageShape(size, InputMessageShape.Depth);
+            return new MessageShape(size, inputMessageShape.Depth);
         }
 
         public override Array PassBackward(Array input)

@@ -15,7 +15,7 @@ namespace Ann.Core.Layers
         public NeuronLayer(
             int numberOfNeurons,
             MessageShape inputMessageShape,
-            Optimizer optimizer) : base(inputMessageShape)
+            Optimizer optimizer) : base(inputMessageShape, new MessageShape(numberOfNeurons))
         {
             List<Neuron> nList = new List<Neuron>();
             for (int i = 0; i < numberOfNeurons; i++)
@@ -46,32 +46,32 @@ namespace Ann.Core.Layers
             Neurons.ForEach(q => q.RandomizeWeights(initializer));
         }
 
-        public override MessageShape GetOutputMessageShape()
+        public void SetWeights(Array weights)
         {
-            return new MessageShape(Neurons.Count);
+            throw new NotImplementedException();
         }
 
-        protected void ValidateForwardInput(Array input)
+        public override void ValidateForwardInput(Array input)
         {
             if(input.Rank != 1)
             {
-                throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
+                throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);
             }
             else if(input.Length != InputMessageShape.Size)
             {
-                throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
+                throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);
             }
         }
 
-        protected void ValidateBackwardInput(Array input)
+        public override void ValidateBackwardInput(Array input)
         {
             if (input.Rank > 1)
             {
-                throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
+                throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);
             }
             else if (input.Length != Neurons.Count)
             {
-                throw new Exception(Consts.HiddenLayerMessages.MessageDimenionsInvalid);
+                throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);
             }
         }
     }

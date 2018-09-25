@@ -1,8 +1,5 @@
 ﻿using Ann.Core.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ann.Core.Tests
 {
@@ -18,8 +15,25 @@ namespace Ann.Core.Tests
 
         private readonly double[][,,] Convert1Dto3DJaggedTestOutput;
 
+        private readonly double[] Convert1Dto2DTestInput;
+        private readonly double[,] Convert1Dto2DTestOutput;
+
         public ArrayConverterTests()
         {
+            Convert1Dto2DTestInput = new double[9]
+            {
+                11,12,13,
+                21,22,23,
+                31,32,33
+            };
+
+            Convert1Dto2DTestOutput = new double[3,3]
+            {
+                { 11,12,13 },
+                { 21,22,23 },
+                { 31,32,33 }
+            };
+
             Convert1Dto4DTestInput = new double[]
             {
                 1111, 1112, 1113,
@@ -175,6 +189,13 @@ namespace Ann.Core.Tests
         {
             var actual = ArrayConverter.Convert1Dto4D(Convert1Dto4DTestInput, new int[] { 2, 3, 3, 3 });
             CollectionAssert.AreEqual(Convert1Dto4DTestOutput, actual);
+        }
+
+        [TestMethod]
+        public void Convert1Dto2DTest()
+        {
+            var actual = ArrayConverter.Convert1Dto2D(Convert1Dto2DTestInput, new int[] { 3, 3 });
+            CollectionAssert.AreEqual(Convert1Dto2DTestOutput, actual);
         }
 
         [TestMethod]

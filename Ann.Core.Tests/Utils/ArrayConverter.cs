@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Ann.Core.Tests.Utils
 {
     public static class ArrayConverter
     {
+        public const string SizesDoNotMatch = "Sizes do not match";
+
         public static T[][,,] ConvertToJagged3D<T>(T[] input, int jagged, int[] dimensions)
         {
             var temp = Convert1Dto4D(input, new int[] { jagged, dimensions[0], dimensions[1], dimensions[2] });
@@ -33,6 +36,7 @@ namespace Ann.Core.Tests.Utils
 
         public static T[,,,] Convert1Dto4D<T>(T[] input, int[] dimensions)
         {
+            ValidateSizes(input, dimensions);
             var output = new T[dimensions[0], dimensions[1], dimensions[2], dimensions[3]];
 
             for (int k = 0; k < dimensions[0]; k++)
@@ -58,6 +62,8 @@ namespace Ann.Core.Tests.Utils
 
         public static T[,,] Convert1Dto3D<T>(T[] input, int[] dimensions)
         {
+            ValidateSizes(input, dimensions);
+
             var output = new T[dimensions[0], dimensions[1], dimensions[2]];
 
             for (int k = 0; k < dimensions[0]; k++)
@@ -75,6 +81,30 @@ namespace Ann.Core.Tests.Utils
             }
 
             return output;
+        }
+
+        public static T[,] Convert1Dto2D<T>(T[] input, int[] dimensions)
+        {
+            ValidateSizes(input, dimensions);
+            var output = new T[dimensions[0], dimensions[1]];
+
+            for (int k = 0; k < dimensions[0]; k++)
+            {
+                for (int d = 0; d < dimensions[1]; d++)
+                {
+                    output[k, d] = input[k * dimensions[0] + d];
+                }
+            }
+
+            return output;
+        }
+
+        private static void ValidateSizes<T>(T[] input, int[] dimensions)
+        {
+            if (input.Length != dimensions.Aggregate((q, w) => q * w))
+            {
+                throw new Exception(SizesDoNotMatch);
+            }
         }
     }
 }

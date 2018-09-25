@@ -128,15 +128,14 @@ namespace Ann.Utils
             }
         }
 
-        public static double[,,,] Values(this Optimizer[,,,] source)
+        public static double[,,] Values(this Optimizer[,,] source)
         {
             var output = new double[
                 source.GetLength(0),
                 source.GetLength(1),
-                source.GetLength(2),
-                source.GetLength(3)];
+                source.GetLength(2)];
 
-            source.ForEach((q,i,j,k,p) => output[i,j,k,p] = q.Value);
+            source.ForEach((q,i,j,k) => output[i,j,k] = q.Value);
             return output;
         }
 

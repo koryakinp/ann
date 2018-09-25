@@ -16,8 +16,9 @@
             public const string MaxPoolingDimensionsInvalid = "Can not compute Max-Pooling result. Input dimensions do not match.";
         }
 
-        public class HiddenLayerMessages
+        public class CommonLayerMessages
         {
+            public const string CanNotSetWeights = "Can not set weights.Input value is invalid";
             public const string MessageDimenionsInvalid = "Message dimensions are not valid";
         }
 
