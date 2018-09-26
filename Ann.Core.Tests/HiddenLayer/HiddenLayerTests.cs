@@ -79,6 +79,22 @@ namespace Ann.Core.Tests.HiddenLayer
 
         [TestMethod]
         [TestDataSource(0, 2)]
+        public void SetWeightsTest(int i)
+        {
+            _layer.SetWeights(HiddenLayerTestsData.Weights[i]);
+            for (int n = 0; n < _layer.Neurons.Count; n++)
+            {
+                for (int w = 0; w < _layer.Neurons[n].Weights.Count(); w++)
+                {
+                    Assert.AreEqual(
+                        _layer.Neurons[n].Weights[w].Value,
+                        HiddenLayerTestsData.Weights[n][w]);
+                }
+            }
+        }
+
+        [TestMethod]
+        [TestDataSource(0, 2)]
         public void ShouldUpdateWeights(int i)
         {
             SeedWeights(i);

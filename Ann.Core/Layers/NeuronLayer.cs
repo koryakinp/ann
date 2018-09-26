@@ -48,11 +48,34 @@ namespace Ann.Core.Layers
 
         public void SetWeights(Array weights)
         {
-            throw new NotImplementedException();
+            if(Neurons.Count() != weights.Length)
+            {
+                throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
+            }
+            else if(!(weights is double[][]))
+            {
+                throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
+            }
+
+            Neurons.ForEach((q, i) =>
+            {
+                var temp = weights.GetValue(i) as double[];
+                if (q.Weights.Count() != temp.Length)
+                {
+                    throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
+                }
+            });
+
+            Neurons.ForEach((q, i) =>
+            {
+                q.Weights.ForEach((w, j) => w.SetValue((double)weights.GetValue(i, j)));
+            });
         }
 
         public override void ValidateForwardInput(Array input)
         {
+            base.ValidateForwardInput(input);
+
             if(input.Rank != 1)
             {
                 throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);
@@ -65,6 +88,8 @@ namespace Ann.Core.Layers
 
         public override void ValidateBackwardInput(Array input)
         {
+            base.ValidateForwardInput(input);
+
             if (input.Rank > 1)
             {
                 throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);

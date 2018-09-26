@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Ann.Core.Tests.Utils;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ann.Core.Tests.Utils
+namespace Ann.Core.Tests.ConvolutionalLayer
 {
     public class ConvolutionalLayerTestsData
     {

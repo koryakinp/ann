@@ -9,19 +9,21 @@ namespace Ann.Core.Layers
 
         public override void ValidateBackwardInput(Array input)
         {
-            if (OutputMessageShape.Size != input.GetLength(1)
-                || OutputMessageShape.Size != input.GetLength(2)
-                || OutputMessageShape.Depth != input.GetLength(0))
-            {
-                throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);
-            }
+            base.ValidateForwardInput(input);
+            ValidateInput(input, OutputMessageShape);
         }
 
         public override void ValidateForwardInput(Array input)
         {
-            if (InputMessageShape.Size != input.GetLength(1)
-                || InputMessageShape.Size != input.GetLength(2)
-                || InputMessageShape.Depth != input.GetLength(0))
+            base.ValidateBackwardInput(input);
+            ValidateInput(input, InputMessageShape);
+        }
+
+        private void ValidateInput(Array input, MessageShape shape)
+        {
+            if (shape.Size != input.GetLength(1)
+                || shape.Size != input.GetLength(2)
+                || shape.Depth != input.GetLength(0))
             {
                 throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);
             }

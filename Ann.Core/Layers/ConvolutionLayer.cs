@@ -9,10 +9,9 @@ namespace Ann.Core.Layers
 {
     public class ConvolutionLayer : KernelLayer, ILearnable
     {
-        private readonly Kernel[] _kernels;
+        internal readonly Kernel[] _kernels;
         private readonly int _kernelSize;
         private readonly int _numberOfKernels;
-        private readonly Activator _activator;
         private readonly double[,,] _cache;
         private readonly double[,,] _gradients;
 
@@ -20,12 +19,10 @@ namespace Ann.Core.Layers
             int numberOfKernels, 
             int kernelSize, 
             MessageShape inputMessageShape,
-            Optimizer optimizer,
-            ActivatorType activator) : base(
+            Optimizer optimizer) : base(
                 inputMessageShape, 
                 BuildOutputMessageShape(inputMessageShape, kernelSize, numberOfKernels))
         {
-            _activator = ActivatorFactory.Produce(activator);
             _kernels = new Kernel[numberOfKernels];
             _kernels.UpdateForEach<Kernel>(q => new Kernel(kernelSize, inputMessageShape.Depth, optimizer));
             _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
@@ -42,7 +39,6 @@ namespace Ann.Core.Layers
             for (int i = 0; i < _kernels.Length; i++)
             {
                 double[,] temp = MatrixHelper.Convolution(input as double[,,], _kernels[i].Weights.Values());
-                temp.UpdateForEach<double>((q, idx) => _activator.CalculateValue(q + _kernels[i].Bias.Value));
                 temp.ForEach((q, j, k) => output[i, j, k] = q);
             }
 
@@ -51,7 +47,6 @@ namespace Ann.Core.Layers
 
         public override Array PassBackward(Array input)
         {
-            //input.UpdateForEach<double>((q) => _activator.CalculateDeriviative(q));
             //var transposed = MatrixHelper.Transpose(_kernels.Values());
             ////var deltas = MatrixHelper.Convolution(_cache, transposed);
             ////_gradients.UpdateForEach<double>((q,idx) => (double)deltas.GetValue(idx));
