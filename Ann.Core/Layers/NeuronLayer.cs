@@ -57,19 +57,33 @@ namespace Ann.Core.Layers
                 throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
             }
 
+            var temp = weights as double[][];
+            for (int i = 0; i < Neurons.Count; i++)
+            {
+                var neuron = Neurons[i];
+                if (neuron.Weights.Count() != temp[i].Length)
+                {
+                    throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
+                }
+            }
+
             Neurons.ForEach((q, i) =>
             {
-                var temp = weights.GetValue(i) as double[];
-                if (q.Weights.Count() != temp.Length)
+                if (q.Weights.Count() != temp[i].Length)
                 {
                     throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
                 }
             });
 
-            Neurons.ForEach((q, i) =>
+            for (int i = 0; i < Neurons.Count; i++)
             {
-                q.Weights.ForEach((w, j) => w.SetValue((double)weights.GetValue(i, j)));
-            });
+                var neuron = Neurons[i];
+                for (int j = 0; j < Neurons[i].Weights.Length; j++)
+                {
+                    var weight = neuron.Weights[j];
+                    weight.SetValue(temp[i][j]);
+                }
+            }
         }
 
         public override void ValidateForwardInput(Array input)

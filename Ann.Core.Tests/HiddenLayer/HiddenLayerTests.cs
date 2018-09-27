@@ -1,12 +1,8 @@
 ﻿using Ann.Activators;
 using Ann.Core.Tests.Utils;
-using Ann.Core.WeightInitializers;
-using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Ann.Core.Tests.HiddenLayer
@@ -42,11 +38,7 @@ namespace Ann.Core.Tests.HiddenLayer
 
         private void SeedWeights(int index)
         {
-            var queue = new Queue<double>();
-            HiddenLayerTestsData.Weights[index].ForEach(w => queue.Enqueue(w));
-            Mock<IWeightInitializer> mock = new Mock<IWeightInitializer>();
-            mock.Setup(q => q.GenerateRandom(It.IsAny<double>())).Returns(queue.Dequeue);
-            _layer.RandomizeWeights(mock.Object);
+            _layer.SetWeights(HiddenLayerTestsData.Weights[index]);
         }
 
         [TestMethod]
@@ -88,7 +80,7 @@ namespace Ann.Core.Tests.HiddenLayer
                 {
                     Assert.AreEqual(
                         _layer.Neurons[n].Weights[w].Value,
-                        HiddenLayerTestsData.Weights[n][w]);
+                        HiddenLayerTestsData.Weights[i][n][w]);
                 }
             }
         }
