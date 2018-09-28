@@ -11,60 +11,61 @@ namespace Ann.Core.Tests.MatrixHelper
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.TransposeDimensionsInvalid)]
         public void TransposeShouldThrowIfKernelSizesAreInvalid()
         {
-            Transpose(new double[2][,,] 
+            new double[2][,,] 
             {
                 new double[1,2,3],
                 new double[2,2,3]
-            });
+            }
+            .Transpose();
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.TransposeNoKernelsFound)]
         public void TransposeShouldThrowIfNoKernelsFound()
         {
-            Transpose(new double[0][,,] {  });
+            new double[0][,,] {  }.Transpose();
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.ConvolutionDeptheInvalid)]
         public void ConvolutionShouldThrowIfKernelDepthAndVolumeDepthDoNotMatch()
         {
-            Convolution(new double[3,5,5], new double[10,5,5]);
+            new double[10,5,5].Convolution(new double[3, 5, 5]);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.ConvolutionVolumeSizeTooSmall)]
         public void ConvolutionShouldThrowIfVolumeSizeTooSmall()
         {
-            Convolution(new double[3, 5, 5], new double[3, 10, 10]);
+            new double[3, 5, 5].Convolution(new double[3, 10, 10]);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.ConvolutionVolumeDimensionsInvalid)]
         public void ConvolutionShouldThrowIfVolumeDimesnionsInvalid()
         {
-            Convolution(new double[3, 7, 5], new double[3, 3, 3]);
+            new double[3, 3, 3].Convolution(new double[3, 7, 5]);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.ConvolutionKernelDimensionsInvalid)]
         public void ConvolutionShouldThrowIfKernelDimesnionsInvalid()
         {
-            Convolution(new double[3, 7, 7], new double[3, 3, 4]);
+            new double[3, 7, 7].Convolution(new double[3, 3, 4]);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.RotateKernelDimensionsInvalid)]
         public void RotateShouldThrowIfKernelDimesnionsInvalid()
         {
-            Rotate(new double[3, 6, 7]);
+            new double[3, 6, 7].Rotate();
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.RotateKernelDimensionsInvalid)]
         public void PadShouldThrowIfPaddingInvalid()
         {
-            Pad(new double[0,0,0], -2);
+            new double[0,0,0].Pad(-2);
         }
 
         [TestMethod]

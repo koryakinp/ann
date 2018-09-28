@@ -19,7 +19,7 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void SetWeightsTest(int index)
         {
             var layer = new ConvolutionLayer(4,3,
@@ -38,7 +38,7 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.CanNotSetWeights)]
         public void SetWeightsShouldThrowIfShapeIsInvalidTest1(int index)
         {
@@ -50,7 +50,7 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.CanNotSetWeights)]
         public void SetWeightsShouldThrowIfShapeIsInvalidTest2(int index)
         {
@@ -69,7 +69,7 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.CanNotSetWeights)]
         public void SetWeightsShouldThrowIfShapeIsInvalidTest3(int index)
         {
@@ -87,7 +87,7 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         }
 
         [TestMethod]
-        [TestDataSource(0,2)]
+        [TestDataSource(0,3)]
         public void ForwardPassTest(int i)
         {
             var layer = CreateLayer(i);
@@ -97,7 +97,7 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void BackwardPassTest(int i)
         {
             var layer = CreateLayer(i);

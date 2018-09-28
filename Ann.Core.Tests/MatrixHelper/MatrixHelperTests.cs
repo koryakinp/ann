@@ -15,20 +15,20 @@ namespace Ann.Core.Tests.MatrixHelper
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void RotateTest(int i)
         {
-            var actual = Rotate(MatrixHelperTestData.RotateInput[i]);
+            var actual = MatrixHelperTestData.RotateInput[i].Rotate();
             var expected = MatrixHelperTestData.RotateOutput[i];
 
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void TransposeTest(int i)
         {
-            var actual = Transpose(MatrixHelperTestData.TransposeInput[i]);
+            var actual = MatrixHelperTestData.TransposeInput[i].Transpose();
             var expected = MatrixHelperTestData.TransposeOutput[i];
 
             Assert.AreEqual(actual.Length, expected.Length);
@@ -39,17 +39,17 @@ namespace Ann.Core.Tests.MatrixHelper
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void PadTest(int i)
         {
-            var actual = Pad(MatrixHelperTestData.PadInput[i], 2);
+            var actual = MatrixHelperTestData.PadInput[i].Pad(2);
             var expected = MatrixHelperTestData.PadOutput[i];
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        [TestDataSource(0, 5)]
+        [TestDataSource(0,3)]
         public void MaxPoolEvenTest(int i)
         {
             var actual = MaxPool(MatrixHelperTestData.MaxPoolEvenInput[i], 2);
@@ -61,7 +61,7 @@ namespace Ann.Core.Tests.MatrixHelper
         }
 
         [TestMethod]
-        [TestDataSource(0, 5)]
+        [TestDataSource(0,3)]
         public void MaxPoolOddTest(int i)
         {
             var actual = MaxPool(MatrixHelperTestData.MaxPoolOddInput[i], 2);
@@ -73,12 +73,12 @@ namespace Ann.Core.Tests.MatrixHelper
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void ConvolutionTest(int i)
         {
-            var actual = Convolution(
-                MatrixHelperTestData.ConvolutionInput[i],
-                MatrixHelperTestData.ConvolutionWeights[i]);
+            var actual = MatrixHelperTestData
+                .ConvolutionInput[i]
+                .Convolution(MatrixHelperTestData.ConvolutionWeights[i]);
 
             CollectionAssert.AreEqual(MatrixHelperTestData.ConvolutionOutput[i], actual, _comparer);
 

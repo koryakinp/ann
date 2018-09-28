@@ -9,7 +9,7 @@ namespace Ann.Core
 {
     public static class MatrixHelper
     {
-        public static double[][,,] Transpose(double[][,,] kernels)
+        public static double[][,,] Transpose(this double[][,,] kernels)
         {
             if(!kernels.Any())
             {
@@ -60,24 +60,45 @@ namespace Ann.Core
             }
         }
 
-        public static double[,] Convolution(double[,,] volume, double[,,] kernel)
+        public static double[,,] Convolution(this double[][,,] kernels, double[,,] volume)
+        {
+            int kernelSize = kernels.First().GetLength(1);
+            int volumeSize = volume.GetLength(1);
+            int size = volumeSize - kernelSize + 1;
+
+            double[,,] output = new double[kernels.Length, size, size];
+            for (int i = 0; i < kernels.Length; i++)
+            {
+                var conv = volume.Convolution(kernels[i]);
+
+                for (int j = 0; j < conv.GetLength(0); j++)
+                {
+                    for (int k = 0; k < conv.GetLength(1); k++)
+                    {
+                        output[i, j, k] = conv[j, k];
+                    }
+                }
+            }
+
+            return output;
+        }
+
+        public static double[,] Convolution(this double[,,] volume, double[,,] kernel)
         {
             ValidateConvolution(volume, kernel);
             int size = kernel.GetLength(1);
-            var output = new double[size, size];
+            int volumeSize = volume.GetLength(1);
+            var output = new double[volumeSize - size + 1, volumeSize - size + 1];
             double[] kernelVector = new double[kernel.Length];
             double[] volumeVector = new double[kernel.Length];
 
-            int height = kernel.GetLength(0);
-            int width = kernel.GetLength(1);
-
-            kernel.ForEach((q,k,j,i) => kernelVector[i + width * (j + height * k)] = q);
+            kernel.ForEach((q,k,j,i) => kernelVector[i + size * (j + size * k)] = q);
 
             var vector1 = new DenseVector(kernelVector);
 
-            for (int x = 0; x < size; x++)
+            for (int x = 0; x < output.GetLength(0); x++)
             {
-                for (int y = 0; y < size; y++)
+                for (int y = 0; y < output.GetLength(1); y++)
                 {
                     var temp = new List<double>();
                     for (int k = 0; k < volume.GetLength(0); k++)
@@ -100,7 +121,7 @@ namespace Ann.Core
             return output;
         }
 
-        public static double[,,] Rotate(double[,,] input)
+        public static double[,,] Rotate(this double[,,] input)
         {
             if(input.GetLength(1) != input.GetLength(2))
             {
@@ -128,7 +149,7 @@ namespace Ann.Core
             return output;
         }
 
-        public static double[,,] Pad(double[,,] input, int size)
+        public static double[,,] Pad(this double[,,] input, int size)
         {
             if(size < 0)
             {

@@ -42,7 +42,7 @@ namespace Ann.Core.Tests.HiddenLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void ForwardPassTest(int i)
         {
             SeedWeights(i);
@@ -52,7 +52,7 @@ namespace Ann.Core.Tests.HiddenLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void BackwardPassTest(int i)
         {
             SeedWeights(i);
@@ -70,7 +70,7 @@ namespace Ann.Core.Tests.HiddenLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void SetWeightsTest(int i)
         {
             _layer.SetWeights(HiddenLayerTestsData.Weights[i]);
@@ -86,7 +86,7 @@ namespace Ann.Core.Tests.HiddenLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void ShouldUpdateWeights(int i)
         {
             SeedWeights(i);
@@ -127,7 +127,7 @@ namespace Ann.Core.Tests.HiddenLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void ShouldUpdateBiasTest(int i)
         {
             SeedWeights(i);

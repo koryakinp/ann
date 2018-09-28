@@ -43,7 +43,7 @@ namespace Ann.Core.Tests.SoftmaxLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void PassForwardTest(int i)
         {
             SeedWeights(i);
@@ -53,7 +53,7 @@ namespace Ann.Core.Tests.SoftmaxLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 2)]
+        [TestDataSource(0,3)]
         public void PassBackwardTest(int i)
         {
             SeedWeights(i);

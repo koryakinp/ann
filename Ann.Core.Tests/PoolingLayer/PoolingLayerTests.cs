@@ -18,7 +18,7 @@ namespace Ann.Core.Tests.PoolingLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 6)]
+        [TestDataSource(0,6)]
         public void PassForwardEvenTest(int i)
         {
             Layers.PoolingLayer layer = GetLayer(6);
@@ -29,7 +29,7 @@ namespace Ann.Core.Tests.PoolingLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 6)]
+        [TestDataSource(0,6)]
         public void PassForwardOddTest(int i)
         {
             Layers.PoolingLayer layer = GetLayer(5);
@@ -40,7 +40,7 @@ namespace Ann.Core.Tests.PoolingLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 6)]
+        [TestDataSource(0,6)]
         public void PassBackwardEvenTest(int i)
         {
             Layers.PoolingLayer layer = GetLayer(6);
@@ -53,7 +53,7 @@ namespace Ann.Core.Tests.PoolingLayer
         }
 
         [TestMethod]
-        [TestDataSource(0, 6)]
+        [TestDataSource(0,6)]
         public void PassBackwardOddTest(int i)
         {
             Layers.PoolingLayer layer = GetLayer(5);

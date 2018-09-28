@@ -1,9 +1,8 @@
-﻿using Ann.Activators;
-using Ann.Core.WeightInitializers;
+﻿using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo;
 using System;
-using Activator = Ann.Activators.Activator;
+using System.Linq;
 
 namespace Ann.Core.Layers
 {
@@ -34,29 +33,24 @@ namespace Ann.Core.Layers
         public override Array PassForward(Array input)
         {
             var output = new double[OutputMessageShape.Depth, OutputMessageShape.Size, OutputMessageShape.Size];
-            _cache.UpdateForEach<double>((q,idx) => (double)input.GetValue(idx));
-
-            for (int i = 0; i < _kernels.Length; i++)
-            {
-                double[,] temp = MatrixHelper.Convolution(input as double[,,], _kernels[i].Weights.Values());
-                temp.ForEach((q, j, k) => output[i, j, k] = q);
-            }
-
-            return output;
+            _cache.UpdateForEach<double>((q, idx) => (double)input.GetValue(idx));
+            return _kernels.Select(q => q.GetValues()).ToArray().Convolution(_cache);
         }
 
         public override Array PassBackward(Array input)
         {
-            //var transposed = MatrixHelper.Transpose(_kernels.Values());
-            ////var deltas = MatrixHelper.Convolution(_cache, transposed);
-            ////_gradients.UpdateForEach<double>((q,idx) => (double)deltas.GetValue(idx));
+            var gradients = input as double[,,];
 
-            //var flipped = MatrixHelper.Flip(transposed);
-            //var padded = MatrixHelper.Pad(input as double[,,], _kernelSize - 1);
-            //var output = MatrixHelper.Convolution(padded, flipped);
-            //return output;
+            var transposed = _kernels
+                .Select(q => q.GetValues())
+                .ToArray()
+                .Transpose()
+                .Select(q => q.Rotate())
+                .ToArray();
 
-            throw new NotImplementedException();
+            var padded = gradients.Pad(_kernelSize - 1);
+
+            return transposed.Convolution(padded);
         }
 
         public void RandomizeWeights(IWeightInitializer weightInitializer)
