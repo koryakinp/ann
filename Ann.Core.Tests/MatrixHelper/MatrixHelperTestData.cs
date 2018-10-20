@@ -30,6 +30,11 @@ namespace Ann.Core.Tests.MatrixHelper
         public static readonly double[][,] ConvolutionOutput;
         public static readonly double[][,,] ConvolutionWeights;
 
+        public static readonly double[][,] ConvolutionSingleLayerInput;
+        public static readonly double[][,] ConvolutionSingleLayerOutput;
+        public static readonly double[][,] ConvolutionSingleLayerWeights;
+
+
         static MatrixHelperTestData()
         {
             TransposeInput = new double[3][][,,]
@@ -430,6 +435,45 @@ namespace Ann.Core.Tests.MatrixHelper
                     new double[] { -1.6915,-1.7734,0.8723,-0.5178,3.0301,1.7775,3.139,1.4857,2.828 },
                     new int[] { 3,3 }
                 ),
+            };
+
+            ConvolutionSingleLayerInput = new double[3][,]
+            {
+                ArrayConverter.Convert1Dto2D(
+                    new double[] { 0.0323,0.5842,-0.281,0.5112,0.6841,-0.1373,-0.6652,-0.3023,0.3949,-0.7723,0.8314,-0.522,-0.7727,0.6695,-0.1751,0.3415,-0.2609,0.1327,-0.7253,0.5736,-0.4703,-0.0114,0.6249,-0.4426,-0.1919 },
+                    new int[] { 5,5}),
+                ArrayConverter.Convert1Dto2D(
+                    new double[] { 0.5308,-0.9172,-0.7795,0.0126,0.1856,-0.6358,-0.1667,-0.8008,-0.1037,-0.2738,0.3328,-0.0234,0.7288,0.171,-0.6736,-0.1629,0.2376,0.6312,-0.2268,0.075,0.0283,-0.5099,-0.8766,0.0559,0.3066 },
+                    new int[] { 5,5}),
+                ArrayConverter.Convert1Dto2D(
+                    new double[] { -0.888,0.3282,-0.6586,0.4587,-0.2271,0.9273,-0.1657,0.3804,-0.2122,0.0868,0.0836,0.5328,0.5937,-0.3641,0.6455,0.5804,0.4408,-0.2641,0.2629,0.1538,-0.1159,0.1771,0.7666,-0.5344,0.5661 },
+                    new int[] { 5,5})
+            };
+
+            ConvolutionSingleLayerOutput = new double[3][,]
+            {
+                ArrayConverter.Convert1Dto2D(
+                    new double[] { -0.9058,1.9955,-1.0034,-0.5655,-0.4938,1.2349,1.2074,-0.9958,-0.5932 },
+                    new int[] { 3,3}),
+                ArrayConverter.Convert1Dto2D(
+                    new double[] { 0.7614,0.1089,-0.6056,0.3422,-0.3405,0.0235,-1.3343,0.6771,0.5365 },
+                    new int[] { 3,3}),
+                ArrayConverter.Convert1Dto2D(
+                    new double[] { 0.1623,-0.0292,-0.7356,0.8054,0.0533,1.2277,1.1727,-0.0547,0.3463 },
+                    new int[] { 3,3})
+            };
+
+            ConvolutionSingleLayerWeights = new double[3][,]
+            {
+                ArrayConverter.Convert1Dto2D(
+                    new double[] { 0.5308,-0.3875,-0.152,-0.6358,0.1893,0.507,-0.1096,-0.519,0.9411 },
+                    new int[] { 3,3}),
+                ArrayConverter.Convert1Dto2D(
+                    new double[] { -0.1738,0.3054,-0.0548,-0.2593,0.2924,-0.5891,-0.614,0.1876,0.9768 },
+                    new int[] { 3,3}),
+                ArrayConverter.Convert1Dto2D(
+                    new double[] { 0.8059,-0.4279,0.1253,0.7413,0.6297,0.3549,-0.9316,0.1135,0.6741 },
+                    new int[] { 3,3})
             };
         }
     }

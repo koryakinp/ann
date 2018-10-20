@@ -81,6 +81,17 @@ namespace Ann.Core.Tests.MatrixHelper
                 .Convolution(MatrixHelperTestData.ConvolutionWeights[i]);
 
             CollectionAssert.AreEqual(MatrixHelperTestData.ConvolutionOutput[i], actual, _comparer);
+        }
+
+        [TestMethod]
+        [TestDataSource(0, 3)]
+        public void ConvolutionSingleLayerTest(int i)
+        {
+            var actual = MatrixHelperTestData
+                .ConvolutionSingleLayerInput[i]
+                .Convolution(MatrixHelperTestData.ConvolutionSingleLayerWeights[i]);
+
+            CollectionAssert.AreEqual(MatrixHelperTestData.ConvolutionSingleLayerOutput[i], actual, _comparer);
 
         }
     }

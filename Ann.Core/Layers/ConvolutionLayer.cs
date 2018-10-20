@@ -41,6 +41,16 @@ namespace Ann.Core.Layers
         {
             var gradients = input as double[,,];
 
+            foreach (var kernel in _kernels)
+            {
+                for (int i = 0; i < kernel.Weights.GetLength(0); i++)
+                {
+                    var kernelChannel = kernel.GetValuesByChannel(i);
+                    //kernel.
+                }
+            }
+
+
             var transposed = _kernels
                 .Select(q => q.GetValues())
                 .ToArray()

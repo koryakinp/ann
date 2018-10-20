@@ -121,6 +121,40 @@ namespace Ann.Core
             return output;
         }
 
+        public static double[,] Convolution(this double[,] volume, double[,] kernel)
+        {
+            int size = kernel.GetLength(0);
+            int volumeSize = volume.GetLength(1);
+            var output = new double[volumeSize - size + 1, volumeSize - size + 1];
+            double[] kernelVector = new double[kernel.Length];
+            double[] volumeVector = new double[kernel.Length];
+
+            kernel.ForEach((q, j, i) => kernelVector[j * size + i] = q);
+
+            var vector1 = new DenseVector(kernelVector);
+
+            for (int x = 0; x < output.GetLength(0); x++)
+            {
+                for (int y = 0; y < output.GetLength(1); y++)
+                {
+                    var temp = new List<double>();
+                    for (int j = x; j < x + size; j++)
+                    {
+                        for (int i = y; i < y + size; i++)
+                        {
+                            temp.Add(volume[j, i]);
+                        }
+                    }
+                    volumeVector = temp.ToArray();
+                    var vector2 = new DenseVector(volumeVector);
+
+                    output[x, y] = vector1.DotProduct(vector2);
+                }
+            }
+
+            return output;
+        }
+
         public static double[,,] Rotate(this double[,,] input)
         {
             if(input.GetLength(1) != input.GetLength(2))

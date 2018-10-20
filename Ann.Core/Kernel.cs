@@ -24,6 +24,20 @@ namespace Ann.Core
             Weights.ForEach((q) => q.SetValue(weightInitializer.GenerateRandom(magnitude)));
         }
 
+        public double[,] GetValuesByChannel(int channel)
+        {
+            var output = new double[Weights.GetLength(1), Weights.GetLength(2)];
+            for (int j = 0; j < Weights.GetLength(1); j++)
+            {
+                for (int k = 0; k < Weights.GetLength(2); k++)
+                {
+                    output[j, k] = (double)Weights.GetValue(channel,j,k);
+                }
+            }
+
+            return output;
+        }
+
         public double[,,] GetValues()
         {
             var output = new double[
