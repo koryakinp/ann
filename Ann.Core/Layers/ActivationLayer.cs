@@ -12,8 +12,7 @@ namespace Ann.Core.Layers
         public ActivationLayer(
             MessageShape inputMessageShape, 
             ActivatorType type) 
-            : base(inputMessageShape, 
-                  new MessageShape(inputMessageShape.Size, inputMessageShape.Depth))
+            : base(inputMessageShape, new MessageShape(inputMessageShape.Size, inputMessageShape.Depth))
         {
             _activator = ActivatorFactory.Produce(type);
             _cache = new double[

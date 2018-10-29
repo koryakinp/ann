@@ -41,15 +41,17 @@ namespace Ann.Core.Layers
         {
             var gradients = input as double[,,];
 
-            foreach (var kernel in _kernels)
+            _kernels.ForEach((kernel, k) =>
             {
-                for (int i = 0; i < kernel.Weights.GetLength(0); i++)
-                {
-                    var kernelChannel = kernel.GetValuesByChannel(i);
-                    //kernel.
-                }
-            }
+                var gradientChannel = gradients.GetChannel(k);
 
+                for (int i = 0; i < kernel.GetNumberOfChannels; i++)
+                {
+                    var inputChannel = _cache.GetChannel(i);
+                    var res = MatrixHelper.Convolution(inputChannel, gradientChannel);
+                    kernel.SetGradientForChannel(i, res);
+                }
+            });
 
             var transposed = _kernels
                 .Select(q => q.GetValues())
@@ -97,12 +99,18 @@ namespace Ann.Core.Layers
 
         public void UpdateBiases()
         {
-            throw new System.NotImplementedException();
+            foreach (var kernel in _kernels)
+            {
+                kernel.UpdateWeights();
+            }
         }
 
         public void UpdateWeights()
         {
-            throw new System.NotImplementedException();
+            foreach (var kernel in _kernels)
+            {
+                kernel.UpdateBias();
+            }
         }
 
         public static MessageShape BuildOutputMessageShape(

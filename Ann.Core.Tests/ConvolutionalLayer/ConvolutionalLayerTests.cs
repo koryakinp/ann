@@ -107,13 +107,25 @@ namespace Ann.Core.Tests.ConvolutionalLayer
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
-        private Layer CreateLayer(int index)
+        [TestMethod]
+        [TestDataSource(0, 3)]
+        public void BackwardPassWeightGradientsTest(int i)
         {
-            var _layer = new ConvolutionLayer(
-                4,
-                3,
-                new MessageShape(5, 3),
-                new Flat(0.1));
+            var layer = CreateLayer(i);
+            layer.PassForward(ConvolutionalLayerTestsData.ForwardPassInput[i]);
+            layer.PassBackward(ConvolutionalLayerTestsData.BackwardPassInput[i]);
+
+            for (int k = 0; k < layer._kernels.Length; k++)
+            {
+                var actual = layer._kernels[k].Gradients;
+                var expected = ConvolutionalLayerTestsData.WeightGradients[i][k];
+                CollectionAssert.AreEqual(expected, actual, _comparer);
+            }
+        }
+
+        private ConvolutionLayer CreateLayer(int index)
+        {
+            var _layer = new ConvolutionLayer(4,3, new MessageShape(5, 3), new Flat(0.1));
 
             _layer.SetWeights(ConvolutionalLayerTestsData.Weights[index]);
 

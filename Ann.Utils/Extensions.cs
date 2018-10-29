@@ -52,6 +52,21 @@ namespace Ann.Utils
             }
         }
 
+        public static T[,] GetChannel<T>(this T[,,] source, int channel)
+        {
+            var output = new T[source.GetLength(1), source.GetLength(2)];
+
+            for (int i = 0; i < source.GetLength(1); i++)
+            {
+                for (int j = 0; j < source.GetLength(2); j++)
+                {
+                    output[i, j] = source[channel, i, j];
+                }
+            }
+
+            return output;
+        }
+
         public static void ForEach<T>(this T[,,] source, Action<T, int, int, int> action)
         {
             for (int w = 0; w < source.GetLength(0); w++)

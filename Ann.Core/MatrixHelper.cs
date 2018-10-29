@@ -86,40 +86,45 @@ namespace Ann.Core
         public static double[,] Convolution(this double[,,] volume, double[,,] kernel)
         {
             ValidateConvolution(volume, kernel);
-            int size = kernel.GetLength(1);
+
+            int kernelSize = kernel.GetLength(1);
             int volumeSize = volume.GetLength(1);
-            var output = new double[volumeSize - size + 1, volumeSize - size + 1];
-            double[] kernelVector = new double[kernel.Length];
-            double[] volumeVector = new double[kernel.Length];
+            int kernelLength = kernel.GetLength(0) * kernel.GetLength(1) * kernel.GetLength(2);
+            int outputSize = volumeSize - kernelSize + 1;
+            int kernelsPerChannel = outputSize * outputSize;
+            int depth = kernel.GetLength(0);
 
-            kernel.ForEach((q,k,j,i) => kernelVector[i + size * (j + size * k)] = q);
+            double[] kernelVector = kernel.Cast<double>().ToArray();
+            double[,] temp = new double[kernelsPerChannel * depth, kernelSize * kernelSize];
 
-            var vector1 = new DenseVector(kernelVector);
 
-            for (int x = 0; x < output.GetLength(0); x++)
+            var matrix = Matrix.Build.DenseOfArray(temp);
+            var vector = Matrix.Build.Dense(1, kernelLength, kernelVector);
+
+            int row = 0;
+
+            for (int z = 0; z < volume.GetLength(0); z++)
             {
-                for (int y = 0; y < output.GetLength(1); y++)
+                for (int y = 0; y <= volume.GetLength(1) - kernelSize; y++)
                 {
-                    var temp = new List<double>();
-                    for (int k = 0; k < volume.GetLength(0); k++)
+                    for (int x = 0; x <= volume.GetLength(2) - kernelSize; x++)
                     {
-                        for (int j = x; j < x + size; j++)
+                        for (int ky = 0; ky < kernelSize; ky++)
                         {
-                            for (int i = y; i < y + size; i++)
+                            for (int kx = 0; kx < kernelSize; kx++)
                             {
-                                temp.Add(volume[k, j, i]);
+                                matrix[row, ky * kernelSize + kx] = volume[z, y + ky, x + kx];
                             }
                         }
+                        row++;
                     }
-                    volumeVector = temp.ToArray();
-                    var vector2 = new DenseVector(volumeVector);
-
-                    output[x,y] = vector1.DotProduct(vector2);
                 }
             }
 
-            return output;
+            var res = vector.Multiply(matrix).AsColumnMajorArray();
+            return DenseMatrix.Build.Dense(outputSize, outputSize, res).Transpose().ToArray();
         }
+
 
         public static double[,] Convolution(this double[,] volume, double[,] kernel)
         {
