@@ -1,4 +1,5 @@
 ﻿using Ann.Core.Tests.Utils;
+using Ann.Utils;
 
 namespace Ann.Core.Tests.ActivationLayer
 {

@@ -93,23 +93,19 @@ namespace Ann.Core.Layers
             }
         }
 
-        private double[,,] ComputeFilterGradient(double[,] gradient)
-        {
-            var output = new double[_cache.GetLength(0), _kernelSize, _kernelSize];
-
-            for (int i = 0; i < output.GetLength(0); i++)
-            {
-                output.SetChannel(MatrixHelper.Convolution(_cache.GetChannel(i), gradient), i);
-            }
-
-            return output;
-        }
-
         private void ComputeFilterGradients(double[,,] gradients)
         {
             for (int i = 0; i < gradients.GetLength(0); i++)
             {
-                var gradient = ComputeFilterGradient(gradients.GetChannel(i));
+                var gradient = new double[_cache.GetLength(0), _kernelSize, _kernelSize];
+
+                for (int j = 0; j < gradient.GetLength(0); j++)
+                {
+                    var X = _cache.GetChannel(i);
+                    var dEdO = gradients.GetChannel(i);
+                    gradient.SetChannel(MatrixHelper.Convolution(X, dEdO), i);
+                }
+
                 _kernels[i].SetGradient(gradient);
             }
         }
