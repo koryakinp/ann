@@ -76,9 +76,10 @@ namespace Ann.Core.Tests.MatrixHelper
         [TestDataSource(0,3)]
         public void ConvolutionTest(int i)
         {
-            var actual = MatrixHelperTestData
-                .ConvolutionInput[i]
-                .Convolution(MatrixHelperTestData.ConvolutionWeights[i]);
+            var X = MatrixHelperTestData.ConvolutionInput[i];
+            var W = MatrixHelperTestData.ConvolutionWeights[i];
+
+            var actual = Convolution(W, X);
 
             CollectionAssert.AreEqual(MatrixHelperTestData.ConvolutionOutput[i], actual, _comparer);
         }

@@ -32,37 +32,17 @@ namespace Ann.Core.Layers
 
         public override Array PassForward(Array input)
         {
-            var output = new double[OutputMessageShape.Depth, OutputMessageShape.Size, OutputMessageShape.Size];
             _cache.UpdateForEach<double>((q, idx) => (double)input.GetValue(idx));
-            return _kernels.Select(q => q.GetValues()).ToArray().Convolution(_cache);
+            var X = input as double[,,];
+            var W = _kernels.Select(q => q.GetValues()).ToArray();
+            return MatrixHelper.Convolution(W, X);
         }
 
         public override Array PassBackward(Array input)
         {
             var gradients = input as double[,,];
-
-            _kernels.ForEach((kernel, k) =>
-            {
-                var gradientChannel = gradients.GetChannel(k);
-
-                for (int i = 0; i < kernel.GetNumberOfChannels; i++)
-                {
-                    var inputChannel = _cache.GetChannel(i);
-                    var res = MatrixHelper.Convolution(inputChannel, gradientChannel);
-                    kernel.SetGradientForChannel(i, res);
-                }
-            });
-
-            var transposed = _kernels
-                .Select(q => q.GetValues())
-                .ToArray()
-                .Transpose()
-                .Select(q => q.Rotate())
-                .ToArray();
-
-            var padded = gradients.Pad(_kernelSize - 1);
-
-            return transposed.Convolution(padded);
+            ComputeFilterGradients(gradients);
+            return ComputeInputGradients(gradients);
         }
 
         public void RandomizeWeights(IWeightInitializer weightInitializer)
@@ -111,6 +91,41 @@ namespace Ann.Core.Layers
             {
                 kernel.UpdateBias();
             }
+        }
+
+        private double[,,] ComputeFilterGradient(double[,] gradient)
+        {
+            var output = new double[_cache.GetLength(0), _kernelSize, _kernelSize];
+
+            for (int i = 0; i < output.GetLength(0); i++)
+            {
+                output.SetChannel(MatrixHelper.Convolution(_cache.GetChannel(i), gradient), i);
+            }
+
+            return output;
+        }
+
+        private void ComputeFilterGradients(double[,,] gradients)
+        {
+            for (int i = 0; i < gradients.GetLength(0); i++)
+            {
+                var gradient = ComputeFilterGradient(gradients.GetChannel(i));
+                _kernels[i].SetGradient(gradient);
+            }
+        }
+
+        private double[,,] ComputeInputGradients(double[,,] input)
+        {
+            var transposed = _kernels
+                .Select(q => q.GetValues())
+                .ToArray()
+                .Transpose()
+                .Select(q => q.Rotate())
+                .ToArray();
+
+            var padded = input.Pad(_kernelSize - 1);
+
+            return MatrixHelper.Convolution(transposed, padded);
         }
 
         public static MessageShape BuildOutputMessageShape(

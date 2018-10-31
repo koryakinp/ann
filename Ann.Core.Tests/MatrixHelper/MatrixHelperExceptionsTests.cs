@@ -30,28 +30,28 @@ namespace Ann.Core.Tests.MatrixHelper
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.ConvolutionDeptheInvalid)]
         public void ConvolutionShouldThrowIfKernelDepthAndVolumeDepthDoNotMatch()
         {
-            new double[10,5,5].Convolution(new double[3, 5, 5]);
+            Convolution(new double[1][,,] { new double[10, 5, 5] }, new double[3, 5, 5]);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.ConvolutionVolumeSizeTooSmall)]
         public void ConvolutionShouldThrowIfVolumeSizeTooSmall()
         {
-            new double[3, 5, 5].Convolution(new double[3, 10, 10]);
+            Convolution(new double[1][,,] { new double[3, 10, 10] }, new double[3, 5, 5]);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.ConvolutionVolumeDimensionsInvalid)]
         public void ConvolutionShouldThrowIfVolumeDimesnionsInvalid()
         {
-            new double[3, 3, 3].Convolution(new double[3, 7, 5]);
+            Convolution(new double[1][,,] { new double[3, 3, 3] }, new double[3, 7, 5]);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception), Consts.MatrixHelperMessages.ConvolutionKernelDimensionsInvalid)]
         public void ConvolutionShouldThrowIfKernelDimesnionsInvalid()
         {
-            new double[3, 7, 7].Convolution(new double[3, 3, 4]);
+            Convolution(new double[1][,,] { new double[3, 7, 7] }, new double[3, 3, 4]);
         }
 
         [TestMethod]

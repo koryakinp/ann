@@ -26,15 +26,9 @@ namespace Ann.Core
 
         public int GetNumberOfChannels => Weights.GetLength(0);
 
-        public void SetGradientForChannel(int channel, double[,] gradient)
+        public void SetGradient(double[,,] gradient)
         {
-            for (int i = 0; i < gradient.GetLength(0); i++)
-            {
-                for (int j = 0; j < gradient.GetLength(1); j++)
-                {
-                    Gradients[channel, i, j] = gradient[i, j];
-                }
-            }
+            gradient.ForEach((q, i, j, k) => Gradients[i, j, k] = q);
         }
 
         public double[,] GetValuesByChannel(int channel)

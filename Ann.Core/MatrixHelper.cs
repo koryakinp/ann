@@ -60,48 +60,32 @@ namespace Ann.Core
             }
         }
 
-        public static double[,,] Convolution(this double[][,,] kernels, double[,,] volume)
+        public static double[,,] Convolution(double[][,,] kernels, double[,,] volume)
         {
-            int kernelSize = kernels.First().GetLength(1);
-            int volumeSize = volume.GetLength(1);
-            int size = volumeSize - kernelSize + 1;
-
-            double[,,] output = new double[kernels.Length, size, size];
-            for (int i = 0; i < kernels.Length; i++)
+            foreach (var item in kernels)
             {
-                var conv = volume.Convolution(kernels[i]);
-
-                for (int j = 0; j < conv.GetLength(0); j++)
-                {
-                    for (int k = 0; k < conv.GetLength(1); k++)
-                    {
-                        output[i, j, k] = conv[j, k];
-                    }
-                }
+                ValidateConvolution(volume, item);
             }
 
-            return output;
-        }
+            var kernel = kernels[0];
 
-        public static double[,] Convolution(this double[,,] volume, double[,,] kernel)
-        {
-            ValidateConvolution(volume, kernel);
-
+            int numberOfKernels = kernels.Length;
             int kernelSize = kernel.GetLength(1);
             int volumeSize = volume.GetLength(1);
+            int kernelArea = kernelSize * kernelSize;
             int kernelLength = kernel.GetLength(0) * kernel.GetLength(1) * kernel.GetLength(2);
             int outputSize = volumeSize - kernelSize + 1;
             int kernelsPerChannel = outputSize * outputSize;
             int depth = kernel.GetLength(0);
 
-            double[] kernelVector = kernel.Cast<double>().ToArray();
-            double[,] temp = new double[kernelsPerChannel * depth, kernelSize * kernelSize];
+            double[,] temp1 = new double[numberOfKernels, kernelLength];
+            double[,] temp2 = new double[kernelArea * depth, outputSize * outputSize];
 
-
-            var matrix = Matrix.Build.DenseOfArray(temp);
-            var vector = Matrix.Build.Dense(1, kernelLength, kernelVector);
+            var kernelMatrix = Matrix.Build.DenseOfArray(temp1);
+            var volumeMatrix = Matrix.Build.DenseOfArray(temp2);
 
             int row = 0;
+            int col = 0;
 
             for (int z = 0; z < volume.GetLength(0); z++)
             {
@@ -109,22 +93,40 @@ namespace Ann.Core
                 {
                     for (int x = 0; x <= volume.GetLength(2) - kernelSize; x++)
                     {
+                        
                         for (int ky = 0; ky < kernelSize; ky++)
                         {
                             for (int kx = 0; kx < kernelSize; kx++)
                             {
-                                matrix[row, ky * kernelSize + kx] = volume[z, y + ky, x + kx];
+                                volumeMatrix[z * kernelArea + row, col] = volume[z, y + ky, x + kx];
+                                row++;
                             }
                         }
-                        row++;
+                        row = 0;
+                        col++;
                     }
                 }
+                col = 0;
             }
 
-            var res = vector.Multiply(matrix).AsColumnMajorArray();
-            return DenseMatrix.Build.Dense(outputSize, outputSize, res).Transpose().ToArray();
-        }
+            for (int i = 0; i < kernels.Length; i++)
+            {
+                kernelMatrix.SetRow(i, kernels[i].Cast<double>().ToArray());
+            }
 
+            var res = kernelMatrix.Multiply(volumeMatrix);
+
+            var output = new double[res.RowCount, outputSize, outputSize];
+
+            for (int i = 0; i < res.RowCount; i++)
+            {
+                var arr = res.Row(i).ToArray();
+                var temp = Matrix.Build.Dense(outputSize, outputSize, arr).Transpose().ToArray();
+                output.SetChannel(temp, i);
+            }
+
+            return output;
+        }
 
         public static double[,] Convolution(this double[,] volume, double[,] kernel)
         {

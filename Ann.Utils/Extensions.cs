@@ -67,6 +67,31 @@ namespace Ann.Utils
             return output;
         }
 
+        public static void SetChannel<T>(this T[,,] source, T[,] values, int channel)
+        {
+            if(source.GetLength(1) != values.GetLength(0) ||
+                source.GetLength(2) != values.GetLength(1))
+            {
+                throw new Exception("Can not set values for channel. Dimensions do not match.");
+            }
+            else if(channel < 0)
+            {
+                throw new Exception("Can not set values for channel. Channel number must greater or equal to 0.");
+            }
+            else if(source.GetLength(0) < channel)
+            {
+                throw new Exception($"Can not set values for channel. Volume do not have channel {channel}");
+            }
+
+            for (int i = 0; i < values.GetLength(0); i++)
+            {
+                for (int j = 0; j < values.GetLength(1); j++)
+                {
+                    source[channel, i, j] = values[i, j];
+                }
+            }
+        }
+
         public static void ForEach<T>(this T[,,] source, Action<T, int, int, int> action)
         {
             for (int w = 0; w < source.GetLength(0); w++)
