@@ -3,6 +3,8 @@ using System.Linq;
 using Activator = Ann.Activators.Activator;
 using System;
 using MathNet.Numerics.LinearAlgebra.Double;
+using Ann.Utils;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace Ann.Core.Layers
 {
@@ -24,32 +26,29 @@ namespace Ann.Core.Layers
         {
             PrevLayerOutput = input;
 
-            foreach (var neuron in Neurons)
-            {
-                var vector1 = new DenseVector(input.OfType<double>().ToArray());
-                var vector2 = new DenseVector(neuron.Weights.Select(q => q.Value).ToArray());
-                var weightedInput = vector1.DotProduct(vector2);
-                neuron.Output = _activator.CalculateValue(weightedInput + neuron.Bias.Value);
-            }
+            var X = Matrix.Build.Dense(1, input.Length, input.OfType<double>().ToArray());
+            var W = GetWeightMatrix();
+            var B = new DenseVector(Neurons.Select(q => q.Bias.Value).ToArray());
+
+            var res = X.Multiply(W).Row(0).Add(B).Map(q => _activator.CalculateValue(q)).ToArray();
+            Neurons.ForEach((q, i) => q.Output = res[i]);
 
             return Neurons.Select(q => q.Output).ToArray();
         }
 
         public override Array PassBackward(Array error)
         {
-            double[] deltas = new double[InputMessageShape.Size];
-            for (int i = 0; i < Neurons.Count; i++)
-            {
-                var neuron = Neurons[i];
-                neuron.Delta = (double)error.GetValue(i) * _activator.CalculateDeriviative(neuron.Output);
+            var W = GetWeightMatrix();
+            Neurons.ForEach((q, i) => q.Delta = (double)error.GetValue(i) * _activator.CalculateDeriviative(q.Output));
+            var dEdX = Neurons.Select(q => q.Delta).ToArray();
+            var dEdO = Matrix.Build.Dense(1, dEdX.Length, dEdX);
+            return dEdO.Multiply(W.Transpose()).Row(0).ToArray();
+        }
 
-                for (int j = 0; j < neuron.Weights.Length; j++)
-                {
-                    var weight = neuron.Weights[j];
-                    deltas[j] += weight.Value * neuron.Delta;
-                }
-            }
-            return deltas;
+        private Matrix<double> GetWeightMatrix()
+        {
+            return Matrix.Build.DenseOfColumnArrays(
+                Neurons.Select(q => q.Weights.Select(w => w.Value).ToArray()).ToArray());
         }
     }
 }
