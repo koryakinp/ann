@@ -44,6 +44,8 @@ namespace Ann.Core.Layers
 
         public override Array PassForward(Array input)
         {
+            PrevLayerOutput = input;
+
             var temp = new double[Neurons.Count];
 
             for (int i = 0; i < Neurons.Count; i++)

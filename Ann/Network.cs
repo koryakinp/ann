@@ -21,7 +21,7 @@ namespace Ann
             _layers = new List<Layer>();
         }
 
-        public double TrainModel(double[,] input, bool[] labels)
+        public double TrainModel(Array input, bool[] labels)
         {
             double[] output = PassForward(input).Cast<double>().ToArray();
             double[] error = _lossFunction.ComputeDeriviative(labels, output);
@@ -32,7 +32,7 @@ namespace Ann
             return _lossFunction.ComputeLoss(labels, output);
         }
 
-        public double[] UseModel(double[,] input)
+        public double[] UseModel(Array input)
         {
             return PassForward(input).Cast<double>().ToArray();
         }

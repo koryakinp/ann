@@ -23,7 +23,7 @@ namespace Ann.Mnist
         {
             var network = new Network(LossFunctionType.CrossEntropy, 10);
 
-            network.AddInputLayer(28, 1);
+            network.AddInputLayer(784, 1);
             network.AddHiddenLayer(16, ActivatorType.Sigmoid, Optimizers.Flat(0.1));
             network.AddHiddenLayer(16, ActivatorType.Sigmoid, Optimizers.Flat(0.1));
             network.AddSoftMaxLayer(Optimizers.Flat(0.1));
@@ -40,7 +40,7 @@ namespace Ann.Mnist
             {
                 foreach (var image in MnistReader.ReadTrainingData())
                 {
-                    var data = Helper.Create2DInput(image.Data);
+                    var data = Helper.Create1DInput(image.Data);
                     var target = Helper.CreateTarget(image.Label);
                     model.TrainModel(data, target);
                     pbar.Tick($"Training Model: {++current} of {total}");
@@ -59,7 +59,7 @@ namespace Ann.Mnist
             {
                 foreach (var image in MnistReader.ReadTestData())
                 {
-                    var data = Helper.Create2DInput(image.Data);
+                    var data = Helper.Create1DInput(image.Data);
                     var res = model.UseModel(data);
                     int predicted = Helper.IntegerFromOutput(res);
 

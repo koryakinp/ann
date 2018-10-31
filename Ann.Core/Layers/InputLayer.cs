@@ -17,14 +17,8 @@ namespace Ann.Core.Layers
             return input;
         }
 
-        public override void ValidateForwardInput(Array input)
-        {
-            throw new NotImplementedException();
-        }
+        public override void ValidateForwardInput(Array input) {}
 
-        public override void ValidateBackwardInput(Array input)
-        {
-            throw new NotImplementedException();
-        }
+        public override void ValidateBackwardInput(Array input) {}
     }
 }
