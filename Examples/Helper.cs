@@ -13,17 +13,17 @@ namespace Ann.Mnist
             return res;
         }
 
-        public static double[,] Create2DInput(byte[] values)
+        public static double[,,] Create3DInput(byte[] values)
         {
             int size = (int)Math.Sqrt(values.Length);
 
-            var output = new double[size, size];
+            var output = new double[1, size, size];
 
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
-                    output[i, j] = (double)values[i * size + j] / 255;
+                    output[0, i, j] = (double)values[i * size + j] / 255;
                 }
             }
 

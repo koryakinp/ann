@@ -1,6 +1,7 @@
 ﻿using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo;
+using System;
 
 namespace Ann.Core
 {
@@ -12,15 +13,15 @@ namespace Ann.Core
 
         public Kernel(int size, int depth, Optimizer optimizer)
         {
-            Gradients = new double[size, size, depth];
-            Weights = new Optimizer[size, size, depth];
+            Gradients = new double[depth, size, size];
+            Weights = new Optimizer[depth, size, size];
             Bias = optimizer.Clone() as Optimizer;
             Weights.UpdateForEach<Optimizer>(q => optimizer.Clone() as Optimizer);
         }
 
         public void RandomizeWeights(IWeightInitializer weightInitializer)
         {
-            double magnitude = 1 / (Weights.GetLength(0) * Weights.GetLength(1) * Weights.GetLength(2));
+            var magnitude = (double)Decimal.Divide(new decimal(1), new decimal(Weights.Length));
             Weights.ForEach((q) => q.SetValue(weightInitializer.GenerateRandom(magnitude)));
         }
 

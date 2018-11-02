@@ -4,6 +4,8 @@ using System.Linq;
 using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace Ann.Core.Layers
 {
@@ -112,6 +114,12 @@ namespace Ann.Core.Layers
             {
                 throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);
             }
+        }
+
+        protected Matrix<double> GetWeightMatrix()
+        {
+            return Matrix.Build.DenseOfColumnArrays(
+                Neurons.Select(q => q.Weights.Select(w => w.Value).ToArray()).ToArray());
         }
     }
 }

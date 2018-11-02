@@ -12,9 +12,9 @@ namespace Ann.Core.Layers
             : base(inputMessageShape, BuildOutputMessageShape(inputMessageShape, kernelSize))
         {
             _cache = new bool[
+                InputMessageShape.Depth,
                 InputMessageShape.Size, 
-                InputMessageShape.Size, 
-                InputMessageShape.Depth];
+                InputMessageShape.Size];
             _stride = kernelSize;
         }
 

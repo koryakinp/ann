@@ -16,9 +16,9 @@ namespace Ann.Core.Layers
         {
             _activator = ActivatorFactory.Produce(type);
             _cache = new double[
+                InputMessageShape.Depth,
                 InputMessageShape.Size, 
-                InputMessageShape.Size,
-                InputMessageShape.Depth];
+                InputMessageShape.Size];
         }
 
         public override Array PassBackward(Array input)

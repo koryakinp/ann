@@ -1,5 +1,7 @@
 ﻿using Ann.Utils;
 using Gdo;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Linq;
 
@@ -28,18 +30,10 @@ namespace Ann.Core.Layers
                 }
             }
 
-            double[] output = new double[InputMessageShape.Size];
-            for (int i = 0; i < Neurons.Count; i++)
-            {
-                var neuron = Neurons[i];
-                for (int j = 0; j < neuron.Weights.Length; j++)
-                {
-                    var weight = neuron.Weights[j];
-                    output[j] += weight.Value * neuron.Delta;
-                }
-            }
-
-            return output;
+            var W = GetWeightMatrix();
+            var dEdX = Neurons.Select(q => q.Delta).ToArray();
+            var dEdO = Matrix.Build.Dense(1, dEdX.Length, dEdX);
+            return dEdO.Multiply(W.Transpose()).Row(0).ToArray();
         }
 
         public override Array PassForward(Array input)

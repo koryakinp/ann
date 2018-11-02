@@ -12,7 +12,6 @@ namespace Ann.Core.Layers
         private readonly int _kernelSize;
         private readonly int _numberOfKernels;
         private readonly double[,,] _cache;
-        private readonly double[,,] _gradients;
 
         public ConvolutionLayer(
             int numberOfKernels, 
@@ -25,7 +24,6 @@ namespace Ann.Core.Layers
             _kernels = new Kernel[numberOfKernels];
             _kernels.UpdateForEach<Kernel>(q => new Kernel(kernelSize, inputMessageShape.Depth, optimizer));
             _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
-            _gradients = new double[_numberOfKernels, _kernelSize, _kernelSize];
             _kernelSize = kernelSize;
             _numberOfKernels = numberOfKernels;
         }
@@ -35,7 +33,11 @@ namespace Ann.Core.Layers
             _cache.UpdateForEach<double>((q, idx) => (double)input.GetValue(idx));
             var X = input as double[,,];
             var W = _kernels.Select(q => q.GetValues()).ToArray();
-            return MatrixHelper.Convolution(W, X);
+            var res = MatrixHelper.Convolution(W, X);
+
+            res.UpdateForEach<double>((q, idx) => q + _kernels[idx[0]].Bias.Value);
+
+            return res;
         }
 
         public override Array PassBackward(Array input)
@@ -81,7 +83,7 @@ namespace Ann.Core.Layers
         {
             foreach (var kernel in _kernels)
             {
-                kernel.UpdateWeights();
+                kernel.UpdateBias();
             }
         }
 
@@ -89,7 +91,7 @@ namespace Ann.Core.Layers
         {
             foreach (var kernel in _kernels)
             {
-                kernel.UpdateBias();
+                kernel.UpdateWeights();
             }
         }
 
@@ -98,12 +100,12 @@ namespace Ann.Core.Layers
             for (int i = 0; i < gradients.GetLength(0); i++)
             {
                 var gradient = new double[_cache.GetLength(0), _kernelSize, _kernelSize];
+                var dEdO = gradients.GetChannel(i);
 
                 for (int j = 0; j < gradient.GetLength(0); j++)
                 {
-                    var X = _cache.GetChannel(i);
-                    var dEdO = gradients.GetChannel(i);
-                    gradient.SetChannel(MatrixHelper.Convolution(X, dEdO), i);
+                    var X = _cache.GetChannel(j);
+                    gradient.SetChannel(MatrixHelper.Convolution(X, dEdO), j);
                 }
 
                 _kernels[i].SetGradient(gradient);

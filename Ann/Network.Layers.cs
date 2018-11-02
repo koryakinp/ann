@@ -14,6 +14,11 @@ namespace Ann
             _layers.Add(new InputLayer(new MessageShape(size, channels)));
         }
 
+        public void AddInputLayer(int size)
+        {
+            _layers.Add(new InputLayer(new MessageShape(size)));
+        }
+
         public void AddHiddenLayer(int numberOfNeurons, ActivatorType activator, Optimizer optimizer)
         {
             if (!_layers.Any())
@@ -37,7 +42,6 @@ namespace Ann
 
         public void AddSoftMaxLayer(Optimizer optimizer)
         {
-
             var numberOfInputs = _layers
                 .Last()
                 .OutputMessageShape
@@ -48,6 +52,46 @@ namespace Ann
                 new MessageShape(numberOfInputs),
                 optimizer);
 
+            _layers.Add(layer);
+        }
+
+        public void AddConvolutionLayer(Optimizer optimizer, int numberOfKernels, int kernelSize)
+        {
+            var prevLayerOutputShape = _layers
+                .Last()
+                .OutputMessageShape;
+
+            var layer = new ConvolutionLayer(numberOfKernels, kernelSize, prevLayerOutputShape, optimizer);
+            _layers.Add(layer);
+        }
+
+        public void AddActivationLayer(ActivatorType activatorType)
+        {
+            var prevLayerOutputShape = _layers
+                .Last()
+                .OutputMessageShape;
+
+            var layer = new ActivationLayer(prevLayerOutputShape, activatorType);
+            _layers.Add(layer);
+        }
+
+        public void AddPoolingLayer(int kernelSize)
+        {
+            var prevLayerOutputShape = _layers
+                .Last()
+                .OutputMessageShape;
+
+            var layer = new PoolingLayer(kernelSize, prevLayerOutputShape);
+            _layers.Add(layer);
+        }
+
+        public void AddFlattenLayer()
+        {
+            var prevLayerOutputShape = _layers
+                .Last()
+                .OutputMessageShape;
+
+            var layer = new FlattenLayer(prevLayerOutputShape);
             _layers.Add(layer);
         }
     }

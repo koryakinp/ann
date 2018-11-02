@@ -44,11 +44,5 @@ namespace Ann.Core.Layers
             var dEdO = Matrix.Build.Dense(1, dEdX.Length, dEdX);
             return dEdO.Multiply(W.Transpose()).Row(0).ToArray();
         }
-
-        private Matrix<double> GetWeightMatrix()
-        {
-            return Matrix.Build.DenseOfColumnArrays(
-                Neurons.Select(q => q.Weights.Select(w => w.Value).ToArray()).ToArray());
-        }
     }
 }

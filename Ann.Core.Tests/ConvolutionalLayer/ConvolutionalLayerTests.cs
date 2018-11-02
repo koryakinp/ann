@@ -5,6 +5,7 @@ using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace Ann.Core.Tests.ConvolutionalLayer
 {
@@ -95,6 +96,19 @@ namespace Ann.Core.Tests.ConvolutionalLayer
             var expected = ConvolutionalLayerTestsData.ForwardPassOutput[i];
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
+
+        [TestMethod]
+        [TestDataSource(0, 3)]
+        public void ForwardPassWithBiasTest(int i)
+        {
+            var layer = CreateLayer(i);
+            layer._kernels.ForEach(q => q.Bias.SetValue(1));
+            var actual = layer.PassForward(ConvolutionalLayerTestsData.ForwardPassInput[i]);
+            var expected = (double[,,])ConvolutionalLayerTestsData.ForwardPassOutput[i].Clone();
+            expected.UpdateForEach<double>(q => q + 1);
+            CollectionAssert.AreEqual(expected, actual, _comparer);
+        }
+
 
         [TestMethod]
         [TestDataSource(0,3)]
