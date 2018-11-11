@@ -4,7 +4,6 @@ using Activator = Ann.Activators.Activator;
 using System;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Ann.Utils;
-using MathNet.Numerics.LinearAlgebra;
 
 namespace Ann.Core.Layers
 {
@@ -42,7 +41,7 @@ namespace Ann.Core.Layers
             Neurons.ForEach((q, i) => q.Delta = (double)error.GetValue(i) * _activator.CalculateDeriviative(q.Output));
             var dEdX = Neurons.Select(q => q.Delta).ToArray();
             var dEdO = Matrix.Build.Dense(1, dEdX.Length, dEdX);
-            return dEdO.Multiply(W.Transpose()).Row(0).ToArray();
+            return dEdO.TransposeAndMultiply(W).Row(0).ToArray();
         }
     }
 }

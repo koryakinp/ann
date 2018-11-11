@@ -5,6 +5,7 @@ using Ann.Core.WeightInitializers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Ann
 {
@@ -21,15 +22,14 @@ namespace Ann
             _layers = new List<Layer>();
         }
 
-        public double TrainModel(Array input, bool[] labels)
+
+        public void TrainModel(Array input, bool[] labels)
         {
             double[] output = PassForward(input).Cast<double>().ToArray();
             double[] error = _lossFunction.ComputeDeriviative(labels, output);
 
             PassBackward(error);
             Learn();
-
-            return _lossFunction.ComputeLoss(labels, output);
         }
 
         public double[] UseModel(Array input)
