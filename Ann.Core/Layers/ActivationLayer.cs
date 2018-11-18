@@ -30,9 +30,9 @@ namespace Ann.Core.Layers
 
         public override Array PassForward(Array input)
         {
-            _cache.UpdateForEach<double>((q,idx) => 
-                _activator.CalculateValue((double)input.GetValue(idx)));
-            return _cache;
+            _cache.UpdateForEach<double>((q,idx) => (double)input.GetValue(idx));
+            input.UpdateForEach<double>((q,idx) => _activator.CalculateValue((double)input.GetValue(idx)));
+            return input;
         }
     }
 }

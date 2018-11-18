@@ -9,6 +9,7 @@ namespace Ann.Core
     {
         public readonly Optimizer[,,] Weights;
         public readonly double[,,] Gradients;
+        public double BiasGradient;
         public readonly Optimizer Bias;
 
         public Kernel(int size, int depth, Optimizer optimizer)
@@ -65,9 +66,7 @@ namespace Ann.Core
 
         public void UpdateBias()
         {
-            double sum = 0;
-            Gradients.ForEach(q => sum += q);
-            Bias.Update(sum);
+            Bias.Update(BiasGradient);
         }
     }
 }

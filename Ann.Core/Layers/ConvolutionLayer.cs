@@ -12,12 +12,14 @@ namespace Ann.Core.Layers
         private readonly int _kernelSize;
         private readonly int _numberOfKernels;
         private readonly double[,,] _cache;
+        private readonly bool _isFirstLayer;
 
         public ConvolutionLayer(
             int numberOfKernels, 
             int kernelSize, 
             MessageShape inputMessageShape,
-            Optimizer optimizer) : base(
+            Optimizer optimizer,
+            bool isFirstLayer = false) : base(
                 inputMessageShape, 
                 BuildOutputMessageShape(inputMessageShape, kernelSize, numberOfKernels))
         {
@@ -26,6 +28,7 @@ namespace Ann.Core.Layers
             _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
             _kernelSize = kernelSize;
             _numberOfKernels = numberOfKernels;
+            _isFirstLayer = isFirstLayer;
         }
 
         public override Array PassForward(Array input)
@@ -44,6 +47,11 @@ namespace Ann.Core.Layers
         {
             var gradients = input as double[,,];
             ComputeFilterGradients(gradients);
+            ComputeBiasGradient(gradients);
+            if (_isFirstLayer)
+            {
+                return null;
+            }
             return ComputeInputGradients(gradients);
         }
 
@@ -95,6 +103,17 @@ namespace Ann.Core.Layers
             }
         }
 
+        private void ComputeBiasGradient(double[,,] gradients)
+        {
+            for (int i = 0; i < gradients.GetLength(0); i++)
+            {
+                var channel =  gradients.GetChannel(i);
+                double sum = 0;
+                channel.ForEach(q => sum += q);
+                _kernels[i].BiasGradient = sum;
+            }
+        }
+
         private void ComputeFilterGradients(double[,,] gradients)
         {
             for (int i = 0; i < gradients.GetLength(0); i++)
@@ -133,6 +152,16 @@ namespace Ann.Core.Layers
         {
             int size = inputMessageShape.Size - kernelSize + 1;
             return new MessageShape(size, numberOfKernels);
+        }
+
+        internal Array GetWeights()
+        {
+            return _kernels.Select(q => q.GetValues()).ToArray();
+        }
+
+        internal Array GetBiases()
+        {
+            return _kernels.Select(q => q.Bias.Value).ToArray();
         }
     }
 }

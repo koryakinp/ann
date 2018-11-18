@@ -5,7 +5,6 @@ using Ann.Core.WeightInitializers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Ann
 {
@@ -72,6 +71,16 @@ namespace Ann
             {
                 layer.RandomizeWeights(new WeightInitializer());
             }
+        }
+
+        internal void SetWeights(int layerIndex, Array weights)
+        {
+            _layers.OfType<ILearnable>().ToArray()[layerIndex].SetWeights(weights);
+        }
+
+        public void SaveModel(string path)
+        {
+
         }
     }
 }

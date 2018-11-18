@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ann.Activators;
-using Ann.Core;
 using Ann.Core.LossFunctions;
-using Gdo.Optimizers;
 using ShellProgressBar;
 
 namespace Ann.Mnist

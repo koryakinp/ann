@@ -10,7 +10,7 @@ namespace Ann.Core.Layers
     public class HiddenLayer : NeuronLayer
     {
         private readonly Activator _activator;
-
+        private readonly double[] _cache;
         public HiddenLayer(
             int numberOfNeurons,
             Activator activator,
@@ -18,6 +18,7 @@ namespace Ann.Core.Layers
             MessageShape inputMessageShape) 
             : base(numberOfNeurons, inputMessageShape, optimizer)
         {
+            _cache = new double[numberOfNeurons];
             _activator = activator;
         }
 
@@ -29,7 +30,11 @@ namespace Ann.Core.Layers
             var W = GetWeightMatrix();
             var B = new DenseVector(Neurons.Select(q => q.Bias.Value).ToArray());
 
-            var res = X.Multiply(W).Row(0).Add(B).Map(q => _activator.CalculateValue(q)).ToArray();
+            var actInput = X.Multiply(W).Row(0).Add(B);
+
+            actInput.AsArray().ForEach((q, i) => _cache[i] = q);
+
+            var res = actInput.Map(q => _activator.CalculateValue(q)).ToArray();
             Neurons.ForEach((q, i) => q.Output = res[i]);
 
             return Neurons.Select(q => q.Output).ToArray();
@@ -38,7 +43,7 @@ namespace Ann.Core.Layers
         public override Array PassBackward(Array error)
         {
             var W = GetWeightMatrix();
-            Neurons.ForEach((q, i) => q.Delta = (double)error.GetValue(i) * _activator.CalculateDeriviative(q.Output));
+            Neurons.ForEach((q, i) => q.Delta = (double)error.GetValue(i) * _activator.CalculateDeriviative(_cache[i]));
             var dEdX = Neurons.Select(q => q.Delta).ToArray();
             var dEdO = Matrix.Build.Dense(1, dEdX.Length, dEdX);
             return dEdO.TransposeAndMultiply(W).Row(0).ToArray();

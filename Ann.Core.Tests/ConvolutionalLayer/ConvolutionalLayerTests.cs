@@ -1,11 +1,9 @@
-﻿using Ann.Activators;
-using Ann.Core.Layers;
+﻿using Ann.Core.Layers;
 using Ann.Core.Tests.Utils;
 using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 
 namespace Ann.Core.Tests.ConvolutionalLayer
 {

@@ -121,5 +121,15 @@ namespace Ann.Core.Layers
             return Matrix.Build.DenseOfColumnArrays(
                 Neurons.Select(q => q.Weights.Select(w => w.Value).ToArray()).ToArray());
         }
+
+        internal Array GetWeights()
+        {
+            return Neurons.Select(q => q.Weights.Select(w => w.Value).ToArray()).ToArray();
+        }
+
+        internal Array GetBiases()
+        {
+            return Neurons.Select(q => q.Bias.Value).ToArray();
+        }
     }
 }

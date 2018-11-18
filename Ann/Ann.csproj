@@ -15,4 +15,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\" />
+  </ItemGroup>
+
 </Project>
