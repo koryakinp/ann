@@ -1,5 +1,4 @@
-﻿using Ann.Core.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ann.Core.Tests.FlattenLayer
 {

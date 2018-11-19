@@ -2,17 +2,9 @@
 using Ann.Core.Layers;
 using Ann.Core.LossFunctions;
 using Ann.Core.Tests.Utils;
-using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo.Optimizers;
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Ann.Core.Tests.NetworkTests
 {
@@ -59,14 +51,14 @@ namespace Ann.Core.Tests.NetworkTests
             var dense1layer = learnableLayers[8] as NeuronLayer;
             var dense2layer = learnableLayers[9] as NeuronLayer;
 
-            var w1 = conv1layer.GetWeights() as double[][,,];
-            var w2 = conv2layer.GetWeights() as double[][,,];
-            var w3 = dense1layer.GetWeights() as double[][];
-            var w4 = dense2layer.GetWeights() as double[][];
+            var w1 = conv1layer.GetWeights();
+            var w2 = conv2layer.GetWeights();
+            var w3 = dense1layer.GetWeights();
+            var w4 = dense2layer.GetWeights();
 
-            var b1 = conv1layer.GetBiases() as double[];
-            var b2 = conv2layer.GetBiases() as double[];
-            var b3 = dense1layer.GetBiases() as double[];
+            var b1 = conv1layer.GetBiases();
+            var b2 = conv2layer.GetBiases();
+            var b3 = dense1layer.GetBiases();
 
             CollectionAssert.AreEqual(b1, NetworkTestsData.Conv1BiasesUpdated, _comparer);
             CollectionAssert.AreEqual(b2, NetworkTestsData.Conv2BiasesUpdated, _comparer);
@@ -91,6 +83,31 @@ namespace Ann.Core.Tests.NetworkTests
             {
                 CollectionAssert.AreEqual(q, NetworkTestsData.Dense2WeightsUpdated[i], _comparer);
             });
+        }
+
+
+        [TestMethod]
+        public void SaveToFileTest()
+        {
+            network.AddInputLayer(7, 1);
+            network.AddConvolutionLayer(new Flat(0.1), 2, 2);
+            network.AddPoolingLayer(2);
+            network.AddActivationLayer(ActivatorType.Relu);
+            network.AddConvolutionLayer(new Flat(0.1), 3, 2);
+            network.AddPoolingLayer(2);
+            network.AddActivationLayer(ActivatorType.Relu);
+            network.AddFlattenLayer();
+            network.AddHiddenLayer(5, ActivatorType.Relu, new Flat(0.1));
+            network.AddSoftMaxLayer(new Flat(0.1));
+
+            network.SetWeights(0, NetworkTestsData.Conv1Weights);
+            network.SetWeights(1, NetworkTestsData.Conv2Weights);
+            network.SetWeights(2, NetworkTestsData.Dense1Weights);
+            network.SetWeights(3, NetworkTestsData.Dense2Weights);
+
+            network.TrainModel(NetworkTestsData.Input, NetworkTestsData.Labels);
+
+            network.SaveModel("network.json");
         }
     }
 }

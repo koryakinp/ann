@@ -2,8 +2,10 @@
 using Ann.Core.Layers;
 using Ann.Core.LossFunctions;
 using Ann.Core.WeightInitializers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Ann
@@ -11,6 +13,7 @@ namespace Ann
     public partial class Network
     {
         internal readonly List<Layer> _layers;
+
         private readonly LossFunction _lossFunction;
         internal readonly int _numberOfClasses;
 
@@ -80,7 +83,8 @@ namespace Ann
 
         public void SaveModel(string path)
         {
-
+            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            File.WriteAllText(path, json);
         }
     }
 }

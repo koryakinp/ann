@@ -1,4 +1,6 @@
 ﻿using Ann.Activators;
+using Ann.Core.Persistence;
+using Ann.Core.Persistence.LayerConfig;
 using Ann.Utils;
 using System;
 
@@ -7,6 +9,7 @@ namespace Ann.Core.Layers
     public class ActivationLayer : Layer
     {
         private readonly Activators.Activator _activator;
+        private readonly ActivatorType _activatorType;
         private readonly double[,,] _cache;
 
         public ActivationLayer(
@@ -19,6 +22,11 @@ namespace Ann.Core.Layers
                 InputMessageShape.Depth,
                 InputMessageShape.Size, 
                 InputMessageShape.Size];
+        }
+
+        public override LayerConfiguration GetLayerConfiguration()
+        {
+            return new ActivationLayerConfiguration(InputMessageShape, _activatorType);
         }
 
         public override Array PassBackward(Array input)

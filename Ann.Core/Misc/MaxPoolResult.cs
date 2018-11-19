@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ann.Core.Misc
+﻿namespace Ann.Core.Misc
 {
     public class MaxPoolResult
     {

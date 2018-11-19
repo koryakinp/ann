@@ -1,6 +1,7 @@
-﻿using Ann.Utils;
+﻿using Ann.Core.Persistence;
+using Ann.Core.Persistence.LayerConfig;
+using Ann.Utils;
 using Gdo;
-using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Linq;
@@ -14,6 +15,11 @@ namespace Ann.Core.Layers
             MessageShape inputMessageShape,
             Optimizer optimizer) 
             : base(numberOfNeurons, inputMessageShape, optimizer) {}
+
+        public override LayerConfiguration GetLayerConfiguration()
+        {
+            return new SoftmaxLayerConfiguration(Neurons.Count, GetWeights(), InputMessageShape);
+        }
 
         public override Array PassBackward(Array errors)
         {

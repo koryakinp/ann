@@ -1,4 +1,6 @@
-﻿using Ann.Core.WeightInitializers;
+﻿using Ann.Core.Persistence;
+using Ann.Core.Persistence.LayerConfig;
+using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo;
 using System;
@@ -12,14 +14,12 @@ namespace Ann.Core.Layers
         private readonly int _kernelSize;
         private readonly int _numberOfKernels;
         private readonly double[,,] _cache;
-        private readonly bool _isFirstLayer;
 
         public ConvolutionLayer(
             int numberOfKernels, 
             int kernelSize, 
             MessageShape inputMessageShape,
-            Optimizer optimizer,
-            bool isFirstLayer = false) : base(
+            Optimizer optimizer) : base(
                 inputMessageShape, 
                 BuildOutputMessageShape(inputMessageShape, kernelSize, numberOfKernels))
         {
@@ -28,7 +28,6 @@ namespace Ann.Core.Layers
             _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
             _kernelSize = kernelSize;
             _numberOfKernels = numberOfKernels;
-            _isFirstLayer = isFirstLayer;
         }
 
         public override Array PassForward(Array input)
@@ -48,10 +47,6 @@ namespace Ann.Core.Layers
             var gradients = input as double[,,];
             ComputeFilterGradients(gradients);
             ComputeBiasGradient(gradients);
-            if (_isFirstLayer)
-            {
-                return null;
-            }
             return ComputeInputGradients(gradients);
         }
 
@@ -154,14 +149,24 @@ namespace Ann.Core.Layers
             return new MessageShape(size, numberOfKernels);
         }
 
-        internal Array GetWeights()
+        internal double[][,,] GetWeights()
         {
             return _kernels.Select(q => q.GetValues()).ToArray();
         }
 
-        internal Array GetBiases()
+        internal double[] GetBiases()
         {
             return _kernels.Select(q => q.Bias.Value).ToArray();
+        }
+
+        public override LayerConfiguration GetLayerConfiguration()
+        {
+            return new ConvolutionLayerConfigurtion(
+                _numberOfKernels,
+                _kernelSize,
+                GetWeights(),
+                GetBiases(),
+                InputMessageShape);
         }
     }
 }

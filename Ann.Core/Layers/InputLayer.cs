@@ -1,4 +1,6 @@
 ﻿using System;
+using Ann.Core.Persistence;
+using Ann.Core.Persistence.LayerConfig;
 
 namespace Ann.Core.Layers
 {
@@ -20,5 +22,10 @@ namespace Ann.Core.Layers
         public override void ValidateForwardInput(Array input) {}
 
         public override void ValidateBackwardInput(Array input) {}
+
+        public override LayerConfiguration GetLayerConfiguration()
+        {
+            return new InputLayerConfiguration(InputMessageShape);
+        }
     }
 }

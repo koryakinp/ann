@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ann.Core.Tests.NetworkTests
+﻿namespace Ann.Core.Tests.NetworkTests
 {
     public static class NetworkTestsData
     {

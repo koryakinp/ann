@@ -122,12 +122,12 @@ namespace Ann.Core.Layers
                 Neurons.Select(q => q.Weights.Select(w => w.Value).ToArray()).ToArray());
         }
 
-        internal Array GetWeights()
+        internal double[][] GetWeights()
         {
             return Neurons.Select(q => q.Weights.Select(w => w.Value).ToArray()).ToArray();
         }
 
-        internal Array GetBiases()
+        internal double[] GetBiases()
         {
             return Neurons.Select(q => q.Bias.Value).ToArray();
         }

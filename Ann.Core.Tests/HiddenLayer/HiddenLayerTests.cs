@@ -12,7 +12,7 @@ namespace Ann.Core.Tests.HiddenLayer
     {
         private Layers.HiddenLayer _layer { get; set; }
         private readonly DoubleComparer _comparer;
-        private readonly LogisticActivator _activator;
+        private readonly ActivatorType _activatorType;
         private readonly int _numberOfNeurons;
         private readonly int _numberOfConnections;
         private readonly double _learningRate;
@@ -22,7 +22,7 @@ namespace Ann.Core.Tests.HiddenLayer
             _numberOfNeurons = 3;
             _numberOfConnections = 4;
             _learningRate = 0.1;
-            _activator = new LogisticActivator();
+            _activatorType = ActivatorType.Sigmoid;
             _comparer = new DoubleComparer(4);
         }
 
@@ -31,7 +31,7 @@ namespace Ann.Core.Tests.HiddenLayer
         {
             _layer = new Layers.HiddenLayer(
                 _numberOfNeurons, 
-                _activator, 
+                _activatorType, 
                 new Flat(_learningRate), 
                 new MessageShape(_numberOfConnections));
         }

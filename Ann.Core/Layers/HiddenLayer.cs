@@ -4,22 +4,27 @@ using Activator = Ann.Activators.Activator;
 using System;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Ann.Utils;
+using Ann.Activators;
+using Ann.Core.Persistence;
+using Ann.Core.Persistence.LayerConfig;
 
 namespace Ann.Core.Layers
 {
     public class HiddenLayer : NeuronLayer
     {
         private readonly Activator _activator;
+        private readonly ActivatorType _activatorType;
         private readonly double[] _cache;
         public HiddenLayer(
             int numberOfNeurons,
-            Activator activator,
+            ActivatorType activatorType,
             Optimizer optimizer,
             MessageShape inputMessageShape) 
             : base(numberOfNeurons, inputMessageShape, optimizer)
         {
+            _activatorType = activatorType;
+            _activator = ActivatorFactory.Produce(activatorType);
             _cache = new double[numberOfNeurons];
-            _activator = activator;
         }
 
         public override Array PassForward(Array input)
@@ -47,6 +52,17 @@ namespace Ann.Core.Layers
             var dEdX = Neurons.Select(q => q.Delta).ToArray();
             var dEdO = Matrix.Build.Dense(1, dEdX.Length, dEdX);
             return dEdO.TransposeAndMultiply(W).Row(0).ToArray();
+        }
+
+        public override LayerConfiguration GetLayerConfiguration()
+        {
+            return new HiddenLayerConfiguration(
+                InputMessageShape,
+                Neurons.Count,
+                GetWeights(),
+                GetBiases(),
+                _activatorType);
+
         }
     }
 }

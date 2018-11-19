@@ -1,4 +1,6 @@
-﻿using Ann.Utils;
+﻿using Ann.Core.Persistence;
+using Ann.Core.Persistence.LayerConfig;
+using Ann.Utils;
 using System;
 using System.Linq;
 
@@ -29,6 +31,11 @@ namespace Ann.Core.Layers
         public static MessageShape ComputeOutputMessageShape(MessageShape shape)
         {
             return new MessageShape(shape.Size * shape.Size * shape.Depth);
+        }
+
+        public override LayerConfiguration GetLayerConfiguration()
+        {
+            return new FlattenLayerConfiguration(InputMessageShape);
         }
     }
 }

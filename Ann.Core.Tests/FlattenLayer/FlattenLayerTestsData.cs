@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ann.Core.Tests.FlattenLayer
+﻿namespace Ann.Core.Tests.FlattenLayer
 {
     public static class FlattenLayerTestsData
     {

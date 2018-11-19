@@ -13,7 +13,7 @@ namespace Ann.Mnist
         static void Main(string[] args)
         {
             var network = CreateModel();
-            TrainModel(network, 10, q => Helper.Create3DInput(q.Data));
+            TrainModel(network, q => Helper.Create3DInput(q.Data));
             var ratio = TestModel(network, q => Helper.Create1DInput(q.Data));
             Console.WriteLine($"Accuracy: {ratio * 100}% ");
             Console.ReadLine();
@@ -23,15 +23,18 @@ namespace Ann.Mnist
         {
             var network = new Network(LossFunctionType.CrossEntropy, 10);
 
+            var lr = 0.001;
+
             network.AddInputLayer(28, 1);
-            network.AddConvolutionLayer(Optimizers.Flat(0.001), 32, 5);
+            network.AddConvolutionLayer(Optimizers.Flat(lr), 16, 5);
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddConvolutionLayer(Optimizers.Flat(0.001), 64, 5);
+            network.AddPoolingLayer(2);
+            network.AddConvolutionLayer(Optimizers.Flat(lr), 32, 5);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
-            network.AddHiddenLayer(1024, ActivatorType.Relu, Optimizers.Flat(0.001));
-            network.AddSoftMaxLayer(Optimizers.Flat(0.001));
+            network.AddHiddenLayer(512, ActivatorType.Relu, Optimizers.Flat(lr));
+            network.AddSoftMaxLayer(Optimizers.Flat(lr));
             network.RandomizeWeights();
 
             return network;

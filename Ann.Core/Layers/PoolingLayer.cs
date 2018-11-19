@@ -1,4 +1,6 @@
-﻿using Ann.Utils;
+﻿using Ann.Core.Persistence;
+using Ann.Core.Persistence.LayerConfig;
+using Ann.Utils;
 using System;
 
 namespace Ann.Core.Layers
@@ -25,6 +27,11 @@ namespace Ann.Core.Layers
                 : (inputMessageShape.Size / stride) + 1;
 
             return new MessageShape(size, inputMessageShape.Depth);
+        }
+
+        public override LayerConfiguration GetLayerConfiguration()
+        {
+            return new PoolingLayerConfiguration(_stride, InputMessageShape);
         }
 
         public override Array PassBackward(Array input)

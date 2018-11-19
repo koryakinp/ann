@@ -19,7 +19,7 @@ namespace Ann
             _layers.Add(new InputLayer(new MessageShape(size)));
         }
 
-        public void AddHiddenLayer(int numberOfNeurons, ActivatorType activator, Optimizer optimizer)
+        public void AddHiddenLayer(int numberOfNeurons, ActivatorType activatorType, Optimizer optimizer)
         {
             if (!_layers.Any())
             {
@@ -33,7 +33,7 @@ namespace Ann
 
             var layer = new HiddenLayer(
                 numberOfNeurons,
-                ActivatorFactory.Produce(activator),
+                activatorType,
                 optimizer,
                 new MessageShape(numberOfInputs));
 
@@ -71,7 +71,9 @@ namespace Ann
                 .Last()
                 .OutputMessageShape;
 
-            var layer = new ActivationLayer(prevLayerOutputShape, activatorType);
+            var layer = new ActivationLayer(
+                prevLayerOutputShape, 
+                activatorType);
             _layers.Add(layer);
         }
 

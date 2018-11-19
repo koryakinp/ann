@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ann.Core.Persistence;
+using System;
 
 namespace Ann.Core.Layers
 {
@@ -30,6 +31,8 @@ namespace Ann.Core.Layers
                 throw new Exception(Consts.CommonLayerMessages.MessageDimenionsInvalid);
             }
         }
+
+        public abstract LayerConfiguration GetLayerConfiguration();
 
         public abstract Array PassForward(Array input);
         public abstract Array PassBackward(Array input);
