@@ -1,6 +1,6 @@
-﻿using Ann.Core.WeightInitializers;
-using Ann.Utils;
+﻿using Ann.Utils;
 using Gdo;
+using MathNet.Numerics.Distributions;
 using System;
 
 namespace Ann.Core
@@ -19,15 +19,10 @@ namespace Ann.Core
             Bias = bias;
         }
 
-        public void RandomizeWeights(IWeightInitializer initializer)
+        public void RandomizeWeights(double stddev)
         {
-            if(Weights.Length != Weights.Length)
-            {
-                throw new Exception(Consts.CanNotSetWeights);
-            }
-
-            var magnitude = (double)Decimal.Divide(new decimal(1), new decimal(Weights.Length));
-            Weights.ForEach((w, i) => Weights[i].Value = initializer.GenerateRandom(magnitude));
+            var dist = new Normal(0, stddev);
+            Weights.ForEach((w, i) => Weights[i].Value = dist.Sample());
         }
 
         public void UpdateWeights(double[] values)

@@ -6,15 +6,30 @@
         public static readonly double[][] ForwardPassOutput;
         public static readonly double[][] BackwardPassInput;
         public static readonly double[][] BackwardPassOutput;
-        public static readonly double[][] Weights;
+        public static readonly double[][][] Weights;
 
         static SoftmaxLayerTestsData()
         {
-            Weights = new double[3][]
+            Weights = new double[3][][]
             {
-                new double[] { 0.1582,0.9075,-0.489,0.1426,0.8314,0.6331,-0.9013,-0.4255,-0.3673,-0.0508,0.3307,0.3973 },
-                new double[] { 0.6568,-0.5939,0.0095,0.6412,0.3328,-0.8684,0.5943,-0.9299,-0.8659,-0.5494,-0.1678,0.9017 },
-                new double[] { 0.9448,0.9901,0.3612,-0.2224,0.0836,0.4475,0.0141,0.3019,-0.4075,-0.6783,0.6376,0.8129 }
+                new double[][]
+                {
+                    new double[] { 0.1582,0.9075,-0.489,0.1426 },
+                    new double[] { 0.8314,0.6331,-0.9013,-0.4255 },
+                    new double[] { -0.3673,-0.0508,0.3307,0.3973 }
+                },
+                new double[][]
+                {
+                    new double[] { 0.6568,-0.5939,0.0095,0.6412 },
+                    new double[] { 0.3328,-0.8684,0.5943,-0.9299 },
+                    new double[] { -0.8659,-0.5494,-0.1678,0.9017 },
+                },
+                new double[][]
+                {
+                    new double[] { 0.9448,0.9901,0.3612,-0.2224 },
+                    new double[] { 0.0836,0.4475,0.0141,0.3019 },
+                    new double[] { -0.4075,-0.6783,0.6376,0.8129 }
+                }
             };
 
             ForwardPassInput = new double[3][]

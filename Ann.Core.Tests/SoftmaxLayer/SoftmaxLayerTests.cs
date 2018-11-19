@@ -1,10 +1,6 @@
 ﻿using Ann.Core.Tests.Utils;
-using Ann.Core.WeightInitializers;
-using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System.Collections.Generic;
 
 namespace Ann.Core.Tests.SoftmaxLayer
 {
@@ -35,11 +31,7 @@ namespace Ann.Core.Tests.SoftmaxLayer
 
         private void SeedWeights(int index)
         {
-            var queue = new Queue<double>();
-            SoftmaxLayerTestsData.Weights[index].ForEach(w => queue.Enqueue(w));
-            Mock<IWeightInitializer> mock = new Mock<IWeightInitializer>();
-            mock.Setup(q => q.GenerateRandom(It.IsAny<double>())).Returns(queue.Dequeue);
-            _layer.RandomizeWeights(mock.Object);
+            _layer.SetWeights(SoftmaxLayerTestsData.Weights[index]);
         }
 
         [TestMethod]

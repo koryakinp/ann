@@ -2,7 +2,6 @@
 using Ann.Core.Layers;
 using Ann.Core.LossFunctions;
 using Ann.Core.Persistence;
-using Ann.Core.WeightInitializers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -89,11 +88,11 @@ namespace Ann
             }
         }
 
-        public void RandomizeWeights()
+        public void RandomizeWeights(double stddev)
         {
             foreach (var layer in _layers.OfType<ILearnable>())
             {
-                layer.RandomizeWeights(new WeightInitializer());
+                layer.RandomizeWeights(stddev);
             }
         }
 

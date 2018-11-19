@@ -1,7 +1,5 @@
-﻿using Ann.Core.WeightInitializers;
-using Ann.Utils;
+﻿using Ann.Utils;
 using Gdo;
-using System;
 
 namespace Ann.Core
 {
@@ -18,12 +16,6 @@ namespace Ann.Core
             Weights = new Optimizer[depth, size, size];
             Bias = optimizer.Clone() as Optimizer;
             Weights.UpdateForEach<Optimizer>(q => optimizer.Clone() as Optimizer);
-        }
-
-        public void RandomizeWeights(IWeightInitializer weightInitializer)
-        {
-            var magnitude = (double)Decimal.Divide(new decimal(1), new decimal(Weights.Length));
-            Weights.ForEach((q) => q.SetValue(weightInitializer.GenerateRandom(magnitude)));
         }
 
         public int GetNumberOfChannels => Weights.GetLength(0);

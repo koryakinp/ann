@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo;
 using MathNet.Numerics.LinearAlgebra;
@@ -43,9 +42,9 @@ namespace Ann.Core.Layers
             Neurons.ForEach(q => q.UpdateBias());
         }
 
-        public void RandomizeWeights(IWeightInitializer initializer)
+        public void RandomizeWeights(double stddev)
         {
-            Neurons.ForEach(q => q.RandomizeWeights(initializer));
+            Neurons.ForEach(q => q.RandomizeWeights(stddev));
         }
 
         public void SetWeights(Array weights)

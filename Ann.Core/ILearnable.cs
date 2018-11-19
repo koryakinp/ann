@@ -1,5 +1,4 @@
-﻿using Ann.Core.WeightInitializers;
-using System;
+﻿using System;
 
 namespace Ann.Core
 {
@@ -7,7 +6,7 @@ namespace Ann.Core
     {
         void UpdateWeights();
         void UpdateBiases();
-        void RandomizeWeights(IWeightInitializer weightInitializer);
+        void RandomizeWeights(double stddev);
         void SetWeights(Array array);
         void SetBiases(Array array);
     }

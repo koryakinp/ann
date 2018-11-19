@@ -1,9 +1,7 @@
-using Ann.Core.WeightInitializers;
+using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Ann.Core.Tests
@@ -12,12 +10,6 @@ namespace Ann.Core.Tests
     public class NeuronTests
     {
         private Neuron _neuron { get; set; }
-        private readonly double[] _weights;
-
-        public NeuronTests()
-        {
-            _weights = new double[5] { 1, 2, 3, 4, 5 };
-        }
 
         [TestInitialize]
         public void Initialize()
@@ -28,14 +20,8 @@ namespace Ann.Core.Tests
         [TestMethod]
         public void ShouldSetWeights()
         {
-            var mock = new Mock<IWeightInitializer>();
-            var queue = new Queue<double>(_weights);
-            mock.Setup(q => q.GenerateRandom(It.IsAny<double>()))
-                .Returns(queue.Dequeue);
-
-            _neuron.RandomizeWeights(mock.Object);
-            var actual = _neuron.Weights.Select(q => q.Value).ToArray();
-            CollectionAssert.AreEqual(_weights, actual);
+            _neuron.RandomizeWeights(0.1);
+            _neuron.Weights.ForEach(q => Assert.AreNotEqual(0, q.Value));
         }
 
         [TestMethod]
@@ -48,17 +34,12 @@ namespace Ann.Core.Tests
         [TestMethod]
         public void ShouldUpdateWeights()
         {
-            var mock = new Mock<IWeightInitializer>();
-            var queue = new Queue<double>(_weights);
-            mock.Setup(q => q.GenerateRandom(It.IsAny<double>()))
-                .Returns(queue.Dequeue);
-
-            _neuron.RandomizeWeights(mock.Object);
+            _neuron.RandomizeWeights(0.1);
             _neuron.Delta = 1;
+            var weights = _neuron.Weights.Select(q => q.Value - 2 * 0.1).ToArray();
             _neuron.UpdateWeights(new double[5] { 2, 2, 2, 2, 2 });
-
             var actual = _neuron.Weights.Select(q => q.Value).ToArray();
-            CollectionAssert.AreEqual(new double[5] { 0.8, 1.8, 2.8, 3.8, 4.8 }, actual);
+            CollectionAssert.AreEqual(weights, actual);
         }
 
         [TestMethod]
@@ -69,7 +50,5 @@ namespace Ann.Core.Tests
             _neuron.UpdateBias();
             Assert.AreEqual(4.9, _neuron.Bias.Value);
         }
-
-
     }
 }

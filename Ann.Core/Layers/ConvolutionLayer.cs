@@ -1,9 +1,9 @@
 ﻿using Ann.Core.Persistence;
 using Ann.Core.Persistence.LayerConfig;
-using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo;
 using Gdo.Optimizers;
+using MathNet.Numerics.Distributions;
 using System;
 using System.Linq;
 
@@ -63,9 +63,10 @@ namespace Ann.Core.Layers
             return ComputeInputGradients(gradients);
         }
 
-        public void RandomizeWeights(IWeightInitializer weightInitializer)
+        public void RandomizeWeights(double stddev)
         {
-            _kernels.ForEach(q => q.RandomizeWeights(weightInitializer));
+            var dist = new Normal(0, stddev);
+            _kernels.ForEach(q => q.Weights.ForEach(w => w.SetValue(dist.Sample())));
         }
 
         public void SetBiases(Array biases)
