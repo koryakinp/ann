@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ann.Core\Ann.Core.csproj" />
+    <ProjectReference Include="..\Ann.Core\Ann.csproj" />
     <ProjectReference Include="..\Ann.Utils\Ann.Utils.csproj" />
   </ItemGroup>
 

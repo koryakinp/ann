@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Ann.Core.Tests")]
+[assembly: InternalsVisibleTo("Ann.Tests")]
 namespace Ann.Properties
 {
     class AssemblyInfo { }

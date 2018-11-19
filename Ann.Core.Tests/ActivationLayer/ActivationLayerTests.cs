@@ -1,6 +1,7 @@
 ﻿using Ann.Activators;
 using Ann.Core.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ActivationLayer = Ann.Layers.ActivationLayer;
 
 namespace Ann.Core.Tests.ActivationLayer
 {
@@ -12,8 +13,7 @@ namespace Ann.Core.Tests.ActivationLayer
 
         public ActivationLayerTests()
         {
-            _layer = new Layers.ActivationLayer(
-                new MessageShape(5, 3), ActivatorType.Sigmoid);
+            _layer = new Layers.ActivationLayer(new MessageShape(5, 3), ActivatorType.Sigmoid);
             _comparer = new DoubleComparer(4);
         }
 
