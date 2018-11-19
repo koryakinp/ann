@@ -11,6 +11,9 @@ namespace Ann.Core.Layers
         public FlattenLayer(MessageShape inputMessageShape) 
             : base(inputMessageShape, ComputeOutputMessageShape(inputMessageShape)) {}
 
+        internal FlattenLayer(FlattenLayerConfiguration config)
+            : base(config.MessageShape, ComputeOutputMessageShape(config.MessageShape)) { }
+
         public override Array PassBackward(Array input)
         {
             return ArrayConverter.Convert1Dto3D(

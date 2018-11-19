@@ -12,6 +12,16 @@ namespace Ann.Core.Layers
         private readonly ActivatorType _activatorType;
         private readonly double[,,] _cache;
 
+        internal ActivationLayer(ActivationLayerConfiguration config)
+            : base(config.MessageShape, new MessageShape(config.MessageShape.Size, config.MessageShape.Depth))
+        {
+            _activator = ActivatorFactory.Produce(config.ActivatorType);
+            _cache = new double[
+                InputMessageShape.Depth,
+                InputMessageShape.Size,
+                InputMessageShape.Size];
+        }
+
         public ActivationLayer(
             MessageShape inputMessageShape, 
             ActivatorType type) 

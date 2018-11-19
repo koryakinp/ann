@@ -5,6 +5,8 @@
         public readonly int Size;
         public readonly int Depth;
 
+        public MessageShape() {}
+
         public MessageShape(int size, int depth)
         {
             Size = size;

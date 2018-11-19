@@ -109,5 +109,30 @@ namespace Ann.Core.Tests.NetworkTests
 
             network.SaveModel("network.json");
         }
+
+        [TestMethod]
+        public void LoadFromFile()
+        {
+            network.AddInputLayer(7, 1);
+            network.AddConvolutionLayer(new Flat(0.1), 2, 2);
+            network.AddPoolingLayer(2);
+            network.AddActivationLayer(ActivatorType.Relu);
+            network.AddConvolutionLayer(new Flat(0.1), 3, 2);
+            network.AddPoolingLayer(2);
+            network.AddActivationLayer(ActivatorType.Relu);
+            network.AddFlattenLayer();
+            network.AddHiddenLayer(5, ActivatorType.Relu, new Flat(0.1));
+            network.AddSoftMaxLayer(new Flat(0.1));
+
+            network.SetWeights(0, NetworkTestsData.Conv1Weights);
+            network.SetWeights(1, NetworkTestsData.Conv2Weights);
+            network.SetWeights(2, NetworkTestsData.Dense1Weights);
+            network.SetWeights(3, NetworkTestsData.Dense2Weights);
+
+            network.TrainModel(NetworkTestsData.Input, NetworkTestsData.Labels);
+            network.SaveModel("network.json");
+
+            var network2 = new Network("network.json");
+        }
     }
 }

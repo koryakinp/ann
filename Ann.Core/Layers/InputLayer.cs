@@ -9,6 +9,9 @@ namespace Ann.Core.Layers
         public InputLayer(MessageShape inputMessageShape) 
             : base(inputMessageShape, inputMessageShape) {}
 
+        internal InputLayer(InputLayerConfiguration config)
+            : base(config.MessageShape, config.MessageShape) { }
+
         public override Array PassBackward(Array input)
         {
             return input;

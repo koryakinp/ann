@@ -20,6 +20,16 @@ namespace Ann.Core.Layers
             _stride = kernelSize;
         }
 
+        internal PoolingLayer(PoolingLayerConfiguration config)
+            : base(config.MessageShape, BuildOutputMessageShape(config.MessageShape, config.KernelSize))
+        {
+            _cache = new bool[
+                InputMessageShape.Depth,
+                InputMessageShape.Size,
+                InputMessageShape.Size];
+            _stride = config.KernelSize;
+        }
+
         public static MessageShape BuildOutputMessageShape(MessageShape inputMessageShape, int stride)
         {
             int size = inputMessageShape.Size % stride == 0

@@ -1,6 +1,7 @@
 ﻿using Ann.Core;
 using Ann.Core.Layers;
 using Ann.Core.LossFunctions;
+using Ann.Core.Persistence;
 using Ann.Core.WeightInitializers;
 using Newtonsoft.Json;
 using System;
@@ -16,6 +17,23 @@ namespace Ann
 
         private readonly LossFunction _lossFunction;
         internal readonly int _numberOfClasses;
+
+        private readonly JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            Formatting = Formatting.Indented
+        };
+
+        public Network(string path)
+        {
+            var json = File.ReadAllText(path);
+            var nc = JsonConvert.DeserializeObject<NetworkConfiguration>(json, jsonSerializerSettings);
+            _layers = new List<Layer>();
+            foreach (var layerConfig in nc.Layers)
+            {
+                _layers.Add(LayerFactory.Produce(layerConfig));
+            }
+        }
 
         public Network(LossFunctionType lossFunctionType, int numberOfClasses)
         {
@@ -83,7 +101,13 @@ namespace Ann
 
         public void SaveModel(string path)
         {
-            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            var networkConfig = new NetworkConfiguration();
+            foreach (var layer in _layers)
+            {
+                networkConfig.Layers.Add(layer.GetLayerConfiguration());
+            }
+
+            var json = JsonConvert.SerializeObject(networkConfig, jsonSerializerSettings);
             File.WriteAllText(path, json);
         }
     }

@@ -3,6 +3,7 @@ using Ann.Core.Persistence.LayerConfig;
 using Ann.Core.WeightInitializers;
 using Ann.Utils;
 using Gdo;
+using Gdo.Optimizers;
 using System;
 using System.Linq;
 
@@ -28,6 +29,18 @@ namespace Ann.Core.Layers
             _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
             _kernelSize = kernelSize;
             _numberOfKernels = numberOfKernels;
+        }
+
+        internal ConvolutionLayer(
+            ConvolutionLayerConfigurtion config) : base(
+                config.MessageShape,
+                BuildOutputMessageShape(config.MessageShape, config.KernelSize, config.NumberOfKernels))
+        {
+            _kernels = new Kernel[config.NumberOfKernels];
+            _kernels.UpdateForEach<Kernel>(q => new Kernel(config.KernelSize, config.MessageShape.Depth, new Flat(0.1)));
+            _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
+            _kernelSize = config.KernelSize;
+            _numberOfKernels = config.NumberOfKernels;
         }
 
         public override Array PassForward(Array input)

@@ -7,6 +7,7 @@ using Ann.Utils;
 using Ann.Activators;
 using Ann.Core.Persistence;
 using Ann.Core.Persistence.LayerConfig;
+using Gdo.Optimizers;
 
 namespace Ann.Core.Layers
 {
@@ -15,6 +16,15 @@ namespace Ann.Core.Layers
         private readonly Activator _activator;
         private readonly ActivatorType _activatorType;
         private readonly double[] _cache;
+
+        internal HiddenLayer(HiddenLayerConfiguration config)
+            : base(config.NumberOfNeurons, config.MessageShape, new Flat(0.1))
+        {
+            _activatorType = config.ActivatorType;
+            _activator = ActivatorFactory.Produce(_activatorType);
+            _cache = new double[config.NumberOfNeurons];
+        }
+
         public HiddenLayer(
             int numberOfNeurons,
             ActivatorType activatorType,
