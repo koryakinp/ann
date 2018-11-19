@@ -3,7 +3,7 @@ using Gdo;
 using MathNet.Numerics.Distributions;
 using System;
 
-namespace Ann.Core
+namespace Ann
 {
     public class Neuron
     {

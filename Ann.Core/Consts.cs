@@ -1,4 +1,4 @@
-﻿namespace Ann.Core
+﻿namespace Ann
 {
     internal class Consts
     {
@@ -22,6 +22,7 @@
             public const string MessageDimenionsInvalid = "Message dimensions are not valid";
         }
 
+        public const string MissingInputLayer = "Can not add layer. An input layer is missing";
         public const string CanNotConvertMessage = "Can not convert single dimensional message to multi dimensional message";
         public const string CanNotSetWeights = "Can not set weights. Number of weights do not match.";
         public const string CanNotUpdateWeights = "Can not update weights. Number of weights do not match.";

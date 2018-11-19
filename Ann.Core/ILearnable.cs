@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ann.Core
+namespace Ann
 {
     public interface ILearnable
     {

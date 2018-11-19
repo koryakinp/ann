@@ -1,9 +1,9 @@
-﻿using Ann.Core.Layers;
-using Ann.Core.Persistence;
-using Ann.Core.Persistence.LayerConfig;
+﻿using Ann.Layers;
+using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
 using System;
 
-namespace Ann.Core
+namespace Ann
 {
     public static class LayerFactory
     {

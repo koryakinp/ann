@@ -1,10 +1,10 @@
 ﻿using Ann.Activators;
-using Ann.Core.Persistence;
-using Ann.Core.Persistence.LayerConfig;
+using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
 using Ann.Utils;
 using System;
 
-namespace Ann.Core.Layers
+namespace Ann.Layers
 {
     public class ActivationLayer : Layer
     {

@@ -1,7 +1,7 @@
 ﻿using Ann.Utils;
 using Gdo;
 
-namespace Ann.Core
+namespace Ann
 {
     public class Kernel
     {

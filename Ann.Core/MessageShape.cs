@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Ann.Core
+namespace Ann
 {
     [Serializable]
     public class MessageShape

@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
 
-namespace Ann.Core.Persistence
+namespace Ann.Persistence
 {
-    //[Serializable]
     public abstract class LayerConfiguration
     {
         [JsonProperty]

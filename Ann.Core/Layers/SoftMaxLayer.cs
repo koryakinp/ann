@@ -1,5 +1,5 @@
-﻿using Ann.Core.Persistence;
-using Ann.Core.Persistence.LayerConfig;
+﻿using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
 using Ann.Utils;
 using Gdo;
 using Gdo.Optimizers;
@@ -7,7 +7,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Linq;
 
-namespace Ann.Core.Layers
+namespace Ann.Layers
 {
     public class SoftMaxLayer : NeuronLayer
     {

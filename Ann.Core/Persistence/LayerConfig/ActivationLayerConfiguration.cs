@@ -1,7 +1,7 @@
 ﻿using Ann.Activators;
 using System;
 
-namespace Ann.Core.Persistence.LayerConfig
+namespace Ann.Persistence.LayerConfig
 {
     [Serializable]
     class ActivationLayerConfiguration : LayerConfiguration

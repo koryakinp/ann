@@ -1,4 +1,4 @@
-﻿namespace Ann.Core.LossFunctions
+﻿namespace Ann.LossFunctions
 {
     public enum LossFunctionType
     {

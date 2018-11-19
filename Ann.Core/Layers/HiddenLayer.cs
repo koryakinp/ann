@@ -5,11 +5,11 @@ using System;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Ann.Utils;
 using Ann.Activators;
-using Ann.Core.Persistence;
-using Ann.Core.Persistence.LayerConfig;
 using Gdo.Optimizers;
+using Ann.Persistence.LayerConfig;
+using Ann.Persistence;
 
-namespace Ann.Core.Layers
+namespace Ann.Layers
 {
     public class HiddenLayer : NeuronLayer
     {

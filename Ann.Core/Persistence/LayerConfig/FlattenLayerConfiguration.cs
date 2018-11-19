@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ann.Core.Persistence.LayerConfig
+namespace Ann.Persistence.LayerConfig
 {
     [Serializable]
     class FlattenLayerConfiguration : LayerConfiguration

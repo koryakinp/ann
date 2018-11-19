@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ann.Core.Persistence
+namespace Ann.Persistence
 {
     [Serializable]
     public class NetworkConfiguration

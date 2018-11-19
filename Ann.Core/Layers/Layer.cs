@@ -1,7 +1,7 @@
-﻿using Ann.Core.Persistence;
+﻿using Ann.Persistence;
 using System;
 
-namespace Ann.Core.Layers
+namespace Ann.Layers
 {
     public abstract class Layer
     {

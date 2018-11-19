@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using static Ann.Core.MatrixHelper;
+using static Ann.MatrixHelper;
 
 namespace Ann.Core.Tests.MatrixHelper
 {

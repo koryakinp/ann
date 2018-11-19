@@ -1,11 +1,11 @@
-﻿using Ann.Core.Misc;
+﻿using Ann.Misc;
 using Ann.Utils;
 using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ann.Core
+namespace Ann
 {
     public static class MatrixHelper
     {

@@ -1,4 +1,4 @@
-﻿namespace Ann.Core.Misc
+﻿namespace Ann.Misc
 {
     public class MaxPoolResult
     {

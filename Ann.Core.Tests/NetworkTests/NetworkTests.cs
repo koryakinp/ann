@@ -1,7 +1,7 @@
 ﻿using Ann.Activators;
-using Ann.Core.Layers;
-using Ann.Core.LossFunctions;
 using Ann.Core.Tests.Utils;
+using Ann.Layers;
+using Ann.LossFunctions;
 using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

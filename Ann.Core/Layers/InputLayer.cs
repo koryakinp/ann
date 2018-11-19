@@ -1,8 +1,8 @@
-﻿using System;
-using Ann.Core.Persistence;
-using Ann.Core.Persistence.LayerConfig;
+﻿using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
+using System;
 
-namespace Ann.Core.Layers
+namespace Ann.Layers
 {
     public class InputLayer : Layer
     {

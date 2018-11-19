@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ann.Core.Layers
+namespace Ann.Layers
 {
     public abstract class KernelLayer : Layer
     {

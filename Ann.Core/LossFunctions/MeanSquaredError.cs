@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Ann.Core.LossFunctions
+namespace Ann.LossFunctions
 {
     public class MeanSquaredError : LossFunction
     {

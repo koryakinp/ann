@@ -6,7 +6,7 @@ using Gdo;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
-namespace Ann.Core.Layers
+namespace Ann.Layers
 {
     public abstract class NeuronLayer : Layer, ILearnable
     {

@@ -1,5 +1,5 @@
-﻿using Ann.Core.Layers;
-using Ann.Core.Tests.Utils;
+﻿using Ann.Core.Tests.Utils;
+using Ann.Layers;
 using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

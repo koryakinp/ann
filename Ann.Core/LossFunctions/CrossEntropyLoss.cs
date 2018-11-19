@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ann.Core.LossFunctions
+namespace Ann.LossFunctions
 {
     public class CrossEntropyLoss : LossFunction
     {
