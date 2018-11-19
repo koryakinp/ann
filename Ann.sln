@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{91
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann.Mnist", "Examples\Ann.Mnist.csproj", "{604E78F9-9D54-442A-B141-1E401C56DCC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann", "Ann.Core\Ann.csproj", "{B6181135-9EB7-4E88-B566-97B74E5F3343}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann", "Ann\Ann.csproj", "{B6181135-9EB7-4E88-B566-97B74E5F3343}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann.Utils", "Ann.Utils\Ann.Utils.csproj", "{F8C8696F-92BC-48C0-9DA2-F04D4F5904CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann.Tests", "Ann.Core.Tests\Ann.Tests.csproj", "{7DA3458E-8E74-4382-9FBB-69AB95FBEBD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann.Tests", "Ann.Tests\Ann.Tests.csproj", "{7DA3458E-8E74-4382-9FBB-69AB95FBEBD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace Ann.Core.Tests
+namespace Ann.Tests
 {
     class TestDataSource : Attribute, ITestDataSource
     {

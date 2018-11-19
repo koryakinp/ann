@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Ann.Tests;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ann.Core.Tests.PoolingLayer
 {

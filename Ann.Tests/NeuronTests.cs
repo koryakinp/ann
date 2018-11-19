@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
-namespace Ann.Core.Tests
+namespace Ann.Tests
 {
     [TestClass]
     public class NeuronTests

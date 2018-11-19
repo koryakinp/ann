@@ -1,7 +1,7 @@
 ﻿using Ann.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ann.Core.Tests
+namespace Ann.Tests
 {
 
     [TestClass]

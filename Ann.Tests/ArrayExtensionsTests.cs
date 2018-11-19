@@ -3,7 +3,7 @@ using Ann.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Ann.Core.Tests
+namespace Ann.Tests
 {
     [TestClass]
     public class ArrayExtensionsTests
