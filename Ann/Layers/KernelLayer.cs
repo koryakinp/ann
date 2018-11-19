@@ -2,7 +2,7 @@
 
 namespace Ann.Layers
 {
-    public abstract class KernelLayer : Layer
+    internal abstract class KernelLayer : Layer
     {
         public KernelLayer(MessageShape inputMessageShape, MessageShape outputMessageShape) 
             : base(inputMessageShape, outputMessageShape) {}

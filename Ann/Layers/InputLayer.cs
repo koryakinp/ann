@@ -4,7 +4,7 @@ using System;
 
 namespace Ann.Layers
 {
-    public class InputLayer : Layer
+    internal class InputLayer : Layer
     {
         public InputLayer(MessageShape inputMessageShape) 
             : base(inputMessageShape, inputMessageShape) {}

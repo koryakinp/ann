@@ -3,7 +3,7 @@ using Gdo;
 
 namespace Ann
 {
-    public class Kernel
+    internal class Kernel
     {
         public readonly Optimizer[,,] Weights;
         public readonly double[,,] Gradients;

@@ -3,7 +3,7 @@ using Gdo.Optimizers;
 
 namespace Ann
 {
-    public static class Optimizers
+    internal static class Optimizers
     {
         public static Optimizer Flat(double learningRate)
         {

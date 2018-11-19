@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Ann.Layers
 {
-    public class FlattenLayer : Layer
+    internal class FlattenLayer : Layer
     {
         public FlattenLayer(MessageShape inputMessageShape) 
             : base(inputMessageShape, ComputeOutputMessageShape(inputMessageShape)) {}

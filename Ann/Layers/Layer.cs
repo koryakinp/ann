@@ -3,7 +3,7 @@ using System;
 
 namespace Ann.Layers
 {
-    public abstract class Layer
+    internal abstract class Layer
     {
         public readonly MessageShape InputMessageShape;
         public readonly MessageShape OutputMessageShape;

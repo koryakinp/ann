@@ -6,7 +6,7 @@ using System;
 
 namespace Ann.Layers
 {
-    public class ActivationLayer : Layer
+    internal class ActivationLayer : Layer
     {
         private readonly Activators.Activator _activator;
         private readonly ActivatorType _activatorType;

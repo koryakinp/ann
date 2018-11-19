@@ -11,7 +11,7 @@ using Ann.Persistence;
 
 namespace Ann.Layers
 {
-    public class HiddenLayer : NeuronLayer
+    internal class HiddenLayer : NeuronLayer
     {
         private readonly Activator _activator;
         private readonly ActivatorType _activatorType;

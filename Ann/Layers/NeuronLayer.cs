@@ -8,7 +8,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace Ann.Layers
 {
-    public abstract class NeuronLayer : Layer, ILearnable
+    internal abstract class NeuronLayer : Layer, ILearnable
     {
         public readonly IReadOnlyList<Neuron> Neurons;
         protected Array PrevLayerOutput;

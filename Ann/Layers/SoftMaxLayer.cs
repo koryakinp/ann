@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Ann.Layers
 {
-    public class SoftMaxLayer : NeuronLayer
+    internal class SoftMaxLayer : NeuronLayer
     {
         public SoftMaxLayer(
             int numberOfNeurons,

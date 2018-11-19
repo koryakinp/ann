@@ -1,6 +1,6 @@
 ﻿namespace Ann.Misc
 {
-    public class MaxPoolResult
+    internal class MaxPoolResult
     {
         public readonly double[,,] Values;
         public readonly bool[,,] Cache;

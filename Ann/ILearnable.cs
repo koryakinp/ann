@@ -2,7 +2,7 @@
 
 namespace Ann
 {
-    public interface ILearnable
+    internal interface ILearnable
     {
         void UpdateWeights();
         void UpdateBiases();

@@ -13,7 +13,7 @@ namespace Ann.Core.Tests.PoolingLayer
             _stride = 2;
         }
 
-        public Layers.PoolingLayer GetLayer(int size)
+        internal Layers.PoolingLayer GetLayer(int size)
         {
             return new Layers.PoolingLayer(_stride, new MessageShape(size, 3));
         }

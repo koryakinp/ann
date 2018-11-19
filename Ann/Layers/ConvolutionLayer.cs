@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Ann.Layers
 {
-    public class ConvolutionLayer : KernelLayer, ILearnable
+    internal class ConvolutionLayer : KernelLayer, ILearnable
     {
         internal readonly Kernel[] _kernels;
         private readonly int _kernelSize;

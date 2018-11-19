@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Ann
 {
-    public static class MatrixHelper
+    internal static class MatrixHelper
     {
         public static double[][,,] Transpose(this double[][,,] kernels)
         {

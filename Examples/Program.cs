@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ann.Activators;
 using Ann.LossFunctions;
+using Gdo;
+using Gdo.Optimizers;
 using ShellProgressBar;
 
 namespace Ann.Mnist
@@ -26,15 +28,15 @@ namespace Ann.Mnist
             var lr = 0.001;
 
             network.AddInputLayer(28, 1);
-            network.AddConvolutionLayer(Optimizers.Flat(lr), 16, 5);
+            network.AddConvolutionLayer(new Flat(lr), 16, 5);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
-            network.AddConvolutionLayer(Optimizers.Flat(lr), 32, 5);
+            network.AddConvolutionLayer(new Flat(lr), 32, 5);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
-            network.AddHiddenLayer(512, ActivatorType.Relu, Optimizers.Flat(lr));
-            network.AddSoftMaxLayer(Optimizers.Flat(lr));
+            network.AddHiddenLayer(512, ActivatorType.Relu, new Flat(lr));
+            network.AddSoftMaxLayer(new Flat(lr));
             network.RandomizeWeights(0.1);
 
             return network;

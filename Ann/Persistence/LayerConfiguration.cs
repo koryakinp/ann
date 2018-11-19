@@ -2,7 +2,7 @@
 
 namespace Ann.Persistence
 {
-    public abstract class LayerConfiguration
+    internal abstract class LayerConfiguration
     {
         [JsonProperty]
         public readonly MessageShape MessageShape;

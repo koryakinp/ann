@@ -5,7 +5,7 @@ using System;
 
 namespace Ann
 {
-    public static class LayerFactory
+    internal static class LayerFactory
     {
         public static Layer Produce(LayerConfiguration config)
         {

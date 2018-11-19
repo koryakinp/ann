@@ -4,7 +4,7 @@ using System;
 namespace Ann
 {
     [Serializable]
-    public class MessageShape
+    internal class MessageShape
     {
         public readonly int Size;
         public readonly int Depth;

@@ -5,7 +5,7 @@ using System;
 
 namespace Ann.Layers
 {
-    public class PoolingLayer : KernelLayer
+    internal class PoolingLayer : KernelLayer
     {
         private readonly int _stride;
         private bool[,,] _cache;

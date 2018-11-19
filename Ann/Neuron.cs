@@ -5,7 +5,7 @@ using System;
 
 namespace Ann
 {
-    public class Neuron
+    internal class Neuron
     {
         public double Output { get; set; }
         public double Delta { get; set; }
