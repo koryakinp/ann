@@ -131,5 +131,10 @@ namespace Ann.Core.Layers
         {
             return Neurons.Select(q => q.Bias.Value).ToArray();
         }
+
+        public void SetBiases(Array biases)
+        {
+            Neurons.ForEach((q, i) => q.Bias.SetValue((double)biases.GetValue(i)));
+        }
     }
 }

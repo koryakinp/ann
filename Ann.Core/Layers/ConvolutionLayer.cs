@@ -38,7 +38,7 @@ namespace Ann.Core.Layers
         {
             _kernels = new Kernel[config.NumberOfKernels];
             _kernels.UpdateForEach<Kernel>(q => new Kernel(config.KernelSize, config.MessageShape.Depth, new Flat(0.1)));
-            _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
+            _cache = new double[config.MessageShape.Depth, config.MessageShape.Size, config.MessageShape.Size];
             _kernelSize = config.KernelSize;
             _numberOfKernels = config.NumberOfKernels;
         }
@@ -66,6 +66,11 @@ namespace Ann.Core.Layers
         public void RandomizeWeights(IWeightInitializer weightInitializer)
         {
             _kernels.ForEach(q => q.RandomizeWeights(weightInitializer));
+        }
+
+        public void SetBiases(Array biases)
+        {
+            _kernels.ForEach((q, i) => q.Bias.SetValue((double)biases.GetValue(i)));
         }
 
         public void SetWeights(Array weights)

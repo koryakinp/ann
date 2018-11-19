@@ -1,12 +1,15 @@
-﻿namespace Ann.Core
+﻿using Newtonsoft.Json;
+using System;
+
+namespace Ann.Core
 {
+    [Serializable]
     public class MessageShape
     {
         public readonly int Size;
         public readonly int Depth;
 
-        public MessageShape() {}
-
+        [JsonConstructor]
         public MessageShape(int size, int depth)
         {
             Size = size;

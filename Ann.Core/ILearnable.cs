@@ -9,5 +9,6 @@ namespace Ann.Core
         void UpdateBiases();
         void RandomizeWeights(IWeightInitializer weightInitializer);
         void SetWeights(Array array);
+        void SetBiases(Array array);
     }
 }

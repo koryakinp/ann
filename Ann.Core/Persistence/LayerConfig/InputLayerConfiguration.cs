@@ -6,6 +6,7 @@ namespace Ann.Core.Persistence.LayerConfig
     class InputLayerConfiguration : LayerConfiguration
     {
         public InputLayerConfiguration(MessageShape inputMessageShape) 
-            : base(inputMessageShape) {}
+            : base(inputMessageShape)
+        {}
     }
 }

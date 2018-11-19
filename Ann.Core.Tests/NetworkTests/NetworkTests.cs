@@ -133,6 +133,44 @@ namespace Ann.Core.Tests.NetworkTests
             network.SaveModel("network.json");
 
             var network2 = new Network("network.json");
+            var learnableLayers = network2._layers.ToArray();
+            var conv1layer = learnableLayers[1] as ConvolutionLayer;
+            var conv2layer = learnableLayers[4] as ConvolutionLayer;
+            var dense1layer = learnableLayers[8] as NeuronLayer;
+            var dense2layer = learnableLayers[9] as NeuronLayer;
+
+            var w1 = conv1layer.GetWeights();
+            var w2 = conv2layer.GetWeights();
+            var w3 = dense1layer.GetWeights();
+            var w4 = dense2layer.GetWeights();
+
+            var b1 = conv1layer.GetBiases();
+            var b2 = conv2layer.GetBiases();
+            var b3 = dense1layer.GetBiases();
+
+            CollectionAssert.AreEqual(b1, NetworkTestsData.Conv1BiasesUpdated, _comparer);
+            CollectionAssert.AreEqual(b2, NetworkTestsData.Conv2BiasesUpdated, _comparer);
+            CollectionAssert.AreEqual(b3, NetworkTestsData.Dense1BiasesUpdated, _comparer);
+
+            w1.ForEach((q, i) =>
+            {
+                CollectionAssert.AreEqual(q, NetworkTestsData.Conv1WeightsUpdated[i], _comparer);
+            });
+
+            w2.ForEach((q, i) =>
+            {
+                CollectionAssert.AreEqual(q, NetworkTestsData.Conv2WeightsUpdated[i], _comparer);
+            });
+
+            w3.ForEach((q, i) =>
+            {
+                CollectionAssert.AreEqual(q, NetworkTestsData.Dense1WeightsUpdated[i], _comparer);
+            });
+
+            w4.ForEach((q, i) =>
+            {
+                CollectionAssert.AreEqual(q, NetworkTestsData.Dense2WeightsUpdated[i], _comparer);
+            });
         }
     }
 }

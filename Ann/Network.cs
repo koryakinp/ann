@@ -31,7 +31,10 @@ namespace Ann
             _layers = new List<Layer>();
             foreach (var layerConfig in nc.Layers)
             {
-                _layers.Add(LayerFactory.Produce(layerConfig));
+                var layer = LayerFactory.Produce(layerConfig);
+
+                _layers.Add(layer);
+
             }
         }
 
