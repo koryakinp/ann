@@ -36,7 +36,7 @@ namespace Ann.Mnist
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
             network.AddDenseLayer(512, new Flat(lr));
-            network.AddSoftMaxLayer(new Flat(lr));
+            network.AddSoftMaxLayer();
             network.RandomizeWeights(0.1);
 
             return network;

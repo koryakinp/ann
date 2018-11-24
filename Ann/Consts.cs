@@ -32,5 +32,6 @@
         public const string ConvolutionalInputIsNotValid = "Can not perform convolution on a single dimension input";
         public const string MessageShapeIsNotValid = "Message shape is not valid. Message with and height do not match";
         public const string CanNotFlipKernels = "Can not flip kernels. Kernel with and height do not match";
+        public const string CanNotCallPlaceholderOptimizer = "Can not update value on a placeholder Optimizer";
     }
 }

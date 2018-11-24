@@ -9,35 +9,28 @@ namespace Ann.Layers
     internal class ActivationLayer : Layer
     {
         private readonly Activators.Activator _activator;
-        private readonly ActivatorType _activatorType;
-        private readonly double[,,] _cache;
+        private readonly Array _cache;
 
-        internal ActivationLayer(ActivationLayerConfiguration config)
+        public ActivationLayer(ActivationLayerConfiguration config)
             : base(config.MessageShape, new MessageShape(config.MessageShape.Size, config.MessageShape.Depth))
         {
             _activator = ActivatorFactory.Produce(config.ActivatorType);
-            _cache = new double[
-                InputMessageShape.Depth,
-                InputMessageShape.Size,
-                InputMessageShape.Size];
-        }
-
-        public ActivationLayer(
-            MessageShape inputMessageShape, 
-            ActivatorType type) 
-            : base(inputMessageShape, new MessageShape(inputMessageShape.Size, inputMessageShape.Depth))
-        {
-            _activatorType = type;
-            _activator = ActivatorFactory.Produce(type);
-            _cache = new double[
-                InputMessageShape.Depth,
-                InputMessageShape.Size, 
-                InputMessageShape.Size];
+            if (InputMessageShape.Depth == 1)
+            {
+                _cache = new double[InputMessageShape.Size];
+            }
+            else
+            {
+                _cache = new double[
+                    InputMessageShape.Depth,
+                    InputMessageShape.Size,
+                    InputMessageShape.Size];
+            }
         }
 
         public override LayerConfiguration GetLayerConfiguration()
         {
-            return new ActivationLayerConfiguration(InputMessageShape, _activatorType);
+            return new ActivationLayerConfiguration(InputMessageShape, _activator.GetActivatorType());
         }
 
         public override Array PassBackward(Array input)

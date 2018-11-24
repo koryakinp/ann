@@ -1,8 +1,6 @@
 ﻿using Ann.Persistence;
 using Ann.Persistence.LayerConfig;
 using Ann.Utils;
-using Gdo;
-using Gdo.Optimizers;
 using MathNet.Numerics.Distributions;
 using System;
 using System.Linq;

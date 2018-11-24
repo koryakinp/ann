@@ -21,7 +21,7 @@ namespace Ann
             _layers.Add(new InputLayer(config));
         }
 
-        public void AddSoftMaxLayer(Optimizer optimizer)
+        public void AddSoftMaxLayer()
         {
             var numberOfInputs = _layers
                 .Last()
@@ -53,9 +53,8 @@ namespace Ann
                 .Last()
                 .OutputMessageShape;
 
-            var layer = new ActivationLayer(
-                prevLayerOutputShape, 
-                activatorType);
+            var config = new ActivationLayerConfiguration(prevLayerOutputShape, activatorType);
+            var layer = new ActivationLayer(config);
             _layers.Add(layer);
         }
 

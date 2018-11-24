@@ -37,7 +37,9 @@ namespace Ann.Core.Tests.NetworkTests
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
             network.AddDenseLayer(5, new Flat(0.1));
-            network.AddSoftMaxLayer(new Flat(0.1));
+            network.AddActivationLayer(ActivatorType.Relu);
+            network.AddDenseLayer(3, new Flat(0.1));
+            network.AddSoftMaxLayer();
 
             network.SetWeights(0, NetworkTestsData.Conv1Weights);
             network.SetWeights(1, NetworkTestsData.Conv2Weights);
@@ -49,7 +51,7 @@ namespace Ann.Core.Tests.NetworkTests
             var conv1layer = learnableLayers[1] as ConvolutionLayer;
             var conv2layer = learnableLayers[4] as ConvolutionLayer;
             var dense1layer = learnableLayers[8] as DenseLayer;
-            var dense2layer = learnableLayers[9] as DenseLayer;
+            var dense2layer = learnableLayers[10] as DenseLayer;
 
             var w1 = conv1layer.GetWeights();
             var w2 = conv2layer.GetWeights();
@@ -91,7 +93,9 @@ namespace Ann.Core.Tests.NetworkTests
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
             network.AddDenseLayer(5, new Flat(0.1));
-            network.AddSoftMaxLayer(new Flat(0.1));
+            network.AddActivationLayer(ActivatorType.Relu);
+            network.AddDenseLayer(3, new Flat(0.1));
+            network.AddSoftMaxLayer();
 
             network.SetWeights(0, NetworkTestsData.Conv1Weights);
             network.SetWeights(1, NetworkTestsData.Conv2Weights);
@@ -115,7 +119,9 @@ namespace Ann.Core.Tests.NetworkTests
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
             network.AddDenseLayer(5, new Flat(0.1));
-            network.AddSoftMaxLayer(new Flat(0.1));
+            network.AddActivationLayer(ActivatorType.Relu);
+            network.AddDenseLayer(3, new Flat(0.1));
+            network.AddSoftMaxLayer();
 
             network.SetWeights(0, NetworkTestsData.Conv1Weights);
             network.SetWeights(1, NetworkTestsData.Conv2Weights);
@@ -130,7 +136,7 @@ namespace Ann.Core.Tests.NetworkTests
             var conv1layer = learnableLayers[1] as ConvolutionLayer;
             var conv2layer = learnableLayers[4] as ConvolutionLayer;
             var dense1layer = learnableLayers[8] as DenseLayer;
-            var dense2layer = learnableLayers[9] as DenseLayer;
+            var dense2layer = learnableLayers[10] as DenseLayer;
 
             var w1 = conv1layer.GetWeights();
             var w2 = conv2layer.GetWeights();

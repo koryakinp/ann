@@ -1,4 +1,6 @@
-﻿using Gdo;
+﻿using Ann.Misc;
+using Gdo;
+using Newtonsoft.Json;
 using System;
 
 namespace Ann.Persistence.LayerConfig
@@ -9,8 +11,11 @@ namespace Ann.Persistence.LayerConfig
         public readonly int NumberOfNeurons;
         public readonly double[,] Weights;
         public readonly double[] Biases;
+
+        [JsonIgnore]
         public readonly Optimizer Optimizer;
 
+        [JsonConstructor]
         public DenseLayerConfiguration(MessageShape inputMessageShape,
            
             int numberOfNeurons,
@@ -18,6 +23,7 @@ namespace Ann.Persistence.LayerConfig
             double[] biases) 
             : base(inputMessageShape)
         {
+            Optimizer = new PlaceholderOptimizer();
             Weights = weights;
             Biases = biases;
             NumberOfNeurons = numberOfNeurons;

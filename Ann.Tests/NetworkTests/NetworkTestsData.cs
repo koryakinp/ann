@@ -5,14 +5,14 @@
         public static readonly double[,,] Input;
         public static readonly double[][,,] Conv1Weights;
         public static readonly double[][,,] Conv2Weights;
-        public static readonly double[][] Dense1Weights;
-        public static readonly double[][] Dense2Weights;
+        public static readonly double[,] Dense1Weights;
+        public static readonly double[,] Dense2Weights;
         public static readonly bool[] Labels;
 
         public static readonly double[][,,] Conv1WeightsUpdated;
         public static readonly double[][,,] Conv2WeightsUpdated;
-        public static readonly double[][] Dense1WeightsUpdated;
-        public static readonly double[][] Dense2WeightsUpdated;
+        public static readonly double[,] Dense1WeightsUpdated;
+        public static readonly double[,] Dense2WeightsUpdated;
 
         public static readonly double[] Conv1BiasesUpdated;
         public static readonly double[] Conv2BiasesUpdated;
@@ -90,20 +90,20 @@
                 }
             };
 
-            Dense1Weights = new double[][]
+            Dense1Weights = new double[,]
             {
-                new double[] { 0.13,    0.03,    -0.19 },
-                new double[] { 0.14,    -0.35,   -0.02 },
-                new double[] { -0.41,   0.23,    0.41 },
-                new double[] { -0.11,   0.25,    0.59 },
-                new double[] { 0.13,    0.25,    0.35 },
+                 { 0.13,    0.03,    -0.19 },
+                 { 0.14,    -0.35,   -0.02 },
+                 { -0.41,   0.23,    0.41 },
+                 { -0.11,   0.25,    0.59 },
+                 { 0.13,    0.25,    0.35 },
             };
 
-            Dense2Weights = new double[][]
+            Dense2Weights = new double[,]
             {
-                new double[] { 0.11,    -0.11,   0.13,  0.22,    0.21 },
-                new double[] { -0.02,   0.13,    0.33,  -0.45,   -0.12},
-                new double[] { 0.82,    0.22,    -0.13, 0.22,    0.41},
+                 { 0.11,    -0.11,   0.13,  0.22,    0.21 },
+                 { -0.02,   0.13,    0.33,  -0.45,   -0.12},
+                 { 0.82,    0.22,    -0.13, 0.22,    0.41},
             };
 
             Conv1WeightsUpdated = new double[][,,]
@@ -161,20 +161,20 @@
                 }
             };
 
-            Dense1WeightsUpdated = new double[][]
+            Dense1WeightsUpdated = new double[,]
             {
-                new double[] { 0.13000, 0.03000, -0.19000 },
-                new double[] { 0.14000, -0.35000, -0.02000 },
-                new double[] { -0.41000, 0.23922, 0.41623 },
-                new double[] { -0.11000, 0.23123, 0.57731 },
-                new double[] { 0.13000, 0.23797, 0.34187 },
+                 { 0.13000, 0.03000, -0.19000 },
+                 { 0.14000, -0.35000, -0.02000 },
+                 { -0.41000, 0.23922, 0.41623 },
+                 { -0.11000, 0.23123, 0.57731 },
+                 { 0.13000, 0.23797, 0.34187 },
             };
 
-            Dense2WeightsUpdated = new double[][]
+            Dense2WeightsUpdated = new double[,]
             {
-                new double[] { 0.11000,-0.11000,0.12285,0.21085,0.20314 },
-                new double[] { -0.02000,0.13000,0.34421,-0.43182,-0.10637 },
-                new double[] { 0.82000,0.22000,-0.13706,0.21097,0.40323 },
+                 { 0.11000,-0.11000,0.12285,0.21085,0.20314 },
+                 { -0.02000,0.13000,0.34421,-0.43182,-0.10637 },
+                 { 0.82000,0.22000,-0.13706,0.21097,0.40323 },
             };
 
             Dense1BiasesUpdated = new double[]{ 0,0,0.023275645,-0.047384306,-0.030362443 };
