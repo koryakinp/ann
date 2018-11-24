@@ -7,14 +7,14 @@ namespace Ann.Persistence.LayerConfig
     class DenseLayerConfiguration : LayerConfiguration
     {
         public readonly int NumberOfNeurons;
-        public readonly double[][] Weights;
+        public readonly double[,] Weights;
         public readonly double[] Biases;
         public readonly Optimizer Optimizer;
 
         public DenseLayerConfiguration(MessageShape inputMessageShape,
            
             int numberOfNeurons,
-            double[][] weights,
+            double[,] weights,
             double[] biases) 
             : base(inputMessageShape)
         {

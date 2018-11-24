@@ -17,27 +17,12 @@ namespace Ann.Layers
         private readonly double[,,] _cache;
 
         public ConvolutionLayer(
-            int numberOfKernels, 
-            int kernelSize, 
-            MessageShape inputMessageShape,
-            Optimizer optimizer) : base(
-                inputMessageShape, 
-                BuildOutputMessageShape(inputMessageShape, kernelSize, numberOfKernels))
-        {
-            _kernels = new Kernel[numberOfKernels];
-            _kernels.UpdateForEach<Kernel>(q => new Kernel(kernelSize, inputMessageShape.Depth, optimizer));
-            _cache = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
-            _kernelSize = kernelSize;
-            _numberOfKernels = numberOfKernels;
-        }
-
-        internal ConvolutionLayer(
             ConvolutionLayerConfigurtion config) : base(
                 config.MessageShape,
                 BuildOutputMessageShape(config.MessageShape, config.KernelSize, config.NumberOfKernels))
         {
             _kernels = new Kernel[config.NumberOfKernels];
-            _kernels.UpdateForEach<Kernel>(q => new Kernel(config.KernelSize, config.MessageShape.Depth, new Flat(0.1)));
+            _kernels.UpdateForEach<Kernel>(q => new Kernel(config.KernelSize, config.MessageShape.Depth, config.Optimizer));
             _cache = new double[config.MessageShape.Depth, config.MessageShape.Size, config.MessageShape.Size];
             _kernelSize = config.KernelSize;
             _numberOfKernels = config.NumberOfKernels;

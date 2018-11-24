@@ -1,4 +1,5 @@
-﻿using Ann.Tests;
+﻿using Ann.Persistence.LayerConfig;
+using Ann.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ann.Core.Tests.PoolingLayer
@@ -15,7 +16,8 @@ namespace Ann.Core.Tests.PoolingLayer
 
         internal Layers.PoolingLayer GetLayer(int size)
         {
-            return new Layers.PoolingLayer(_stride, new MessageShape(size, 3));
+            var config = new PoolingLayerConfiguration(_stride, new MessageShape(size, 3));
+            return new Layers.PoolingLayer(config);
         }
 
         [TestMethod]

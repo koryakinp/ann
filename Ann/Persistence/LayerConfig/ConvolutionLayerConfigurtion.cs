@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gdo;
+using System;
 
 namespace Ann.Persistence.LayerConfig
 {
@@ -9,6 +10,7 @@ namespace Ann.Persistence.LayerConfig
         public readonly int KernelSize;
         public readonly double[][,,] Weights;
         public readonly double[] Biases;
+        public readonly Optimizer Optimizer;
 
         public ConvolutionLayerConfigurtion(int numberOfKernels,
             int kernelSize,
@@ -18,6 +20,16 @@ namespace Ann.Persistence.LayerConfig
         {
             Weights = weights;
             Biases = biases;
+            NumberOfKernels = numberOfKernels;
+            KernelSize = kernelSize;
+        }
+
+        public ConvolutionLayerConfigurtion(int numberOfKernels,
+            int kernelSize,
+            Optimizer optimizer,
+            MessageShape inputMessageShape) : base(inputMessageShape)
+        {
+            Optimizer = optimizer;
             NumberOfKernels = numberOfKernels;
             KernelSize = kernelSize;
         }

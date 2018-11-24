@@ -11,15 +11,15 @@ namespace Ann
     {
         public void AddInputLayer(int size, int channels)
         {
-            _layers.Add(new InputLayer(new MessageShape(size, channels)));
+            var config = new InputLayerConfiguration(new MessageShape(size));
+            _layers.Add(new InputLayer(config));
         }
 
         public void AddInputLayer(int size)
         {
-            _layers.Add(new InputLayer(new MessageShape(size)));
+            var config = new InputLayerConfiguration(new MessageShape(size));
+            _layers.Add(new InputLayer(config));
         }
-
-        
 
         public void AddSoftMaxLayer(Optimizer optimizer)
         {
@@ -41,7 +41,9 @@ namespace Ann
                 .Last()
                 .OutputMessageShape;
 
-            var layer = new ConvolutionLayer(numberOfKernels, kernelSize, prevLayerOutputShape, optimizer);
+            var config = new ConvolutionLayerConfigurtion(numberOfKernels, kernelSize, optimizer, prevLayerOutputShape);
+
+            var layer = new ConvolutionLayer(config);
             _layers.Add(layer);
         }
 
@@ -75,7 +77,9 @@ namespace Ann
                 .Last()
                 .OutputMessageShape;
 
-            var layer = new PoolingLayer(kernelSize, prevLayerOutputShape);
+            var config = new PoolingLayerConfiguration(kernelSize, prevLayerOutputShape);
+
+            var layer = new PoolingLayer(config);
             _layers.Add(layer);
         }
 
@@ -85,7 +89,9 @@ namespace Ann
                 .Last()
                 .OutputMessageShape;
 
-            var layer = new FlattenLayer(prevLayerOutputShape);
+            var config = new FlattenLayerConfiguration(prevLayerOutputShape);
+
+            var layer = new FlattenLayer(config);
             _layers.Add(layer);
         }
     }

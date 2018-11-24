@@ -33,7 +33,7 @@ namespace Ann.Layers
 
         public override LayerConfiguration GetLayerConfiguration()
         {
-            throw new NotImplementedException();
+            return new DenseLayerConfiguration(InputMessageShape, OutputMessageShape.Size, GetWeights(), GetBiases());
         }
 
         public override Array PassBackward(Array input)

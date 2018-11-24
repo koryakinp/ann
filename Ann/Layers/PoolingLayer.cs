@@ -10,17 +10,7 @@ namespace Ann.Layers
         private readonly int _stride;
         private bool[,,] _cache;
 
-        public PoolingLayer(int kernelSize, MessageShape inputMessageShape) 
-            : base(inputMessageShape, BuildOutputMessageShape(inputMessageShape, kernelSize))
-        {
-            _cache = new bool[
-                InputMessageShape.Depth,
-                InputMessageShape.Size, 
-                InputMessageShape.Size];
-            _stride = kernelSize;
-        }
-
-        internal PoolingLayer(PoolingLayerConfiguration config)
+        public PoolingLayer(PoolingLayerConfiguration config)
             : base(config.MessageShape, BuildOutputMessageShape(config.MessageShape, config.KernelSize))
         {
             _cache = new bool[

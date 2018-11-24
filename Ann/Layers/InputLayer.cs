@@ -6,10 +6,7 @@ namespace Ann.Layers
 {
     internal class InputLayer : Layer
     {
-        public InputLayer(MessageShape inputMessageShape) 
-            : base(inputMessageShape, inputMessageShape) {}
-
-        internal InputLayer(InputLayerConfiguration config)
+        public InputLayer(InputLayerConfiguration config)
             : base(config.MessageShape, config.MessageShape) { }
 
         public override Array PassBackward(Array input)

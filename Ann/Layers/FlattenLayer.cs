@@ -8,10 +8,7 @@ namespace Ann.Layers
 {
     internal class FlattenLayer : Layer
     {
-        public FlattenLayer(MessageShape inputMessageShape) 
-            : base(inputMessageShape, ComputeOutputMessageShape(inputMessageShape)) {}
-
-        internal FlattenLayer(FlattenLayerConfiguration config)
+        public FlattenLayer(FlattenLayerConfiguration config)
             : base(config.MessageShape, ComputeOutputMessageShape(config.MessageShape)) { }
 
         public override Array PassBackward(Array input)
