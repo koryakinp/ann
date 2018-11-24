@@ -36,7 +36,7 @@ namespace Ann.Core.Tests.NetworkTests
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
-            network.AddHiddenLayer(5, ActivatorType.Relu, new Flat(0.1));
+            network.AddDenseLayer(5, new Flat(0.1));
             network.AddSoftMaxLayer(new Flat(0.1));
 
             network.SetWeights(0, NetworkTestsData.Conv1Weights);
@@ -48,8 +48,8 @@ namespace Ann.Core.Tests.NetworkTests
             var learnableLayers = network._layers.ToArray();
             var conv1layer = learnableLayers[1] as ConvolutionLayer;
             var conv2layer = learnableLayers[4] as ConvolutionLayer;
-            var dense1layer = learnableLayers[8] as NeuronLayer;
-            var dense2layer = learnableLayers[9] as NeuronLayer;
+            var dense1layer = learnableLayers[8] as DenseLayer;
+            var dense2layer = learnableLayers[9] as DenseLayer;
 
             var w1 = conv1layer.GetWeights();
             var w2 = conv2layer.GetWeights();
@@ -74,15 +74,8 @@ namespace Ann.Core.Tests.NetworkTests
                 CollectionAssert.AreEqual(q, NetworkTestsData.Conv2WeightsUpdated[i], _comparer);
             });
 
-            w3.ForEach((q, i) =>
-            {
-                CollectionAssert.AreEqual(q, NetworkTestsData.Dense1WeightsUpdated[i], _comparer);
-            });
-
-            w4.ForEach((q, i) =>
-            {
-                CollectionAssert.AreEqual(q, NetworkTestsData.Dense2WeightsUpdated[i], _comparer);
-            });
+            CollectionAssert.AreEqual(w3, NetworkTestsData.Dense1WeightsUpdated, _comparer);
+            CollectionAssert.AreEqual(w4, NetworkTestsData.Dense2WeightsUpdated, _comparer);
         }
 
 
@@ -97,7 +90,7 @@ namespace Ann.Core.Tests.NetworkTests
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
-            network.AddHiddenLayer(5, ActivatorType.Relu, new Flat(0.1));
+            network.AddDenseLayer(5, new Flat(0.1));
             network.AddSoftMaxLayer(new Flat(0.1));
 
             network.SetWeights(0, NetworkTestsData.Conv1Weights);
@@ -121,7 +114,7 @@ namespace Ann.Core.Tests.NetworkTests
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
-            network.AddHiddenLayer(5, ActivatorType.Relu, new Flat(0.1));
+            network.AddDenseLayer(5, new Flat(0.1));
             network.AddSoftMaxLayer(new Flat(0.1));
 
             network.SetWeights(0, NetworkTestsData.Conv1Weights);
@@ -136,8 +129,8 @@ namespace Ann.Core.Tests.NetworkTests
             var learnableLayers = network2._layers.ToArray();
             var conv1layer = learnableLayers[1] as ConvolutionLayer;
             var conv2layer = learnableLayers[4] as ConvolutionLayer;
-            var dense1layer = learnableLayers[8] as NeuronLayer;
-            var dense2layer = learnableLayers[9] as NeuronLayer;
+            var dense1layer = learnableLayers[8] as DenseLayer;
+            var dense2layer = learnableLayers[9] as DenseLayer;
 
             var w1 = conv1layer.GetWeights();
             var w2 = conv2layer.GetWeights();
@@ -162,15 +155,9 @@ namespace Ann.Core.Tests.NetworkTests
                 CollectionAssert.AreEqual(q, NetworkTestsData.Conv2WeightsUpdated[i], _comparer);
             });
 
-            w3.ForEach((q, i) =>
-            {
-                CollectionAssert.AreEqual(q, NetworkTestsData.Dense1WeightsUpdated[i], _comparer);
-            });
+            CollectionAssert.AreEqual(w3, NetworkTestsData.Dense1WeightsUpdated, _comparer);
+            CollectionAssert.AreEqual(w4, NetworkTestsData.Dense2WeightsUpdated, _comparer);
 
-            w4.ForEach((q, i) =>
-            {
-                CollectionAssert.AreEqual(q, NetworkTestsData.Dense2WeightsUpdated[i], _comparer);
-            });
         }
     }
 }

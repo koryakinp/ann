@@ -35,7 +35,7 @@ namespace Ann.Mnist
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
-            network.AddHiddenLayer(512, ActivatorType.Relu, new Flat(lr));
+            network.AddDenseLayer(512, new Flat(lr));
             network.AddSoftMaxLayer(new Flat(lr));
             network.RandomizeWeights(0.1);
 

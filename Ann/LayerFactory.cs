@@ -20,8 +20,8 @@ namespace Ann
                     return layer1;
                 case FlattenLayerConfiguration c:
                     return new FlattenLayer(c);
-                case HiddenLayerConfiguration c:
-                    var layer2 = new HiddenLayer(c);
+                case DenseLayerConfiguration c:
+                    var layer2 = new DenseLayer(c);
                     layer2.SetWeights(c.Weights);
                     layer2.SetBiases(c.Biases);
                     return layer2;
@@ -31,7 +31,6 @@ namespace Ann
                     return new PoolingLayer(c);
                 case SoftmaxLayerConfiguration c:
                     var layer3 = new SoftMaxLayer(c);
-                    layer3.SetWeights(c.Weights);
                     return layer3;
                 default:
                     throw new Exception("Config type is not supported");
