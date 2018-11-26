@@ -1,4 +1,5 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.Distributions;
+using MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
 
@@ -6,6 +7,18 @@ namespace Ann.Utils
 {
     public static class Extensions
     {
+        public static double TruncatedNormalSample(this Normal dist)
+        {
+            while (true)
+            {
+                var res = dist.Sample();
+                if (res > -dist.StdDev && res < dist.StdDev)
+                {
+                    return res;
+                }
+            }
+        }
+
         public static void SetValues(this Vector<double> source, Array values)
         {
             if (values.Rank != 1)

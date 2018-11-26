@@ -12,19 +12,19 @@ namespace Ann.Layers
         private readonly Array _cache;
 
         public ActivationLayer(ActivationLayerConfiguration config)
-            : base(config.MessageShape, new MessageShape(config.MessageShape.Size, config.MessageShape.Depth))
+            : base(config.MessageShape, config.MessageShape)
         {
             _activator = ActivatorFactory.Produce(config.ActivatorType);
-            if (InputMessageShape.Depth == 1)
+            if (config.MessageShape.Depth == 1)
             {
-                _cache = new double[InputMessageShape.Size];
+                _cache = new double[config.MessageShape.Size];
             }
             else
             {
                 _cache = new double[
-                    InputMessageShape.Depth,
-                    InputMessageShape.Size,
-                    InputMessageShape.Size];
+                    config.MessageShape.Depth,
+                    config.MessageShape.Size,
+                    config.MessageShape.Size];
             }
         }
 
@@ -42,8 +42,12 @@ namespace Ann.Layers
 
         public override Array PassForward(Array input)
         {
-            _cache.UpdateForEach<double>((q,idx) => (double)input.GetValue(idx));
-            input.UpdateForEach<double>((q,idx) => _activator.CalculateValue((double)input.GetValue(idx)));
+            input.UpdateForEach<double>((q,idx) => 
+            {
+                _cache.SetValue(q, idx);
+                var val = _activator.CalculateValue(q);
+                return val;
+            });
             return input;
         }
     }

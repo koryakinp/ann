@@ -58,13 +58,13 @@ namespace Ann
             _layers.Add(layer);
         }
 
-        public void AddDenseLayer(int numberOfNeurons, Optimizer optimizer)
+        public void AddDenseLayer(int numberOfNeurons, bool enableBiases, Optimizer optimizer)
         {
             var prevLayerOutputShape = _layers
                 .Last()
                 .OutputMessageShape;
 
-            var config = new DenseLayerConfiguration(prevLayerOutputShape, optimizer, numberOfNeurons);
+            var config = new DenseLayerConfiguration(prevLayerOutputShape, optimizer, enableBiases, numberOfNeurons);
             var layer = new DenseLayer(config);
 
             _layers.Add(layer);

@@ -7,7 +7,7 @@
         public static readonly double[][,,] Conv2Weights;
         public static readonly double[,] Dense1Weights;
         public static readonly double[,] Dense2Weights;
-        public static readonly bool[] Labels;
+        public static readonly bool[][] Labels;
 
         public static readonly double[][,,] Conv1WeightsUpdated;
         public static readonly double[][,,] Conv2WeightsUpdated;
@@ -33,7 +33,12 @@
                 }
             };
 
-            Labels = new bool[] { false, true, false };
+            Labels = new bool[][] 
+            {
+                new bool[] { false, true, false },
+                new bool[] { true, false, false },
+                new bool[] { false, false, true },
+            };
 
             Conv1Weights = new double[][,,]
             {

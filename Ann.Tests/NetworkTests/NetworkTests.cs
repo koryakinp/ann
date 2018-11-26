@@ -28,17 +28,19 @@ namespace Ann.Core.Tests.NetworkTests
         [TestMethod]
         public void CNNTest()
         {
+            var lr = 0.1;
+
             network.AddInputLayer(7, 1);
-            network.AddConvolutionLayer(new Flat(0.1), 2, 2);
+            network.AddConvolutionLayer(new Flat(lr), 2, 2);
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddConvolutionLayer(new Flat(0.1), 3, 2);
+            network.AddConvolutionLayer(new Flat(lr), 3, 2);
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
-            network.AddDenseLayer(5, new Flat(0.1));
+            network.AddDenseLayer(5, true, new Flat(lr));
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddDenseLayer(3, new Flat(0.1));
+            network.AddDenseLayer(3, false, new Flat(lr));
             network.AddSoftMaxLayer();
 
             network.SetWeights(0, NetworkTestsData.Conv1Weights);
@@ -46,7 +48,8 @@ namespace Ann.Core.Tests.NetworkTests
             network.SetWeights(2, NetworkTestsData.Dense1Weights);
             network.SetWeights(3, NetworkTestsData.Dense2Weights);
 
-            network.TrainModel(NetworkTestsData.Input, NetworkTestsData.Labels);
+            network.TrainModel(NetworkTestsData.Input, NetworkTestsData.Labels[0]);
+
             var learnableLayers = network._layers.ToArray();
             var conv1layer = learnableLayers[1] as ConvolutionLayer;
             var conv2layer = learnableLayers[4] as ConvolutionLayer;
@@ -92,9 +95,9 @@ namespace Ann.Core.Tests.NetworkTests
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
-            network.AddDenseLayer(5, new Flat(0.1));
+            network.AddDenseLayer(5, true, new Flat(0.1));
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddDenseLayer(3, new Flat(0.1));
+            network.AddDenseLayer(3, false, new Flat(0.1));
             network.AddSoftMaxLayer();
 
             network.SetWeights(0, NetworkTestsData.Conv1Weights);
@@ -102,7 +105,7 @@ namespace Ann.Core.Tests.NetworkTests
             network.SetWeights(2, NetworkTestsData.Dense1Weights);
             network.SetWeights(3, NetworkTestsData.Dense2Weights);
 
-            network.TrainModel(NetworkTestsData.Input, NetworkTestsData.Labels);
+            network.TrainModel(NetworkTestsData.Input, NetworkTestsData.Labels[0]);
 
             network.SaveModel("network.json");
         }
@@ -118,9 +121,9 @@ namespace Ann.Core.Tests.NetworkTests
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
-            network.AddDenseLayer(5, new Flat(0.1));
+            network.AddDenseLayer(5, true, new Flat(0.1));
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddDenseLayer(3, new Flat(0.1));
+            network.AddDenseLayer(3, false, new Flat(0.1));
             network.AddSoftMaxLayer();
 
             network.SetWeights(0, NetworkTestsData.Conv1Weights);
@@ -128,7 +131,7 @@ namespace Ann.Core.Tests.NetworkTests
             network.SetWeights(2, NetworkTestsData.Dense1Weights);
             network.SetWeights(3, NetworkTestsData.Dense2Weights);
 
-            network.TrainModel(NetworkTestsData.Input, NetworkTestsData.Labels);
+            network.TrainModel(NetworkTestsData.Input, NetworkTestsData.Labels[0]);
             network.SaveModel("network.json");
 
             var network2 = new Network("network.json");
@@ -163,7 +166,6 @@ namespace Ann.Core.Tests.NetworkTests
 
             CollectionAssert.AreEqual(w3, NetworkTestsData.Dense1WeightsUpdated, _comparer);
             CollectionAssert.AreEqual(w4, NetworkTestsData.Dense2WeightsUpdated, _comparer);
-
         }
     }
 }

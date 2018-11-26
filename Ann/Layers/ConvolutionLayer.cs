@@ -49,7 +49,7 @@ namespace Ann.Layers
         public void RandomizeWeights(double stddev)
         {
             var dist = new Normal(0, stddev);
-            _kernels.ForEach(q => q.Weights.ForEach(w => w.SetValue(dist.Sample())));
+            _kernels.ForEach(q => q.Weights.ForEach(w => w.SetValue(dist.TruncatedNormalSample())));
         }
 
         public void SetBiases(Array biases)

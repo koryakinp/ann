@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ann.Activators;
 using Ann.LossFunctions;
-using Gdo;
 using Gdo.Optimizers;
 using ShellProgressBar;
 
@@ -16,7 +14,10 @@ namespace Ann.Mnist
         {
             var network = CreateModel();
             TrainModel(network, q => Helper.Create3DInput(q.Data));
-            var ratio = TestModel(network, q => Helper.Create1DInput(q.Data));
+            network.SaveModel("model.json");
+            //var network = new Network("model.json");
+            
+            var ratio = TestModel(network, q => Helper.Create3DInput(q.Data));
             Console.WriteLine($"Accuracy: {ratio * 100}% ");
             Console.ReadLine();
         }
@@ -25,7 +26,7 @@ namespace Ann.Mnist
         {
             var network = new Network(LossFunctionType.CrossEntropy, 10);
 
-            var lr = 0.001;
+            var lr = 0.01;
 
             network.AddInputLayer(28, 1);
             network.AddConvolutionLayer(new Flat(lr), 16, 5);
@@ -35,8 +36,11 @@ namespace Ann.Mnist
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
-            network.AddDenseLayer(512, new Flat(lr));
+            network.AddDenseLayer(512, true, new Flat(lr));
+            network.AddActivationLayer(ActivatorType.Relu);
+            network.AddDenseLayer(10, false, new Flat(lr));
             network.AddSoftMaxLayer();
+
             network.RandomizeWeights(0.1);
 
             return network;
@@ -44,11 +48,11 @@ namespace Ann.Mnist
 
         private static void TrainModel(Network model, Func<Image,Array> getInput)
         {
-            int total = 60000;
+            int total = 1000;
             int current = 0;
             using (var pbar = new ProgressBar(total, "Training Model"))
             {
-                foreach (var image in MnistReader.ReadTrainingData(10000))
+                foreach (var image in MnistReader.ReadTrainingData(total))
                 {
                     var target = Helper.CreateTarget(image.Label);
                     model.TrainModel(getInput(image), target);
@@ -57,35 +61,11 @@ namespace Ann.Mnist
             }
         }
 
-        private static void TrainModel(Network model, int batchSize, Func<Image, Array> getInput)
-        {
-            int total = 10000;
-            int current = 0;
-            using (var pbar = new ProgressBar(total, "Training Model"))
-            {
-                List<Task> tasks = new List<Task>();
-                foreach (var image in MnistReader.ReadTrainingData(total))
-                {
-                    if(tasks.Count < batchSize)
-                    { 
-                        var target = Helper.CreateTarget(image.Label);
-                        tasks.Add(Task.Run(() => model.TrainModel(getInput(image), target)));
-                    }
-                    else
-                    {
-                        Task.WaitAll(tasks.ToArray());
-                        tasks.Clear();
-                    }
-
-                    pbar.Tick($"Training Model: {++current} of {total}");
-                }
-            }
-        }
 
         private static double TestModel(Network model, Func<Image, Array> getInput)
         {
             var results = new List<double>();
-            int total = 10000;
+            int total = 1000;
             int current = 0;
             using (var pbar = new ProgressBar(total, "Testing Model"))
             {

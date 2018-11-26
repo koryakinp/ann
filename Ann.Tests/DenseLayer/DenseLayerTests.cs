@@ -20,7 +20,7 @@ namespace Ann.Tests.DenseLayer
         [TestInitialize]
         public void Initialize()
         {
-            var config = new DenseLayerConfiguration(new MessageShape(4), new Flat(0.1), 3);
+            var config = new DenseLayerConfiguration(new MessageShape(4), new Flat(0.1), true, 3);
             _layer = new Layers.DenseLayer(config);
         }
 

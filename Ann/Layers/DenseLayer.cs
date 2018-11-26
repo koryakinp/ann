@@ -17,10 +17,12 @@ namespace Ann.Layers
         private readonly Optimizer[] _biasOptimizers;
         private readonly Vector<double> _dedx;
         private readonly Vector<double> _cache;
+        private readonly bool _enableBiases;
 
         public DenseLayer(DenseLayerConfiguration config)
             : base(config.MessageShape, new MessageShape(config.NumberOfNeurons))
         {
+            _enableBiases = config.EnableBias;
             _weightOptimizers = new Optimizer[config.NumberOfNeurons, config.MessageShape.Size];
             _weightOptimizers.UpdateForEach<Optimizer>((q, i) => config.Optimizer.Clone() as Optimizer);
             _biasOptimizers = new Optimizer[config.NumberOfNeurons];
@@ -33,7 +35,7 @@ namespace Ann.Layers
 
         public override LayerConfiguration GetLayerConfiguration()
         {
-            return new DenseLayerConfiguration(InputMessageShape, OutputMessageShape.Size, GetWeights(), GetBiases());
+            return new DenseLayerConfiguration(InputMessageShape, _enableBiases, OutputMessageShape.Size, GetWeights(), GetBiases());
         }
 
         public override Array PassBackward(Array input)
@@ -46,13 +48,16 @@ namespace Ann.Layers
         {
             _cache.SetValues(input);
             var X = Vector.Build.Dense(input as double[]);
-            return _weights.Multiply(X).Add(_biases).ToArray();
+
+            return _enableBiases 
+                ? _weights.Multiply(X).Add(_biases).ToArray()
+                : _weights.Multiply(X).ToArray();
         }
 
         public void RandomizeWeights(double stddev)
         {
             var dist = new Normal(0, stddev);
-            _weights.MapInplace(q => dist.Sample());
+            _weights.MapInplace(q => dist.TruncatedNormalSample());
         }
 
         public void SetBiases(Array array)
