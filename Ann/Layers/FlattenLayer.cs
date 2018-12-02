@@ -1,34 +1,52 @@
 ﻿using Ann.Persistence;
 using Ann.Persistence.LayerConfig;
-using Ann.Utils;
 using System;
-using System.Linq;
 
 namespace Ann.Layers
 {
-    public class FlattenLayer : Layer
+    internal class FlattenLayer : Layer
     {
-        public FlattenLayer(MessageShape inputMessageShape) 
-            : base(inputMessageShape, ComputeOutputMessageShape(inputMessageShape)) {}
-
-        internal FlattenLayer(FlattenLayerConfiguration config)
+        public FlattenLayer(FlattenLayerConfiguration config)
             : base(config.MessageShape, ComputeOutputMessageShape(config.MessageShape)) { }
 
         public override Array PassBackward(Array input)
         {
-            return ArrayConverter.Convert1Dto3D(
-                input as double[], 
-                new int[3] 
+            var output = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
+
+            int index = 0;
+
+            for (int i = 0; i < InputMessageShape.Size; i++)
+            {
+                for (int j = 0; j < InputMessageShape.Size; j++)
                 {
-                    InputMessageShape.Depth,
-                    InputMessageShape.Size,
-                    InputMessageShape.Size
-                });
+                    for (int k = 0; k < InputMessageShape.Depth; k++)
+                    {
+                        output[k, i, j] = (double)input.GetValue(index++);
+                    }
+                }
+            }
+
+            return output;
         }
 
         public override Array PassForward(Array input)
         {
-            return input.OfType<double>().ToArray();
+            var output = new double[input.GetLength(0) * input.GetLength(1) * input.GetLength(2)];
+
+            int index = 0;
+
+            for (int i = 0; i < input.GetLength(1); i++)
+            {
+                for (int j = 0; j < input.GetLength(2); j++)
+                {
+                    for (int k = 0; k < input.GetLength(0); k++)
+                    {
+                        output[index++] = (double)input.GetValue(k, i, j);
+                    }
+                }
+            }
+
+            return output;
         }
 
         public static MessageShape ComputeOutputMessageShape(MessageShape shape)

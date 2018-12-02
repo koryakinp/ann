@@ -9,9 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ann.Activators.koryakinp" Version="1.0.0" />
-    <PackageReference Include="Gdo.koryakinp" Version="2.1.4" />
-    <PackageReference Include="MathNet.Numerics" Version="4.5.1" />
+    <PackageReference Include="Ann.Activators.koryakinp" Version="1.0.3" />
+    <PackageReference Include="Gdo.koryakinp" Version="2.1.5" />
+    <PackageReference Include="MathNet.Numerics" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 

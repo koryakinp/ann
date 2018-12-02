@@ -10,7 +10,7 @@ namespace Ann.Core.Tests.FlattenLayer
         [TestInitialize]
         public void Initialize()
         {
-            _layer = new Layers.FlattenLayer(new MessageShape(5,3));
+            //_layer = new Layers.FlattenLayer(new MessageShape(5,3));
         }
 
         [TestMethod]

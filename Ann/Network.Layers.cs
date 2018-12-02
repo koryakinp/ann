@@ -1,5 +1,6 @@
 ﻿using Ann.Activators;
 using Ann.Layers;
+using Ann.Persistence.LayerConfig;
 using Gdo;
 using System;
 using System.Linq;
@@ -66,13 +67,12 @@ namespace Ann
 
         public void AddActivationLayer(ActivatorType activatorType)
         {
-            var prevLayerOutputShape = _layers
+            var shape = _layers
                 .Last()
                 .OutputMessageShape;
 
-            var layer = new ActivationLayer(
-                prevLayerOutputShape, 
-                activatorType);
+            var config = new ActivationLayerConfiguration(shape, activatorType);
+            var layer = new ActivationLayer(config);
             _layers.Add(layer);
         }
 
@@ -88,11 +88,13 @@ namespace Ann
 
         public void AddFlattenLayer()
         {
-            var prevLayerOutputShape = _layers
+            var shape = _layers
                 .Last()
                 .OutputMessageShape;
 
-            var layer = new FlattenLayer(prevLayerOutputShape);
+            var config = new FlattenLayerConfiguration(shape);
+
+            var layer = new FlattenLayer(config);
             _layers.Add(layer);
         }
     }
