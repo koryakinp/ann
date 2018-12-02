@@ -2,7 +2,6 @@
 using Ann.Layers;
 using Ann.Persistence.LayerConfig;
 using Gdo;
-using System;
 using System.Linq;
 
 namespace Ann
@@ -23,12 +22,11 @@ namespace Ann
 
         public void AddSoftMaxLayer()
         {
-            var numberOfInputs = _layers
+            var shape = _layers
                 .Last()
-                .OutputMessageShape
-                .GetLength();
+                .OutputMessageShape;
 
-            var config = new SoftmaxLayerConfiguration(new MessageShape(numberOfInputs));
+            var config = new SoftmaxLayerConfiguration(shape);
 
             var layer = new SoftMaxLayer(config);
 

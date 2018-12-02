@@ -36,7 +36,7 @@ namespace Ann.Mnist
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
-            network.AddDenseLayer(512, true, new Flat(lr));
+            network.AddDenseLayer(1024, true, new Flat(lr));
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddDenseLayer(10, false, new Flat(lr));
             network.AddSoftMaxLayer();
@@ -48,7 +48,7 @@ namespace Ann.Mnist
 
         private static void TrainModel(Network model, Func<Image,Array> getInput)
         {
-            int total = 1000;
+            int total = 10000;
             int current = 0;
             using (var pbar = new ProgressBar(total, "Training Model"))
             {

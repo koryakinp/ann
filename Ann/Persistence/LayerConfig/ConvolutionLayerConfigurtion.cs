@@ -1,6 +1,5 @@
 ﻿using Ann.Misc;
 using Gdo;
-using Gdo.Optimizers;
 using Newtonsoft.Json;
 using System;
 

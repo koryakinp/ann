@@ -27,7 +27,7 @@ namespace Ann.Layers
             _weightOptimizers.UpdateForEach<Optimizer>((q, i) => config.Optimizer.Clone() as Optimizer);
             _biasOptimizers = new Optimizer[config.NumberOfNeurons];
             _biasOptimizers.UpdateForEach<Optimizer>((q, i) => config.Optimizer.Clone() as Optimizer);
-            _weights = Matrix.Build.Dense(config.NumberOfNeurons, config.MessageShape.Size);
+            _weights = Matrix.Build.Dense(config.MessageShape.Size, config.NumberOfNeurons);
             _biases = Vector.Build.Dense(config.NumberOfNeurons);
             _dedx = Vector.Build.Dense(config.NumberOfNeurons);
             _cache = Vector.Build.Dense(config.MessageShape.Size);
@@ -41,17 +41,14 @@ namespace Ann.Layers
         public override Array PassBackward(Array input)
         {
             _dedx.SetValues(input);
-            return _weights.TransposeThisAndMultiply(_dedx).ToArray();
+            return _weights.Multiply(_dedx).ToArray();
         }
 
         public override Array PassForward(Array input)
         {
             _cache.SetValues(input);
-            var X = Vector.Build.Dense(input as double[]);
-
-            return _enableBiases 
-                ? _weights.Multiply(X).Add(_biases).ToArray()
-                : _weights.Multiply(X).ToArray();
+            var X = Matrix.Build.DenseOfRowArrays(input as double[]);
+            return X.Multiply(_weights).Row(0).Add(_biases).ToArray();
         }
 
         public void RandomizeWeights(double stddev)
@@ -69,7 +66,7 @@ namespace Ann.Layers
         public void SetWeights(Array array)
         {
             _weights.SetValues(array);
-            _weights.ToArray().ForEach((q, i, j) => _weightOptimizers[i, j].SetValue(q));
+            _weights.ToArray().ForEach((q, i, j) => _weightOptimizers[j, i].SetValue(q));
         }
 
         public void UpdateBiases()
@@ -90,8 +87,8 @@ namespace Ann.Layers
 
             _weights.MapIndexedInplace((i, j, q) =>
             {
-                var opt = _weightOptimizers[i, j];
-                opt.Update(m3[i, j]);
+                var opt = _weightOptimizers[j, i];
+                opt.Update(m3[j, i]);
                 return opt.Value;
             });
         }

@@ -7,12 +7,167 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="NetworkTests\test1\after\conv_1_biases.json" />
+    <None Remove="NetworkTests\test1\after\conv_1_weights.json" />
+    <None Remove="NetworkTests\test1\after\conv_2_biases.json" />
+    <None Remove="NetworkTests\test1\after\conv_2_weights.json" />
+    <None Remove="NetworkTests\test1\after\dense_1_biases.json" />
+    <None Remove="NetworkTests\test1\after\dense_1_weights.json" />
+    <None Remove="NetworkTests\test1\after\dense_2_weights.json" />
+    <None Remove="NetworkTests\test1\before\conv_1_biases.json" />
+    <None Remove="NetworkTests\test1\before\conv_1_weights.json" />
+    <None Remove="NetworkTests\test1\before\conv_2_biases.json" />
+    <None Remove="NetworkTests\test1\before\conv_2_weights.json" />
+    <None Remove="NetworkTests\test1\before\dense_1_biases.json" />
+    <None Remove="NetworkTests\test1\before\dense_1_weights.json" />
+    <None Remove="NetworkTests\test1\before\dense_2_weights.json" />
+    <None Remove="NetworkTests\test1\data\x.json" />
+    <None Remove="NetworkTests\test1\data\y.json" />
+    <None Remove="NetworkTests\test2\after\conv_1_biases.json" />
+    <None Remove="NetworkTests\test2\after\conv_1_weights.json" />
+    <None Remove="NetworkTests\test2\after\conv_2_biases.json" />
+    <None Remove="NetworkTests\test2\after\conv_2_weights.json" />
+    <None Remove="NetworkTests\test2\after\dense_1_biases.json" />
+    <None Remove="NetworkTests\test2\after\dense_1_weights.json" />
+    <None Remove="NetworkTests\test2\after\dense_2_weights.json" />
+    <None Remove="NetworkTests\test2\before\conv_1_biases.json" />
+    <None Remove="NetworkTests\test2\before\conv_1_weights.json" />
+    <None Remove="NetworkTests\test2\before\conv_2_biases.json" />
+    <None Remove="NetworkTests\test2\before\conv_2_weights.json" />
+    <None Remove="NetworkTests\test2\before\dense_1_biases.json" />
+    <None Remove="NetworkTests\test2\before\dense_1_weights.json" />
+    <None Remove="NetworkTests\test2\before\dense_2_weights.json" />
+    <None Remove="NetworkTests\test2\data\x.json" />
+    <None Remove="NetworkTests\test2\data\y.json" />
+    <None Remove="NetworkTests\weights\initial\dense_layer_weights.json" />
+    <None Remove="NetworkTests\weights\initial\first_conv_layer_weights.json" />
+    <None Remove="NetworkTests\weights\initial\input.json" />
+    <None Remove="NetworkTests\weights\initial\output_layer_weights.json" />
+    <None Remove="NetworkTests\weights\initial\second_conv_layer_weights.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="NetworkTests\test1\after\conv_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\after\conv_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\after\conv_2_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\after\conv_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\after\dense_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\after\dense_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\after\dense_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\before\conv_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\before\conv_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\before\conv_2_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\before\conv_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\before\dense_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\before\dense_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\before\dense_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\data\x.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test1\data\y.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\after\conv_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\after\conv_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\after\conv_2_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\after\conv_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\after\dense_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\after\dense_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\after\dense_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\before\conv_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\before\conv_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\before\conv_2_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\before\conv_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\before\dense_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\before\dense_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\before\dense_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\data\x.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\test2\data\y.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\weights\initial\dense_layer_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\weights\initial\first_conv_layer_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\weights\initial\input.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\weights\initial\output_layer_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\weights\initial\second_conv_layer_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="4.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="Moq" Version="4.9.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="System.Numerics.Tensors" Version="0.1.0-preview2-181124-2" />
   </ItemGroup>
 
   <ItemGroup>

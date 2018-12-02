@@ -100,6 +100,11 @@ namespace Ann
             _layers.OfType<ILearnable>().ToArray()[layerIndex].SetWeights(weights);
         }
 
+        internal void SetBiases(int layerIndex, double[] biases)
+        {
+            _layers.OfType<ILearnable>().ToArray()[layerIndex].SetBiases(biases);
+        }
+
         public void SaveModel(string path)
         {
             var networkConfig = new NetworkConfiguration();

@@ -1,7 +1,6 @@
 ﻿using Ann.Core.Tests.Utils;
 using Ann.Persistence.LayerConfig;
 using Ann.Tests;
-using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ann.Core.Tests.SoftmaxLayer

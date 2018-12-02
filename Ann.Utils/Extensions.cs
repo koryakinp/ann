@@ -54,7 +54,7 @@ namespace Ann.Utils
             {
                 for (int j = 0; j < values.GetLength(1); j++)
                 {
-                    source[i, j] = (double)values.GetValue(i, j);
+                    source[i,j] = (double)values.GetValue(i,j);
                 }
             }
         }
