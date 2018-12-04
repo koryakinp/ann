@@ -2,9 +2,12 @@
 using Ann.Core.Tests.Utils;
 using Ann.Layers;
 using Ann.LossFunctions;
+using Ann.Mnist;
 using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Ann.Core.Tests.NetworkTests
 {
@@ -85,6 +88,59 @@ namespace Ann.Core.Tests.NetworkTests
             });
         }
 
+        [TestMethod]
+        public void CompareNetworksTest()
+        {
+            var network = new Network(LossFunctionType.CrossEntropy, 10);
+
+            var lr = 0.001;
+
+            network.AddInputLayer(28, 1, true);
+            network.AddConvolutionLayer(Optimizers.Flat(lr), 16, 5, true);
+            network.AddActivationLayer(ActivatorType.Relu, true);
+            network.AddPoolingLayer(2, true);
+            network.AddConvolutionLayer(Optimizers.Flat(lr), 32, 5, true);
+            network.AddActivationLayer(ActivatorType.Relu, true);
+            network.AddPoolingLayer(2, true);
+            network.AddFlattenLayer(true);
+            network.AddHiddenLayer(1024, ActivatorType.Relu, Optimizers.Flat(lr), true);
+            network.AddSoftMaxLayer(Optimizers.Flat(lr), true);
+
+            network.AddInputLayer(28, 1, false);
+            network.AddConvolutionLayer(Optimizers.Flat(lr), 16, 5, false);
+            network.AddActivationLayer(ActivatorType.Relu, false);
+            network.AddPoolingLayer(2, false);
+            network.AddConvolutionLayer(Optimizers.Flat(lr), 32, 5, false);
+            network.AddActivationLayer(ActivatorType.Relu, false);
+            network.AddPoolingLayer(2, false);
+            network.AddFlattenLayer(false);
+            network.AddDenseLayer(1024, true, Optimizers.Flat(lr), false);
+            network.AddActivationLayer(ActivatorType.Relu, false);
+            network.AddDenseLayer(10, false, Optimizers.Flat(lr), false);
+            network.AddSoftMaxLayer2(false);
+
+            network.SetWeights(0, ReadConvWeightsJson("before/conv_1_weights.json"), true);
+            network.SetBiases(0, ReadDenseWeightsJson<double[]>("before/conv_1_biases.json"), true);
+            network.SetWeights(1, ReadConvWeightsJson("before/conv_2_weights.json"), true);
+            network.SetBiases(1, ReadDenseWeightsJson<double[]>("before/conv_2_biases.json"), true);
+            network.SetWeights(2, MapWeights(ReadDenseWeightsJson<double[,]>("before/dense_1_weights.json")), true);
+            network.SetBiases(2, ReadDenseWeightsJson<double[]>("before/dense_1_biases.json"), true);
+            network.SetWeights(3, MapWeights(ReadDenseWeightsJson<double[,]>("before/dense_2_weights.json")), true);
+
+            network.SetWeights(0, ReadConvWeightsJson("before/conv_1_weights.json"), false);
+            network.SetBiases(0, ReadDenseWeightsJson<double[]>("before/conv_1_biases.json"), false);
+            network.SetWeights(1, ReadConvWeightsJson("before/conv_2_weights.json"), false);
+            network.SetBiases(1, ReadDenseWeightsJson<double[]>("before/conv_2_biases.json"), false);
+            network.SetWeights(2, ReadDenseWeightsJson<double[,]>("before/dense_1_weights.json"), false);
+            network.SetBiases(2, ReadDenseWeightsJson<double[]>("before/dense_1_biases.json"), false);
+            network.SetWeights(3, ReadDenseWeightsJson<double[,]>("before/dense_2_weights.json"), false);
+
+            foreach (var image in MnistReader.ReadTrainingData(10000))
+            {
+                var target = Helper.CreateTarget(image.Label);
+                network.TrainModel(Helper.Create3DInput(image.Data), target);
+            }
+        }
 
         [TestMethod]
         public void SaveToFileTest()
@@ -171,6 +227,57 @@ namespace Ann.Core.Tests.NetworkTests
             {
                 CollectionAssert.AreEqual(q, NetworkTestsData.Dense2WeightsUpdated[i], _comparer);
             });
+        }
+
+        private T ReadDenseWeightsJson<T>(string file)
+        {
+            var json1 = File.ReadAllText($"NetworkTests/{file}");
+            return JsonConvert.DeserializeObject<T>(json1);
+        }
+
+        private double[][,,] ReadConvWeightsJson(string file)
+        {
+            var json1 = File.ReadAllText($"NetworkTests/{file}");
+            var w1 = JsonConvert.DeserializeObject<double[,,,]>(json1);
+
+            var output = new double[w1.GetLength(3)][,,];
+
+            for (int kernel = 0; kernel < w1.GetLength(3); kernel++)
+            {
+                var arr = new double[w1.GetLength(2), w1.GetLength(1), w1.GetLength(0)];
+
+                for (int d = 0; d < w1.GetLength(2); d++)
+                {
+                    for (int i = 0; i < w1.GetLength(1); i++)
+                    {
+                        for (int j = 0; j < w1.GetLength(0); j++)
+                        {
+                            arr[d, i, j] = w1[i, j, d, kernel];
+                        }
+                    }
+                }
+
+                output[kernel] = arr;
+            }
+
+            return output;
+        }
+
+        private double[][] MapWeights(double[,] weights)
+        {
+            var output = new double[weights.GetLength(1)][];
+
+            for (int i = 0; i < weights.GetLength(1); i++)
+            {
+                output[i] = new double[weights.GetLength(0)];
+
+                for (int j = 0; j < weights.GetLength(0); j++)
+                {
+                    output[i][j] = weights[j, i];
+                }
+            }
+
+            return output;
         }
     }
 }

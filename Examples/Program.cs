@@ -33,26 +33,26 @@ namespace Ann.Mnist
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
-            network.AddHiddenLayer(512, ActivatorType.Relu, Optimizers.Flat(lr));
+            network.AddDenseLayer(1024, true, Optimizers.Flat(lr));
+            network.AddActivationLayer(ActivatorType.Relu);
+            //network.AddHiddenLayer(1024, ActivatorType.Relu, Optimizers.Flat(lr));
             network.AddSoftMaxLayer(Optimizers.Flat(lr));
             network.RandomizeWeights(0.1);
 
             return network;
         }
 
-        private static void TrainModel(Network model, Func<Image,Array> getInput)
+        public static void TrainModel(Network model, Func<Image,Array> getInput)
         {
-            int total = 60000;
-            int current = 0;
-            using (var pbar = new ProgressBar(total, "Training Model"))
-            {
+            //using (var pbar = new ProgressBar(total, "Training Model"))
+            //{
                 foreach (var image in MnistReader.ReadTrainingData(10000))
                 {
                     var target = Helper.CreateTarget(image.Label);
                     model.TrainModel(getInput(image), target);
-                    pbar.Tick($"Training Model: {++current} of {total}");
+                    //pbar.Tick($"Training Model: {++current} of {total}");
                 }
-            }
+            //}
         }
 
         private static void TrainModel(Network model, int batchSize, Func<Image, Array> getInput)

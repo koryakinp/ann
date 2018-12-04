@@ -115,7 +115,7 @@ namespace Ann.Layers
             }
         }
 
-        protected Matrix<double> GetWeightMatrix()
+        internal Matrix<double> GetWeightMatrix()
         {
             return Matrix.Build.DenseOfColumnArrays(
                 Neurons.Select(q => q.Weights.Select(w => w.Value).ToArray()).ToArray());

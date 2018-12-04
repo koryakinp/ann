@@ -41,7 +41,7 @@ namespace Ann.Layers
         {
             PrevLayerOutput = input;
 
-            var X = Matrix.Build.Dense(1, input.Length, input.OfType<double>().ToArray());
+            var X = Matrix.Build.DenseOfRowArrays(input as double[]);
             var W = GetWeightMatrix();
             var B = new DenseVector(Neurons.Select(q => q.Bias.Value).ToArray());
 

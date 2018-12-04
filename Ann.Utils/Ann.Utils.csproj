@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Gdo.koryakinp" Version="2.1.5" />
+    <PackageReference Include="MathNet.Numerics" Version="4.7.0" />
   </ItemGroup>
 
 </Project>

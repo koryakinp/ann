@@ -32,7 +32,11 @@ namespace Ann
                 throw new Exception(Consts.CanNotUpdateWeights);
             }
 
-            Weights.ForEach((q, i) => Weights[i].Update(Delta * values[i]));
+            Weights.ForEach((q, i) => 
+            {
+                var val = Delta * values[i];
+                Weights[i].Update(val);
+            });
         }
 
         public void UpdateBias()

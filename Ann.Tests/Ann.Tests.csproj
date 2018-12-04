@@ -7,6 +7,40 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="NetworkTests\before\conv_1_biases.json" />
+    <None Remove="NetworkTests\before\conv_1_weights.json" />
+    <None Remove="NetworkTests\before\conv_2_biases.json" />
+    <None Remove="NetworkTests\before\conv_2_weights.json" />
+    <None Remove="NetworkTests\before\dense_1_biases.json" />
+    <None Remove="NetworkTests\before\dense_1_weights.json" />
+    <None Remove="NetworkTests\before\dense_2_weights.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="NetworkTests\before\conv_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\before\conv_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\before\conv_2_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\before\conv_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\before\dense_1_biases.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\before\dense_1_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTests\before\dense_2_weights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="4.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="Moq" Version="4.9.0" />
@@ -17,6 +51,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ann\Ann.csproj" />
+    <ProjectReference Include="..\Examples\Ann.Mnist.csproj" />
   </ItemGroup>
 
 </Project>

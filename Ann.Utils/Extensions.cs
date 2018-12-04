@@ -1,10 +1,51 @@
-﻿using System;
+﻿using MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Collections.Generic;
 
 namespace Ann.Utils
 {
     public static class Extensions
     {
+        public static void SetValues(this Vector<double> source, Array values)
+        {
+            if (values.Rank != 1)
+            {
+                throw new Exception(Consts.RankDoNotMatch);
+            }
+
+            if (source.Count != values.Length)
+            {
+                throw new Exception(Consts.DimensionsDoNotMatch);
+            }
+
+            for (int i = 0; i < values.GetLength(0); i++)
+            {
+                source[i] = (double)values.GetValue(i);
+            }
+        }
+
+        public static void SetValues(this Matrix<double> source, Array values)
+        {
+            if (values.Rank != 2)
+            {
+                throw new Exception(Consts.RankDoNotMatch);
+            }
+
+            if (values.GetLength(0) != source.RowCount
+                || values.GetLength(1) != source.ColumnCount)
+            {
+                throw new Exception(Consts.DimensionsDoNotMatch);
+            }
+
+            for (int i = 0; i < values.GetLength(0); i++)
+            {
+                for (int j = 0; j < values.GetLength(1); j++)
+                {
+                    source[i, j] = (double)values.GetValue(i, j);
+                }
+            }
+        }
+
         public static void ForEach<T>(this IEnumerable<T> source, Action<T, int> action)
         {
             var i = 0;
