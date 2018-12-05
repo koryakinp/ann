@@ -23,7 +23,7 @@ namespace Ann.Layers
             : base(config.MessageShape, new MessageShape(config.NumberOfNeurons))
         {
             _enableBiases = config.EnableBias;
-            _weightOptimizers = new Optimizer[config.NumberOfNeurons, config.MessageShape.Size];
+            _weightOptimizers = new Optimizer[config.MessageShape.Size, config.NumberOfNeurons];
             _weightOptimizers.UpdateForEach<Optimizer>((q, i) => config.Optimizer.Clone() as Optimizer);
             _biasOptimizers = new Optimizer[config.NumberOfNeurons];
             _biasOptimizers.UpdateForEach<Optimizer>((q, i) => config.Optimizer.Clone() as Optimizer);
@@ -55,6 +55,7 @@ namespace Ann.Layers
         {
             var dist = new Normal(0, stddev);
             _weights.MapInplace(q => dist.TruncatedNormalSample());
+            _weightOptimizers.ForEach((q, i, j) => q.SetValue(_weights[i, j]));
         }
 
         public void SetBiases(Array array)
@@ -81,14 +82,14 @@ namespace Ann.Layers
 
         public void UpdateWeights()
         {
-            var m1 = Matrix.Build.DenseOfRowVectors(_cache);
-            var m2 = Matrix.Build.DenseOfColumnVectors(_dedx);
+            var m1 = Matrix.Build.DenseOfColumnVectors(_cache);
+            var m2 = Matrix.Build.DenseOfRowVectors(_dedx);
             var m3 = m1.KroneckerProduct(m2);
 
             _weights.MapIndexedInplace((i, j, q) =>
             {
-                var opt = _weightOptimizers[j, i];
-                opt.Update(m3[j, i]);
+                var opt = _weightOptimizers[i, j];
+                opt.Update(m3[i, j]);
                 return opt.Value;
             });
         }

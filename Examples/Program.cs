@@ -26,7 +26,7 @@ namespace Ann.Mnist
         {
             var network = new Network(LossFunctionType.CrossEntropy, 10);
 
-            var lr = 0.01;
+            var lr = 0.001;
 
             network.AddInputLayer(28, 1);
             network.AddConvolutionLayer(new Flat(lr), 16, 5);
