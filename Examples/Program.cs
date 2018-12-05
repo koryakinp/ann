@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ann.Activators;
 using Ann.LossFunctions;
+using Ann.Persistence;
 using Gdo.Optimizers;
 using ShellProgressBar;
 
@@ -14,10 +15,8 @@ namespace Ann.Mnist
         {
             var network = CreateModel();
             TrainModel(network, q => Helper.Create3DInput(q.Data));
-            network.SaveModel("model.json");
-            //var network = new Network("model.json");
-            
-            var ratio = TestModel(network, q => Helper.Create3DInput(q.Data));
+            var model = network.BuildModel();
+            var ratio = TestModel(model, q => Helper.Create3DInput(q.Data));
             Console.WriteLine($"Accuracy: {ratio * 100}% ");
             Console.ReadLine();
         }
@@ -62,7 +61,7 @@ namespace Ann.Mnist
         }
 
 
-        private static double TestModel(Network model, Func<Image, Array> getInput)
+        private static double TestModel(Model model, Func<Image, Array> getInput)
         {
             var results = new List<double>();
             int total = 1000;
@@ -71,7 +70,7 @@ namespace Ann.Mnist
             {
                 foreach (var image in MnistReader.ReadTestData(total))
                 {
-                    var res = model.UseModel(getInput(image));
+                    var res = model.Predict(getInput(image));
                     results.Add(Helper.IntegerFromOutput(res) == image.Label ? 1 : 0);
                     pbar.Tick($"Testing Model: {++current} of {total}");
                 }

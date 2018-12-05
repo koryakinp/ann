@@ -1,10 +1,7 @@
 ﻿using Ann.Layers;
 using Ann.LossFunctions;
-using Ann.Persistence;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Ann
@@ -12,29 +9,8 @@ namespace Ann
     public partial class Network
     {
         internal readonly List<Layer> _layers;
-
         private readonly LossFunction _lossFunction;
         internal readonly int _numberOfClasses;
-
-        private readonly JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            Formatting = Formatting.Indented
-        };
-
-        public Network(string path)
-        {
-            var json = File.ReadAllText(path);
-            var nc = JsonConvert.DeserializeObject<NetworkConfiguration>(json, jsonSerializerSettings);
-            _layers = new List<Layer>();
-            foreach (var layerConfig in nc.Layers)
-            {
-                var layer = LayerFactory.Produce(layerConfig);
-
-                _layers.Add(layer);
-
-            }
-        }
 
         public Network(LossFunctionType lossFunctionType, int numberOfClasses)
         {
@@ -43,7 +19,6 @@ namespace Ann
             _layers = new List<Layer>();
         }
 
-
         public void TrainModel(Array input, bool[] labels)
         {
             double[] output = PassForward(input).Cast<double>().ToArray();
@@ -51,11 +26,6 @@ namespace Ann
 
             PassBackward(error);
             Learn();
-        }
-
-        public double[] UseModel(Array input)
-        {
-            return PassForward(input).Cast<double>().ToArray();
         }
 
         private Array PassForward(Array input)
@@ -105,16 +75,10 @@ namespace Ann
             _layers.OfType<ILearnable>().ToArray()[layerIndex].SetBiases(biases);
         }
 
-        public void SaveModel(string path)
+        public Model BuildModel()
         {
-            var networkConfig = new NetworkConfiguration();
-            foreach (var layer in _layers)
-            {
-                networkConfig.Layers.Add(layer.GetLayerConfiguration());
-            }
-
-            var json = JsonConvert.SerializeObject(networkConfig, jsonSerializerSettings);
-            File.WriteAllText(path, json);
+            var lc = _layers.Select(q => q.GetLayerConfiguration()).ToList();
+            return new Model(lc);
         }
     }
 }
