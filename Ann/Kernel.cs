@@ -53,12 +53,12 @@ namespace Ann
 
         public void UpdateWeights()
         {
-            Weights.ForEach((q, i, j, k) => q.Update(Gradients[i, j, k]));
+            //Weights.ForEach((q, i, j, k) => q.Update(Gradients[i, j, k]));
         }
 
         public void UpdateBias()
         {
-            Bias.Update(BiasGradient);
+            //Bias.Update(BiasGradient);
         }
     }
 }

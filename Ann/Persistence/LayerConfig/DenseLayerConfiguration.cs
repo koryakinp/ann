@@ -25,7 +25,7 @@ namespace Ann.Persistence.LayerConfig
             : base(inputMessageShape)
         {
             EnableBias = enableBiase;
-            Optimizer = new PlaceholderOptimizer();
+            //Optimizer = new PlaceholderOptimizer();
             Weights = weights;
             Biases = biases;
             NumberOfNeurons = numberOfNeurons;

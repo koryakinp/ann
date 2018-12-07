@@ -22,7 +22,7 @@ namespace Ann.Persistence.LayerConfig
             double[] biases,
             MessageShape inputMessageShape) : base(inputMessageShape)
         {
-            Optimizer = new PlaceholderOptimizer();
+            //Optimizer = new PlaceholderOptimizer();
             Weights = weights;
             Biases = biases;
             NumberOfKernels = numberOfKernels;

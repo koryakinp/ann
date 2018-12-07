@@ -75,7 +75,7 @@ namespace Ann.Layers
             _biases.MapIndexedInplace((i, q) =>
             {
                 var opt = _biasOptimizers[i];
-                opt.Update(_dedx[i]);
+                //opt.Update(_dedx[i]);
                 return opt.Value;
             });
         }
@@ -89,7 +89,7 @@ namespace Ann.Layers
             _weights.MapIndexedInplace((i, j, q) =>
             {
                 var opt = _weightOptimizers[i, j];
-                opt.Update(m3[i, j]);
+                //opt.Update(m3[i, j]);
                 return opt.Value;
             });
         }
