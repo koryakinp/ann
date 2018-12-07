@@ -75,14 +75,10 @@ namespace Ann
             int kernelArea = kernelSize * kernelSize;
             int kernelLength = kernel.GetLength(0) * kernel.GetLength(1) * kernel.GetLength(2);
             int outputSize = volumeSize - kernelSize + 1;
-            int kernelsPerChannel = outputSize * outputSize;
             int depth = kernel.GetLength(0);
 
-            double[,] temp1 = new double[numberOfKernels, kernelLength];
-            double[,] temp2 = new double[kernelArea * depth, outputSize * outputSize];
-
-            var kernelMatrix = Matrix.Build.DenseOfArray(temp1);
-            var volumeMatrix = Matrix.Build.DenseOfArray(temp2);
+            var kernelMatrix = Matrix.Build.Dense(numberOfKernels, kernelLength);
+            var volumeMatrix = Matrix.Build.Dense(kernelArea * depth, outputSize * outputSize);
 
             int row = 0;
             int col = 0;
@@ -93,13 +89,11 @@ namespace Ann
                 {
                     for (int x = 0; x <= volume.GetLength(2) - kernelSize; x++)
                     {
-                        
                         for (int ky = 0; ky < kernelSize; ky++)
                         {
                             for (int kx = 0; kx < kernelSize; kx++)
                             {
-                                volumeMatrix[z * kernelArea + row, col] = volume[z, y + ky, x + kx];
-                                row++;
+                                volumeMatrix[z * kernelArea + row++, col] = volume[z, y + ky, x + kx];
                             }
                         }
                         row = 0;
@@ -114,16 +108,19 @@ namespace Ann
                 kernelMatrix.SetRow(i, kernels[i].Cast<double>().ToArray());
             }
 
-            var res = kernelMatrix.Multiply(volumeMatrix);
+            var output = new double[numberOfKernels, outputSize, outputSize];
 
-            var output = new double[res.RowCount, outputSize, outputSize];
+            kernelMatrix
+                .Multiply(volumeMatrix)
+                .ToRowArrays()
+                .ForEach((q, i) =>
+                {
+                    var temp = Matrix.Build.Dense(outputSize, outputSize, q)
+                        .Transpose()
+                        .ToArray();
 
-            for (int i = 0; i < res.RowCount; i++)
-            {
-                var arr = res.Row(i).ToArray();
-                var temp = Matrix.Build.Dense(outputSize, outputSize, arr).Transpose().ToArray();
-                output.SetChannel(temp, i);
-            }
+                    output.SetChannel(temp, i);
+                });
 
             return output;
         }
