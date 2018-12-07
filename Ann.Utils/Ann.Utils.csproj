@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Gdo.koryakinp" Version="2.1.4" />
+    <PackageReference Include="Gdo.koryakinp" Version="2.1.6" />
     <PackageReference Include="MathNet.Numerics" Version="4.7.0" />
   </ItemGroup>
 

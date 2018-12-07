@@ -8,6 +8,6 @@ namespace Ann
         void UpdateBiases();
         void RandomizeWeights(double stddev);
         void SetWeights(Array array);
-        void SetBiases(Array array);
+        void SetBiases(double[] array);
     }
 }

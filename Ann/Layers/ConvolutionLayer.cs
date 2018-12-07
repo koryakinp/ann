@@ -52,7 +52,7 @@ namespace Ann.Layers
             _kernels.ForEach(q => q.Weights.ForEach(w => w.SetValue(dist.TruncatedNormalSample())));
         }
 
-        public void SetBiases(Array biases)
+        public void SetBiases(double[] biases)
         {
             _kernels.ForEach((q, i) => q.Bias.SetValue((double)biases.GetValue(i)));
         }

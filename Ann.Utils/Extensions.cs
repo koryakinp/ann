@@ -7,6 +7,24 @@ namespace Ann.Utils
 {
     public static class Extensions
     {
+        public static void CopyTo<T>(this Array src, Array dst)
+        {
+            if(src.Rank != dst.Rank)
+            {
+                throw new Exception(Consts.ShapesDoNotMatch);
+            }
+
+            for (int i = 0; i < src.Rank; i++)
+            {
+                if(src.GetLength(i) != dst.GetLength(i))
+                {
+                    throw new Exception(Consts.ShapesDoNotMatch);
+                }
+            }
+
+            dst.UpdateForEach<T>((q, idx) => (T)src.GetValue(idx));
+        }
+
         public static double TruncatedNormalSample(this Normal dist)
         {
             while (true)

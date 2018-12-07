@@ -58,7 +58,7 @@ namespace Ann.Layers
             _weightOptimizers.ForEach((q, i, j) => q.SetValue(_weights[i, j]));
         }
 
-        public void SetBiases(Array array)
+        public void SetBiases(double[] array)
         {
             _biases.SetValues(array);
             _biases.ToArray().ForEach((q, i) => _biasOptimizers[i].SetValue(q));
