@@ -1,4 +1,4 @@
-﻿using Ann.Misc;
+using Ann.Misc;
 using Ann.Utils;
 using Gdo;
 using System;
@@ -9,8 +9,6 @@ namespace Ann.Layers.Convolution
     class ConvolutionFullLayer : ConvolutionForwardLayer, IFullLayer, ILearnable
     {
         private readonly double[,,] _cache;
-        private readonly double[] _dedb;
-        private readonly double[][,,] _dedf;
         private readonly Optimizer[][,,] _weightOptimizers;
         private readonly Optimizer[] _biasOptimizers;
 
@@ -21,9 +19,7 @@ namespace Ann.Layers.Convolution
             Optimizer optimizer) 
             : base(inputMessageShape, kernelSize, numberOfkernels)
         {
-            _dedb = new double[numberOfkernels];
-            _dedf = new double[numberOfkernels][,,];
-            _dedf.UpdateForEach<double[,,]>(q => new double[inputMessageShape.Depth, kernelSize, kernelSize]);
+            _cache = new double[inputMessageShape.Depth, inputMessageShape.Size, inputMessageShape.Size];
             _weightOptimizers = Helper.InitializeKernelOptimizers(
                 inputMessageShape.Depth, numberOfkernels, kernelSize, optimizer);
             _biasOptimizers = Helper.InitializeBiasOptimizers(numberOfkernels, optimizer);
@@ -71,18 +67,20 @@ namespace Ann.Layers.Convolution
 
         private void ComputeFilterGradients(double[,,] gradients)
         {
-            for (int i = 0; i < gradients.GetLength(0); i++)
-            {
-                var dEdO = gradients.GetChannel(i);
-
-                for (int j = 0; j < _cache.GetLength(0); j++)
+            _weightOptimizers
+                .AsParallel()
+                .Select((q, i) => new { Kernel = q, Index = i })
+                .ForAll(q =>
                 {
-                    var dedf = MatrixHelper.Convolution(_cache.GetChannel(j), dEdO);
-                    _weightOptimizers[i]
-                        .GetChannel(j)
-                        .ForEach((q, ii, jj) => q.SetGradient(dedf[ii, jj]));
-                }
-            }
+                    var dEdO = gradients.GetChannel(q.Index);
+                    for (int j = 0; j < _cache.GetLength(0); j++)
+                    {
+                        var dedf = MatrixHelper.Convolution(_cache.GetChannel(j), dEdO);
+                        q.Kernel
+                            .GetChannel(j)
+                            .ForEach((w, ii, jj) => w.SetGradient(dedf[ii, jj]));
+                    }
+                });
         }
 
         private double[,,] ComputeInputGradients(double[,,] input)
