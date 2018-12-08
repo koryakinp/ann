@@ -1,4 +1,6 @@
-﻿using Ann.Utils;
+﻿using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
+using Ann.Utils;
 using System;
 
 namespace Ann.Layers.Convolution
@@ -66,6 +68,16 @@ namespace Ann.Layers.Convolution
                 (weights.GetValue(kernel) as double[,,])
                     .ForEach((w, i, j, k) => Kernels[kernel][i,j,k] = w);
             });
+        }
+
+        public LayerConfiguration GetConfiguration()
+        {
+            return new ConvolutionLayerConfigurtion(
+                NumberOfKernels,
+                KernelSize,
+                Kernels,
+                Biases,
+                GetInputMessageShape());
         }
     }
 }

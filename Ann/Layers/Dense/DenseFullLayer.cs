@@ -56,15 +56,15 @@ namespace Ann.Layers.Dense
             _weightOptimizers.ForEach((q, i, j) => q.SetValue(Weights[i, j]));
         }
 
-        public void SetBiases(double[] array)
+        public new void SetBiases(double[] array)
         {
-            Biases.SetValues(array);
+            base.SetBiases(array);
             Biases.ToArray().ForEach((q, i) => _biasOptimizers[i].SetValue(q));
         }
 
-        public void SetWeights(Array array)
+        public new void SetWeights(Array array)
         {
-            Weights.SetValues(array);
+            base.SetWeights(array);
             Weights.ToArray().ForEach((q, i, j) => _weightOptimizers[i, j].SetValue(q));
         }
 

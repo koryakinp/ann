@@ -1,4 +1,6 @@
 ﻿using Ann.Activators;
+using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
 using Ann.Utils;
 using System;
 using Activator = Ann.Activators.Activator;
@@ -15,6 +17,13 @@ namespace Ann.Layers.Activation
             : base(inputMessageShape, inputMessageShape)
         {
             Activator = ActivatorFactory.Produce(type);
+        }
+
+        public LayerConfiguration GetConfiguration()
+        {
+            return new ActivationLayerConfiguration(
+                GetInputMessageShape(),
+                Activator.GetActivatorType());
         }
 
         public Array PassForward(Array input)

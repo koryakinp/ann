@@ -1,4 +1,6 @@
 ﻿using Ann.Activators;
+using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
 using System;
 
 namespace Ann.Layers.SoftMax
@@ -10,6 +12,11 @@ namespace Ann.Layers.SoftMax
         public SoftMaxForwardLayer(
             MessageShape inputMessageShape) 
             : base(inputMessageShape, inputMessageShape) {}
+
+        public LayerConfiguration GetConfiguration()
+        {
+            return new SoftmaxLayerConfiguration(GetInputMessageShape());
+        }
 
         public Array PassForward(Array input)
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
 
 namespace Ann.Layers.Flatten
 {
@@ -30,6 +32,11 @@ namespace Ann.Layers.Flatten
         public static MessageShape ComputeOutputMessageShape(MessageShape shape)
         {
             return new MessageShape(shape.Size * shape.Size * shape.Depth);
+        }
+
+        public LayerConfiguration GetConfiguration()
+        {
+            return new FlattenLayerConfiguration(GetInputMessageShape());
         }
     }
 }

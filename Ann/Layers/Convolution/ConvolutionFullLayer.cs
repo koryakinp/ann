@@ -1,6 +1,7 @@
 using Ann.Misc;
 using Ann.Utils;
 using Gdo;
+using MathNet.Numerics.Distributions;
 using System;
 using System.Linq;
 
@@ -13,10 +14,10 @@ namespace Ann.Layers.Convolution
         private readonly Optimizer[] _biasOptimizers;
 
         public ConvolutionFullLayer(
-            MessageShape inputMessageShape, 
+            MessageShape inputMessageShape,
             int kernelSize,
             int numberOfkernels,
-            Optimizer optimizer) 
+            Optimizer optimizer)
             : base(inputMessageShape, kernelSize, numberOfkernels)
         {
             _cache = new double[inputMessageShape.Depth, inputMessageShape.Size, inputMessageShape.Size];
@@ -41,7 +42,13 @@ namespace Ann.Layers.Convolution
 
         public void RandomizeWeights(double stddev)
         {
-            throw new NotImplementedException();
+            var dist = new Normal(0, stddev);
+            Kernels
+                .ForEach((q, kernel) => q.UpdateForEach<double>((w, idx) => dist.Sample()));
+            Kernels.ForEach((kernel, kernelIndex) =>
+            {
+                kernel.UpdateForEach<double>((q, idx) => ((Optimizer)_weightOptimizers[kernelIndex].GetValue(idx)).Update());
+            });
         }
 
         public void Update()
@@ -100,6 +107,20 @@ namespace Ann.Layers.Convolution
         public double[] GetBiases()
         {
             return Biases.ToArray();
+        }
+
+        public new void SetBiases(double[] biases)
+        {
+            base.SetBiases(biases);
+            biases.ForEach((q, i) => _biasOptimizers[i].SetValue(q));
+        }
+
+        public new void SetWeights(Array weights)
+        {
+            base.SetWeights(weights);
+            (weights as double[][,,])
+                .ForEach((q, kernel) => q.ForEach((w, i, j, k) => _weightOptimizers[kernel][i, j, k].SetValue(w)));
+
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
 
 namespace Ann.Layers.Pooling
 {
@@ -24,6 +26,11 @@ namespace Ann.Layers.Pooling
                 : (inputMessageShape.Size / stride) + 1;
 
             return new MessageShape(size, inputMessageShape.Depth);
+        }
+
+        public LayerConfiguration GetConfiguration()
+        {
+            return new PoolingLayerConfiguration(Stride, GetInputMessageShape());
         }
     }
 }

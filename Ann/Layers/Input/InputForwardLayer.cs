@@ -1,4 +1,6 @@
 ﻿using System;
+using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
 
 namespace Ann.Layers.Input
 {
@@ -7,6 +9,11 @@ namespace Ann.Layers.Input
         public InputForwardLayer(
             MessageShape inputMessageShape) 
             : base(inputMessageShape, inputMessageShape) {}
+
+        public LayerConfiguration GetConfiguration()
+        {
+            return new InputLayerConfiguration(GetInputMessageShape());
+        }
 
         public Array PassForward(Array input)
         {

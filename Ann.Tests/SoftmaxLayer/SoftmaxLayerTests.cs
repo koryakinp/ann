@@ -1,6 +1,5 @@
 ﻿using Ann.Core.Tests.Utils;
 using Ann.Layers.SoftMax;
-using Ann.Persistence.LayerConfig;
 using Ann.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

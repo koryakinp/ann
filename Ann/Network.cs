@@ -77,9 +77,12 @@ namespace Ann
 
         public Model BuildModel()
         {
-            //var lc = _layers.Select(q => q.GetLayerConfiguration()).ToList();
-            //return new Model(lc);
-            throw new NotImplementedException();
+            var lc = _layers
+                .OfType<IForwardLayer>()
+                .Select(q => q.GetConfiguration())
+                .ToList();
+
+            return new Model(lc);
         }
     }
 }

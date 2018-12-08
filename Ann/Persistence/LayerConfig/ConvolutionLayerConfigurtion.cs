@@ -1,5 +1,4 @@
-﻿using Ann.Misc;
-using Gdo;
+﻿using Gdo;
 using Newtonsoft.Json;
 using System;
 
@@ -12,8 +11,6 @@ namespace Ann.Persistence.LayerConfig
         public readonly int KernelSize;
         public readonly double[][,,] Weights;
         public readonly double[] Biases;
-        [JsonIgnore]
-        public readonly Optimizer Optimizer;
 
         [JsonConstructor]
         public ConvolutionLayerConfigurtion(int numberOfKernels,
@@ -22,7 +19,6 @@ namespace Ann.Persistence.LayerConfig
             double[] biases,
             MessageShape inputMessageShape) : base(inputMessageShape)
         {
-            //Optimizer = new PlaceholderOptimizer();
             Weights = weights;
             Biases = biases;
             NumberOfKernels = numberOfKernels;
@@ -31,10 +27,8 @@ namespace Ann.Persistence.LayerConfig
 
         public ConvolutionLayerConfigurtion(int numberOfKernels,
             int kernelSize,
-            Optimizer optimizer,
             MessageShape inputMessageShape) : base(inputMessageShape)
         {
-            Optimizer = optimizer;
             NumberOfKernels = numberOfKernels;
             KernelSize = kernelSize;
         }

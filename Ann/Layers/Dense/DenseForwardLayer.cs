@@ -1,8 +1,9 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using Ann.Persistence;
+using Ann.Persistence.LayerConfig;
+using Ann.Utils;
+using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ann.Layers.Dense
 {
@@ -25,6 +26,16 @@ namespace Ann.Layers.Dense
             Biases = Vector.Build.Dense(NumberOfNeurons);
         }
 
+        public LayerConfiguration GetConfiguration()
+        {
+            return new DenseLayerConfiguration(
+                GetInputMessageShape(),
+                EnableBiases,
+                NumberOfNeurons,
+                Weights.ToArray(),
+                Biases.ToArray());
+        }
+
         public Array PassForward(Array input)
         {
             var X = Matrix.Build.DenseOfRowArrays(input as double[]);
@@ -32,6 +43,16 @@ namespace Ann.Layers.Dense
             return EnableBiases
                 ? X.Multiply(Weights).Row(0).Add(Biases).ToArray()
                 : X.Multiply(Weights).Row(0).ToArray();
+        }
+
+        public void SetBiases(double[] array)
+        {
+            Biases.SetValues(array);
+        }
+
+        public void SetWeights(Array array)
+        {
+            Weights.SetValues(array);
         }
     }
 }

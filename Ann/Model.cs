@@ -9,7 +9,7 @@ namespace Ann
 {
     public class Model
     {
-        private readonly List<Layer> _layers;
+        private readonly List<IForwardLayer> _layers;
         private readonly List<LayerConfiguration> _layerConfiguration;
         private readonly JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
         {
@@ -20,7 +20,7 @@ namespace Ann
         internal Model(List<LayerConfiguration> layerConfig)
         {
             _layerConfiguration = layerConfig;
-            _layers = new List<Layer>();
+            _layers = new List<IForwardLayer>();
             foreach (var lc in _layerConfiguration)
             {
                 var layer = LayerFactory.Produce(lc);
@@ -32,7 +32,7 @@ namespace Ann
         {
             var json = File.ReadAllText(path);
             _layerConfiguration = JsonConvert.DeserializeObject<List<LayerConfiguration>>(json, jsonSerializerSettings);
-            _layers = new List<Layer>();
+            _layers = new List<IForwardLayer>();
             foreach (var lc in _layerConfiguration)
             {
                 var layer = LayerFactory.Produce(lc);

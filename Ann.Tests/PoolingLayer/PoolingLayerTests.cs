@@ -1,5 +1,4 @@
 ﻿using Ann.Layers.Pooling;
-using Ann.Persistence.LayerConfig;
 using Ann.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

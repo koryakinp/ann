@@ -1,7 +1,6 @@
 ﻿using Ann.Activators;
 using Ann.Core.Tests.Utils;
 using Ann.Layers.Activation;
-using Ann.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ann.Tests.ActivationLayer

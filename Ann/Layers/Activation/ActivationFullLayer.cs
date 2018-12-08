@@ -29,8 +29,9 @@ namespace Ann.Layers.Activation
 
         public new Array PassForward(Array input)
         {
-            base.PassForward(input).CopyTo<double>(_cache);
-            return _cache;
+            var output = base.PassForward(input);
+            output.CopyTo<double>(_cache);
+            return output;
         }
     }
 }
