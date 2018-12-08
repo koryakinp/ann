@@ -16,8 +16,9 @@ namespace Ann.Layers.Dense
         public DenseFullLayer(
             MessageShape inputMessageShape, 
             int numberOfNeurons,
+            bool enableBiases,
             Optimizer optimizer) 
-            : base(inputMessageShape, numberOfNeurons)
+            : base(inputMessageShape, numberOfNeurons, enableBiases)
         {
             _weightOptimizers = new Optimizer[inputMessageShape.Size, numberOfNeurons];
             _weightOptimizers.UpdateForEach<Optimizer>((q, i) => optimizer.Clone() as Optimizer);
@@ -67,14 +68,23 @@ namespace Ann.Layers.Dense
             Weights.ToArray().ForEach((q, i, j) => _weightOptimizers[i, j].SetValue(q));
         }
 
-        public void UpdateBiases()
+        public void Update()
         {
-            Biases.MapIndexedInplace((i, q) => _biasOptimizers[i].Update());
+            if (EnableBiases)
+            {
+                Biases.MapIndexedInplace((i, q) => _biasOptimizers[i].Update());
+            }
+            Weights.MapIndexedInplace((i, j, q) => _weightOptimizers[i, j].Update());
         }
 
-        public void UpdateWeights()
+        public double[,] GetWeights()
         {
-            Weights.MapIndexedInplace((i, j, q) => _weightOptimizers[i, j].Update());
+            return Weights.ToArray();
+        }
+
+        public double[] GetBiases()
+        {
+            return Biases.ToArray();
         }
     }
 }

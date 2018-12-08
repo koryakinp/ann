@@ -1,4 +1,5 @@
 ﻿using Ann.Core.Tests.Utils;
+using Ann.Layers.SoftMax;
 using Ann.Persistence.LayerConfig;
 using Ann.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,7 +9,7 @@ namespace Ann.Core.Tests.SoftmaxLayer
     [TestClass]
     public class SoftmaxLayerTests
     {
-        private Layers.SoftMaxLayer _layer { get; set; }
+        private SoftMaxFullLayer _layer { get; set; }
         public readonly int _numberOfNeurons;
         private readonly DoubleComparer _comparer;
 
@@ -21,8 +22,7 @@ namespace Ann.Core.Tests.SoftmaxLayer
         [TestInitialize]
         public void Initialize()
         {
-            var config = new SoftmaxLayerConfiguration(new MessageShape(_numberOfNeurons));
-            _layer = new Layers.SoftMaxLayer(config);
+            _layer = new SoftMaxFullLayer(new MessageShape(_numberOfNeurons));
         }
 
         [TestMethod]

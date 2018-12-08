@@ -1,4 +1,5 @@
-﻿using Ann.Persistence.LayerConfig;
+﻿using Ann.Layers.Pooling;
+using Ann.Persistence.LayerConfig;
 using Ann.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,17 +15,16 @@ namespace Ann.Core.Tests.PoolingLayer
             _stride = 2;
         }
 
-        internal Layers.PoolingLayer GetLayer(int size)
+        internal PoolingFullLayer GetLayer(int size)
         {
-            var config = new PoolingLayerConfiguration(_stride, new MessageShape(size, 3));
-            return new Layers.PoolingLayer(config);
+            return new PoolingFullLayer(new MessageShape(size, 3), _stride);
         }
 
         [TestMethod]
         [TestDataSource(0,6)]
         public void PassForwardEvenTest(int i)
         {
-            Layers.PoolingLayer layer = GetLayer(6);
+            var layer = GetLayer(6);
             var input = MatrixHelper.MatrixHelperTestData.MaxPoolEvenInput[i];
             var expected = MatrixHelper.MatrixHelperTestData.MaxPoolEvenOutput[i];
             var actual = layer.PassForward(input);
@@ -35,7 +35,7 @@ namespace Ann.Core.Tests.PoolingLayer
         [TestDataSource(0,6)]
         public void PassForwardOddTest(int i)
         {
-            Layers.PoolingLayer layer = GetLayer(5);
+            var layer = GetLayer(5);
             var input = MatrixHelper.MatrixHelperTestData.MaxPoolOddInput[i];
             var expected = MatrixHelper.MatrixHelperTestData.MaxPoolOddOutput[i];
             var actual = layer.PassForward(input);
@@ -46,7 +46,7 @@ namespace Ann.Core.Tests.PoolingLayer
         [TestDataSource(0,6)]
         public void PassBackwardEvenTest(int i)
         {
-            Layers.PoolingLayer layer = GetLayer(6);
+            var layer = GetLayer(6);
 
             layer.PassForward(MatrixHelper.MatrixHelperTestData.MaxPoolEvenInput[i]);
             var actual = layer.PassBackward(MatrixHelper.MatrixHelperTestData.ReverseMaxPoolInput[i]);
@@ -59,7 +59,7 @@ namespace Ann.Core.Tests.PoolingLayer
         [TestDataSource(0,6)]
         public void PassBackwardOddTest(int i)
         {
-            Layers.PoolingLayer layer = GetLayer(5);
+            var layer = GetLayer(5);
 
             layer.PassForward(MatrixHelper.MatrixHelperTestData.MaxPoolOddInput[i]);
             var actual = layer.PassBackward(MatrixHelper.MatrixHelperTestData.ReverseMaxPoolInput[i]);

@@ -44,13 +44,9 @@ namespace Ann.Layers.Convolution
             throw new NotImplementedException();
         }
 
-        public void UpdateBiases()
+        public void Update()
         {
             _biasOptimizers.ForEach((q, i) => Biases[i] = q.Update());
-        }
-
-        public void UpdateWeights()
-        {
             Kernels.ForEach((kernel, kernelIndex) =>
             {
                 kernel.UpdateForEach<double>((q, idx) => ((Optimizer)_weightOptimizers[kernelIndex].GetValue(idx)).Update());
@@ -93,6 +89,17 @@ namespace Ann.Layers.Convolution
             var padded = input.Pad(KernelSize - 1);
 
             return MatrixHelper.Convolution(transposed, padded);
+        }
+
+
+        public double[][,,] GetWeights()
+        {
+            return Kernels.Select(q => q).ToArray();
+        }
+
+        public double[] GetBiases()
+        {
+            return Biases.ToArray();
         }
     }
 }

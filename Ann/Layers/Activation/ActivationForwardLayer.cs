@@ -19,8 +19,7 @@ namespace Ann.Layers.Activation
 
         public Array PassForward(Array input)
         {
-            input.UpdateForEach<double>((q, idx) =>
-                Activator.CalculateDeriviative(q) * (double)input.GetValue(idx));
+            input.UpdateForEach<double>(q => Activator.CalculateValue(q));
             return input;
         }
     }

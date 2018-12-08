@@ -1,5 +1,6 @@
 ﻿using Ann.Layers;
 using Ann.LossFunctions;
+using Gdo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,17 @@ namespace Ann
 {
     public partial class Network
     {
-        internal readonly List<Layer> _layers;
+        internal readonly List<IFullLayer> _layers;
         private readonly LossFunction _lossFunction;
         internal readonly int _numberOfClasses;
+        internal readonly Optimizer _optimizer;
 
-        public Network(LossFunctionType lossFunctionType, int numberOfClasses)
+        public Network(LossFunctionType lossFunctionType, Optimizer optimizer, int numberOfClasses)
         {
             _numberOfClasses = numberOfClasses;
             _lossFunction = LossFunctionFactory.Produce(lossFunctionType);
-            _layers = new List<Layer>();
+            _layers = new List<IFullLayer>();
+            _optimizer = optimizer;
         }
 
         public void TrainModel(Array input, bool[] labels)
@@ -32,7 +35,6 @@ namespace Ann
         {
             for (int i = 0; i < _layers.Count; i++)
             {
-                _layers[i].ValidateForwardInput(input);
                 input = _layers[i].PassForward(input);
             }
 
@@ -43,7 +45,6 @@ namespace Ann
         {
             for (int i = _layers.Count - 1; i >= 0; i--)
             {
-                _layers[i].ValidateBackwardInput(error);
                 error = _layers[i].PassBackward(error);
             }
         }
@@ -52,8 +53,7 @@ namespace Ann
         {
             foreach (var item in _layers.OfType<ILearnable>())
             {
-                item.UpdateWeights();
-                item.UpdateBiases();
+                item.Update();
             }
         }
 
@@ -77,8 +77,9 @@ namespace Ann
 
         public Model BuildModel()
         {
-            var lc = _layers.Select(q => q.GetLayerConfiguration()).ToList();
-            return new Model(lc);
+            //var lc = _layers.Select(q => q.GetLayerConfiguration()).ToList();
+            //return new Model(lc);
+            throw new NotImplementedException();
         }
     }
 }

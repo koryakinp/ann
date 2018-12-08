@@ -1,5 +1,5 @@
 ﻿using Ann.Core.Tests.Utils;
-using Ann.Persistence.LayerConfig;
+using Ann.Layers.Dense;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Ann.Tests.DenseLayer.DenseLayerTestData;
@@ -9,7 +9,7 @@ namespace Ann.Tests.DenseLayer
     [TestClass]
     public class DenseLayerTests
     {
-        private Layers.DenseLayer _layer { get; set; }
+        private DenseFullLayer _layer { get; set; }
         private readonly DoubleComparer _comparer;
 
         public DenseLayerTests()
@@ -20,8 +20,7 @@ namespace Ann.Tests.DenseLayer
         [TestInitialize]
         public void Initialize()
         {
-            var config = new DenseLayerConfiguration(new MessageShape(4), new Flat(0.1), true, 3);
-            _layer = new Layers.DenseLayer(config);
+            _layer = new DenseFullLayer(new MessageShape(4), 3, true, new Flat(0.1));
         }
 
         [TestMethod]
@@ -45,7 +44,7 @@ namespace Ann.Tests.DenseLayer
 
         [TestMethod]
         [TestDataSource(0, 2)]
-        public void UpdateWeightsTest(int i)
+        public void UpdateTest(int i)
         {
             _layer.SetWeights(Weights[i]);
             _layer.SetBiases(Biases[i]);
@@ -53,26 +52,12 @@ namespace Ann.Tests.DenseLayer
             _layer.PassForward(DenseLayerForwardPassInput[i]);
             _layer.PassBackward(DenseLayerBackwardPassInput[i]);
 
-            _layer.UpdateWeights();
-            var actual = _layer.GetWeights();
+            _layer.Update();
+            var actualWeights = _layer.GetWeights();
+            var actualBiases = _layer.GetBiases();
 
-            CollectionAssert.AreEqual(WeightsUpdated[i], actual, _comparer);
-        }
-
-        [TestMethod]
-        [TestDataSource(0, 2)]
-        public void UpdateBiasesTest(int i)
-        {
-            _layer.SetWeights(Weights[i]);
-            _layer.SetBiases(Biases[i]);
-
-            _layer.PassForward(DenseLayerForwardPassInput[i]);
-            _layer.PassBackward(DenseLayerBackwardPassInput[i]);
-
-            _layer.UpdateBiases();
-            var actual = _layer.GetBiases();
-
-            CollectionAssert.AreEqual(BiasesUpdated[i], actual, _comparer);
+            CollectionAssert.AreEqual(BiasesUpdated[i], actualBiases, _comparer);
+            CollectionAssert.AreEqual(WeightsUpdated[i], actualWeights, _comparer);
         }
     }
 }

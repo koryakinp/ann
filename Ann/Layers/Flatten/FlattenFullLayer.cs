@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ann.Layers.Flatten
 {
@@ -10,15 +8,16 @@ namespace Ann.Layers.Flatten
 
         public Array PassBackward(Array error)
         {
-            var output = new double[InputMessageShape.Depth, InputMessageShape.Size, InputMessageShape.Size];
+            var shape = GetInputMessageShape();
+            var output = new double[shape.Depth, shape.Size, shape.Size];
 
             int index = 0;
 
-            for (int i = 0; i < InputMessageShape.Size; i++)
+            for (int i = 0; i < shape.Size; i++)
             {
-                for (int j = 0; j < InputMessageShape.Size; j++)
+                for (int j = 0; j < shape.Size; j++)
                 {
-                    for (int k = 0; k < InputMessageShape.Depth; k++)
+                    for (int k = 0; k < shape.Depth; k++)
                     {
                         output[k, i, j] = (double)error.GetValue(index++);
                     }

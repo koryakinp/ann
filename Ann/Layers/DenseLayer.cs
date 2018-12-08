@@ -103,5 +103,10 @@ namespace Ann.Layers
         {
             return _biases.ToArray();
         }
+
+        public void Update()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

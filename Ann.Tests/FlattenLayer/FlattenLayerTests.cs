@@ -1,4 +1,4 @@
-﻿using Ann.Persistence.LayerConfig;
+﻿using Ann.Layers.Flatten;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ann.Core.Tests.FlattenLayer
@@ -6,13 +6,12 @@ namespace Ann.Core.Tests.FlattenLayer
     [TestClass]
     public class FlattenLayerTests
     {
-        private Layers.FlattenLayer _layer { get; set; }
+        private FlattenFullLayer _layer { get; set; }
 
         [TestInitialize]
         public void Initialize()
         {
-            var config = new FlattenLayerConfiguration(new MessageShape(5, 3));
-            _layer = new Layers.FlattenLayer(config);
+            _layer = new FlattenFullLayer(new MessageShape(5, 3));
         }
 
         [TestMethod]

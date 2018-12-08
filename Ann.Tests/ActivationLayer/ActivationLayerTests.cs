@@ -1,6 +1,7 @@
 ﻿using Ann.Activators;
 using Ann.Core.Tests.Utils;
-using Ann.Persistence.LayerConfig;
+using Ann.Layers.Activation;
+using Ann.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ann.Tests.ActivationLayer
@@ -9,7 +10,6 @@ namespace Ann.Tests.ActivationLayer
     public class ActivationLayerTests
     {
         public readonly DoubleComparer _comparer;
-        private Layers.ActivationLayer _layer;
 
         public ActivationLayerTests()
         {
@@ -20,10 +20,10 @@ namespace Ann.Tests.ActivationLayer
         [TestDataSource(0, 3)]
         public void ForwardPassTest(int i)
         {
-            _layer = Create3D();
+            var _layer = Create3D();
 
             var expected = ActivationLayerTestData.ForwardPass3DOutput[i];
-            var actual = _layer.PassForward(ActivationLayerTestData.ForwardPass3DInput[i]);
+            var actual = _layer.PassForward(ActivationLayerTestData.ForwardPass3DInput[i].Clone() as double[,,]);
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
@@ -31,11 +31,11 @@ namespace Ann.Tests.ActivationLayer
         [TestDataSource(0, 3)]
         public void BackwardPassTest(int i)
         {
-            _layer = Create3D();
+            var _layer = Create3D();
 
             var expected = ActivationLayerTestData.BackwardPass3DOutput[i];
-            _layer.PassForward(ActivationLayerTestData.ForwardPass3DInput[i]);
-            var actual = _layer.PassBackward(ActivationLayerTestData.BackwardPass3DInput[i]);
+            _layer.PassForward(ActivationLayerTestData.ForwardPass3DInput[i].Clone() as double[,,]);
+            var actual = _layer.PassBackward(ActivationLayerTestData.BackwardPass3DInput[i].Clone() as double[,,]);
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
@@ -43,10 +43,10 @@ namespace Ann.Tests.ActivationLayer
         [TestDataSource(0, 3)]
         public void ForwardPass1DTest(int i)
         {
-            _layer = Create1D();
+            var _layer = Create1D();
 
             var expected = ActivationLayerTestData.ForwardPass1DOutput[i];
-            var actual = _layer.PassForward(ActivationLayerTestData.ForwardPass1DInput[i]);
+            var actual = _layer.PassForward(ActivationLayerTestData.ForwardPass1DInput[i].Clone() as double[]);
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
@@ -54,24 +54,22 @@ namespace Ann.Tests.ActivationLayer
         [TestDataSource(0, 3)]
         public void BackwardPass1DTest(int i)
         {
-            _layer = Create1D();
+            var _layer = Create1D();
 
             var expected = ActivationLayerTestData.BackwardPass1DOutput[i];
-            _layer.PassForward(ActivationLayerTestData.ForwardPass1DInput[i]);
-            var actual = _layer.PassBackward(ActivationLayerTestData.BackwardPass1DInput[i]);
+            _layer.PassForward(ActivationLayerTestData.ForwardPass1DInput[i].Clone() as double[]);
+            var actual = _layer.PassBackward(ActivationLayerTestData.BackwardPass1DInput[i].Clone() as double[]);
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
-        private Layers.ActivationLayer Create3D()
+        private ActivationFullLayer Create3D()
         {
-            var config = new ActivationLayerConfiguration(new MessageShape(5, 3), ActivatorType.Sigmoid);
-            return new Layers.ActivationLayer(config);
+            return new ActivationFullLayer(ActivatorType.Sigmoid, new MessageShape(5, 3));
         }
 
-        private Layers.ActivationLayer Create1D()
+        private ActivationFullLayer Create1D()
         {
-            var config = new ActivationLayerConfiguration(new MessageShape(10), ActivatorType.Sigmoid);
-            return new Layers.ActivationLayer(config);
+            return new ActivationFullLayer(ActivatorType.Sigmoid, new MessageShape(10));
         }
     }
 }

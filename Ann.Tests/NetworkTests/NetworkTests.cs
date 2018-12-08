@@ -1,13 +1,14 @@
 ﻿using Ann.Activators;
 using Ann.Core.Tests.Utils;
-using Ann.Layers;
+using Ann.Layers.Convolution;
+using Ann.Layers.Dense;
 using Ann.LossFunctions;
-using Ann.Persistence;
 using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System.IO;
+using System.Linq;
 
 namespace Ann.Core.Tests.NetworkTests
 {
@@ -25,46 +26,42 @@ namespace Ann.Core.Tests.NetworkTests
         [TestInitialize]
         public void Initialize()
         {
-            network = new Network(LossFunctionType.CrossEntropy, 3);
+            network = new Network(LossFunctionType.CrossEntropy, new Flat(0.1), 3);
         }
 
         [TestMethod]
         public void CNNTest()
         {
-            var lr = 0.1;
-
             network.AddInputLayer(7, 1);
-            network.AddConvolutionLayer(new Flat(lr), 2, 2);
+            network.AddConvolutionLayer(2, 2);
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddConvolutionLayer(new Flat(lr), 3, 2);
+            network.AddConvolutionLayer(3, 2);
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
-            network.AddDenseLayer(5, true, new Flat(lr));
+            network.AddDenseLayer(5, true);
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddDenseLayer(3, false, new Flat(lr));
+            network.AddDenseLayer(3, false);
             network.AddSoftMaxLayer();
 
             TestNetwork(network, "test1");
         }
 
-       
-
         [TestMethod]
         public void LoadFromFile()
         {
             network.AddInputLayer(7, 1);
-            network.AddConvolutionLayer(new Flat(0.1), 2, 2);
+            network.AddConvolutionLayer(2, 2);
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddConvolutionLayer(new Flat(0.1), 3, 2);
+            network.AddConvolutionLayer(3, 2);
             network.AddPoolingLayer(2);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddFlattenLayer();
-            network.AddDenseLayer(5, true, new Flat(0.1));
+            network.AddDenseLayer(5, true);
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddDenseLayer(3, false, new Flat(0.1));
+            network.AddDenseLayer(3, false);
             network.AddSoftMaxLayer();
 
             network.RandomizeWeights(0.1);
@@ -78,19 +75,17 @@ namespace Ann.Core.Tests.NetworkTests
         [TestMethod]
         public void MNISTTest()
         {
-            var lr = 0.1;
-
             network.AddInputLayer(28, 1);
-            network.AddConvolutionLayer(new Flat(lr), 16, 5);
+            network.AddConvolutionLayer(16, 5);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
-            network.AddConvolutionLayer(new Flat(lr), 32, 5);
+            network.AddConvolutionLayer(32, 5);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
-            network.AddDenseLayer(1024, true, new Flat(lr));
+            network.AddDenseLayer(1024, true);
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddDenseLayer(10, false, new Flat(lr));
+            network.AddDenseLayer(10, false);
             network.AddSoftMaxLayer();
 
             TestNetwork(network, "test2");
@@ -170,11 +165,11 @@ namespace Ann.Core.Tests.NetworkTests
             var y = ReadLabels(folder);
             network.TrainModel(x, y);
 
-            var learnableLayers = network._layers.ToArray();
-            var conv1layer = learnableLayers[1] as ConvolutionLayer;
-            var conv2layer = learnableLayers[4] as ConvolutionLayer;
-            var dense1layer = learnableLayers[8] as DenseLayer;
-            var dense2layer = learnableLayers[10] as DenseLayer;
+            var learnableLayers = network._layers.OfType<ILearnable>().ToArray();
+            var conv1layer = learnableLayers[0] as ConvolutionFullLayer;
+            var conv2layer = learnableLayers[1] as ConvolutionFullLayer;
+            var dense1layer = learnableLayers[2] as DenseFullLayer;
+            var dense2layer = learnableLayers[3] as DenseFullLayer;
 
             var w1 = conv1layer.GetWeights();
             var w2 = conv2layer.GetWeights();

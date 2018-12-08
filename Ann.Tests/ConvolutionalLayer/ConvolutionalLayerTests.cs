@@ -1,11 +1,11 @@
 ﻿using Ann.Core.Tests.Utils;
-using Ann.Layers;
-using Ann.Persistence.LayerConfig;
+using Ann.Layers.Convolution;
 using Ann.Tests;
 using Ann.Utils;
 using Gdo.Optimizers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using static Ann.Core.Tests.ConvolutionalLayer.ConvolutionalLayerTestsData;
 
 namespace Ann.Core.Tests.ConvolutionalLayer
 {
@@ -24,22 +24,19 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         public void SetWeightsTest(int index)
         {
             var layer = CreateLayer();
-
-            layer.SetWeights(ConvolutionalLayerTestsData.Weights[index]);
-            for (int kernel = 0; kernel < layer._kernels.Length; kernel++)
-            {
-                layer._kernels[kernel].Weights.ForEach((q, i, j, k) =>
-                {
-                    Assert.AreEqual(q.Value, 
-                        ConvolutionalLayerTestsData.Weights[index][kernel][i, j, k]);
-                });
-            }
+            layer.SetWeights(Weights[index]);
+            layer
+                .GetWeights()
+                .ForEach((kernel, kk) => kernel
+                    .ForEach((q, i, j, k) =>
+                    {
+                        Assert.AreEqual(q, Weights[index][kk][i, j, k]);
+                    }));
         }
 
         [TestMethod]
-        [TestDataSource(0,3)]
         [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.CanNotSetWeights)]
-        public void SetWeightsShouldThrowIfShapeIsInvalidTest1(int index)
+        public void SetWeightsShouldThrowIfShapeIsInvalidTest1()
         {
             var layer = CreateLayer();
 
@@ -47,9 +44,8 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         }
 
         [TestMethod]
-        [TestDataSource(0,3)]
         [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.CanNotSetWeights)]
-        public void SetWeightsShouldThrowIfShapeIsInvalidTest2(int index)
+        public void SetWeightsShouldThrowIfShapeIsInvalidTest2()
         {
             var layer = CreateLayer();
 
@@ -64,9 +60,8 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         }
 
         [TestMethod]
-        [TestDataSource(0,3)]
         [ExpectedException(typeof(Exception), Consts.CommonLayerMessages.CanNotSetWeights)]
-        public void SetWeightsShouldThrowIfShapeIsInvalidTest3(int index)
+        public void SetWeightsShouldThrowIfShapeIsInvalidTest3()
         {
             var layer = CreateLayer();
 
@@ -84,9 +79,9 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         public void ForwardPassTest(int i)
         {
             var layer = CreateLayer();
-            layer.SetWeights(ConvolutionalLayerTestsData.Weights[i]);
-            var actual = layer.PassForward(ConvolutionalLayerTestsData.ForwardPassInput[i]);
-            var expected = ConvolutionalLayerTestsData.ForwardPassOutput[i];
+            layer.SetWeights(Weights[i]);
+            var actual = layer.PassForward(ForwardPassInput[i]);
+            var expected = ForwardPassOutput[i];
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
@@ -95,10 +90,10 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         public void ForwardPassWithBiasTest(int i)
         {
             var layer = CreateLayer();
-            layer.SetWeights(ConvolutionalLayerTestsData.Weights[i]);
-            layer._kernels.ForEach(q => q.Bias.SetValue(1));
-            var actual = layer.PassForward(ConvolutionalLayerTestsData.ForwardPassInput[i]);
-            var expected = (double[,,])ConvolutionalLayerTestsData.ForwardPassOutput[i].Clone();
+            layer.SetWeights(Weights[i]);
+            layer.SetBiases(new double[4] { 1, 1, 1, 1 });
+            var actual = layer.PassForward(ForwardPassInput[i]);
+            var expected = (double[,,])ForwardPassOutput[i].Clone();
             expected.UpdateForEach<double>(q => q + 1);
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
@@ -109,10 +104,10 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         public void BackwardPassTest(int i)
         {
             var layer = CreateLayer();
-            layer.SetWeights(ConvolutionalLayerTestsData.Weights[i]);
-            layer.PassForward(ConvolutionalLayerTestsData.ForwardPassInput[i]);
-            var actual = layer.PassBackward(ConvolutionalLayerTestsData.BackwardPassInput[i]);
-            var expected = ConvolutionalLayerTestsData.BackwardPassOutput[i];
+            layer.SetWeights(Weights[i]);
+            layer.PassForward(ForwardPassInput[i]);
+            var actual = layer.PassBackward(BackwardPassInput[i]);
+            var expected = BackwardPassOutput[i];
             CollectionAssert.AreEqual(expected, actual, _comparer);
         }
 
@@ -121,22 +116,23 @@ namespace Ann.Core.Tests.ConvolutionalLayer
         public void BackwardPassWeightGradientsTest(int i)
         {
             var layer = CreateLayer();
-            layer.SetWeights(ConvolutionalLayerTestsData.Weights[i]);
-            layer.PassForward(ConvolutionalLayerTestsData.ForwardPassInput[i]);
-            layer.PassBackward(ConvolutionalLayerTestsData.BackwardPassInput[i]);
+            layer.SetWeights(Weights[i]);
+            layer.PassForward(ForwardPassInput[i]);
+            layer.PassBackward(BackwardPassInput[i]);
 
-            for (int k = 0; k < layer._kernels.Length; k++)
+            /*
+            for (int k = 0; k < layer..Length; k++)
             {
                 var actual = layer._kernels[k].Gradients;
-                var expected = ConvolutionalLayerTestsData.WeightGradients[i][k];
+                var expected = WeightGradients[i][k];
                 CollectionAssert.AreEqual(expected, actual, _comparer);
             }
+            */
         }
 
-        private ConvolutionLayer CreateLayer()
+        private ConvolutionFullLayer CreateLayer()
         {
-            var config = new ConvolutionLayerConfigurtion(4, 3, new Flat(0.1), new MessageShape(5, 3));
-            return new ConvolutionLayer(config);
+            return new ConvolutionFullLayer(new MessageShape(5, 3), 3, 4, new Flat(0.1));
         }
     }
 }

@@ -11,12 +11,15 @@ namespace Ann.Layers.Dense
         protected readonly int NumberOfNeurons;
         protected readonly Matrix<double> Weights;
         protected readonly Vector<double> Biases;
+        protected readonly bool EnableBiases;
 
         public DenseForwardLayer(
             MessageShape inputMessageShape, 
-            int numberOfNeurons) 
+            int numberOfNeurons,
+            bool enableBiases) 
             : base(inputMessageShape, new MessageShape(numberOfNeurons))
         {
+            EnableBiases = enableBiases;
             NumberOfNeurons = numberOfNeurons;
             Weights = Matrix.Build.Dense(inputMessageShape.Size, NumberOfNeurons);
             Biases = Vector.Build.Dense(NumberOfNeurons);
@@ -25,7 +28,10 @@ namespace Ann.Layers.Dense
         public Array PassForward(Array input)
         {
             var X = Matrix.Build.DenseOfRowArrays(input as double[]);
-            return X.Multiply(Weights).Row(0).Add(Biases).ToArray();
+
+            return EnableBiases
+                ? X.Multiply(Weights).Row(0).Add(Biases).ToArray()
+                : X.Multiply(Weights).Row(0).ToArray();
         }
     }
 }

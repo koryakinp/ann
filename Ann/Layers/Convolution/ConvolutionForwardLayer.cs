@@ -56,9 +56,9 @@ namespace Ann.Layers.Convolution
             {
                 if (!(weights.GetValue(kernel) is double[,,]) 
                     || q.Rank != 3
-                    || q.GetLength(0) != InputMessageShape.Depth
-                    || q.GetLength(1) != KernelSize
-                    || q.GetLength(2) != KernelSize)
+                    || q.GetLength(0) != (weights.GetValue(kernel) as double[,,]).GetLength(0)
+                    || q.GetLength(1) != (weights.GetValue(kernel) as double[,,]).GetLength(1)
+                    || q.GetLength(2) != (weights.GetValue(kernel) as double[,,]).GetLength(2))
                 {
                     throw new Exception(Consts.CommonLayerMessages.CanNotSetWeights);
                 }

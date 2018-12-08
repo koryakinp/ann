@@ -12,9 +12,9 @@ namespace Ann.Layers.Pooling
             : base(inputMessageShape, stride)
         {
             _cache = new bool[
-                InputMessageShape.Depth,
-                InputMessageShape.Size,
-                InputMessageShape.Size];
+                inputMessageShape.Depth,
+                inputMessageShape.Size,
+                inputMessageShape.Size];
         }
 
         public new Array PassForward(Array input)

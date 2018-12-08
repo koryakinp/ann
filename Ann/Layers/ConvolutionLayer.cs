@@ -84,18 +84,11 @@ namespace Ann.Layers
             });
         }
 
-        public void UpdateBiases()
+        public void Update()
         {
             foreach (var kernel in _kernels)
             {
                 kernel.UpdateBias();
-            }
-        }
-
-        public void UpdateWeights()
-        {
-            foreach (var kernel in _kernels)
-            {
                 kernel.UpdateWeights();
             }
         }

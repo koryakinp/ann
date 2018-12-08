@@ -23,21 +23,19 @@ namespace Ann.Mnist
 
         private static Network CreateModel()
         {
-            var network = new Network(LossFunctionType.CrossEntropy, 10);
-
-            var lr = 0.001;
+            var network = new Network(LossFunctionType.CrossEntropy, new Flat(0.001), 10);
 
             network.AddInputLayer(28, 1);
-            network.AddConvolutionLayer(new Flat(lr), 16, 5);
+            network.AddConvolutionLayer(16, 5);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
-            network.AddConvolutionLayer(new Flat(lr), 32, 5);
+            network.AddConvolutionLayer(32, 5);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
-            network.AddDenseLayer(1024, true, new Flat(lr));
+            network.AddDenseLayer(1024, true);
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddDenseLayer(10, false, new Flat(lr));
+            network.AddDenseLayer(10, false);
             network.AddSoftMaxLayer();
 
             network.RandomizeWeights(0.1);

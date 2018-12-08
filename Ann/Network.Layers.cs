@@ -1,7 +1,11 @@
 ﻿using Ann.Activators;
-using Ann.Layers;
-using Ann.Persistence.LayerConfig;
-using Gdo;
+using Ann.Layers.Activation;
+using Ann.Layers.Convolution;
+using Ann.Layers.Dense;
+using Ann.Layers.Flatten;
+using Ann.Layers.Input;
+using Ann.Layers.Pooling;
+using Ann.Layers.SoftMax;
 using System.Linq;
 
 namespace Ann
@@ -10,86 +14,48 @@ namespace Ann
     {
         public void AddInputLayer(int size, int channels)
         {
-            var config = new InputLayerConfiguration(new MessageShape(size));
-            _layers.Add(new InputLayer(config));
+            _layers.Add(new InputFullLayer(new MessageShape(size, channels)));
         }
 
         public void AddInputLayer(int size)
         {
-            var config = new InputLayerConfiguration(new MessageShape(size));
-            _layers.Add(new InputLayer(config));
+            _layers.Add(new InputFullLayer(new MessageShape(size)));
         }
 
         public void AddSoftMaxLayer()
         {
-            var shape = _layers
-                .Last()
-                .OutputMessageShape;
-
-            var config = new SoftmaxLayerConfiguration(shape);
-
-            var layer = new SoftMaxLayer(config);
-
-            _layers.Add(layer);
+            var shape = _layers.Last().GetOutputMessageShape();
+            _layers.Add(new SoftMaxFullLayer(shape));
         }
 
-        public void AddConvolutionLayer(Optimizer optimizer, int numberOfKernels, int kernelSize)
+        public void AddConvolutionLayer(int numberOfKernels, int kernelSize)
         {
-            var prevLayerOutputShape = _layers
-                .Last()
-                .OutputMessageShape;
-
-            var config = new ConvolutionLayerConfigurtion(numberOfKernels, kernelSize, optimizer, prevLayerOutputShape);
-
-            var layer = new ConvolutionLayer(config);
-            _layers.Add(layer);
+            var shape = _layers.Last().GetOutputMessageShape();
+            _layers.Add(new ConvolutionFullLayer(shape, kernelSize, numberOfKernels, _optimizer));
         }
 
         public void AddActivationLayer(ActivatorType activatorType)
         {
-            var prevLayerOutputShape = _layers
-                .Last()
-                .OutputMessageShape;
-
-            var config = new ActivationLayerConfiguration(prevLayerOutputShape, activatorType);
-            var layer = new ActivationLayer(config);
-            _layers.Add(layer);
+            var shape = _layers.Last().GetOutputMessageShape();
+            _layers.Add(new ActivationFullLayer(activatorType, shape));
         }
 
-        public void AddDenseLayer(int numberOfNeurons, bool enableBiases, Optimizer optimizer)
+        public void AddDenseLayer(int numberOfNeurons, bool enableBiases)
         {
-            var prevLayerOutputShape = _layers
-                .Last()
-                .OutputMessageShape;
-
-            var config = new DenseLayerConfiguration(prevLayerOutputShape, optimizer, enableBiases, numberOfNeurons);
-            var layer = new DenseLayer(config);
-
-            _layers.Add(layer);
+            var shape = _layers.Last().GetOutputMessageShape();
+            _layers.Add(new DenseFullLayer(shape, numberOfNeurons, enableBiases, _optimizer));
         }
 
         public void AddPoolingLayer(int kernelSize)
         {
-            var prevLayerOutputShape = _layers
-                .Last()
-                .OutputMessageShape;
-
-            var config = new PoolingLayerConfiguration(kernelSize, prevLayerOutputShape);
-
-            var layer = new PoolingLayer(config);
-            _layers.Add(layer);
+            var shape = _layers.Last().GetOutputMessageShape();
+            _layers.Add(new PoolingFullLayer(shape, kernelSize));
         }
 
         public void AddFlattenLayer()
         {
-            var prevLayerOutputShape = _layers
-                .Last()
-                .OutputMessageShape;
-
-            var config = new FlattenLayerConfiguration(prevLayerOutputShape);
-
-            var layer = new FlattenLayer(config);
-            _layers.Add(layer);
+            var shape = _layers.Last().GetOutputMessageShape();
+            _layers.Add(new FlattenFullLayer(shape));
         }
     }
 }
