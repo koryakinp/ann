@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Ann.Utils
 {
-    public static class Extensions
+    internal static class Extensions
     {
         public static IEnumerable<T> Reverse<T>(this IList<T> items)
         {

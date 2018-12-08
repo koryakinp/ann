@@ -4,7 +4,7 @@ using Ann.Persistence.LayerConfig;
 
 namespace Ann.Layers.Input
 {
-    class InputForwardLayer : BaseLayer, IForwardLayer
+    internal class InputForwardLayer : BaseLayer, IForwardLayer
     {
         public InputForwardLayer(
             MessageShape inputMessageShape) 

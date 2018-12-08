@@ -3,7 +3,7 @@ using Gdo;
 
 namespace Ann.Misc
 {
-    public static class Helper
+    internal static class Helper
     {
         public static Optimizer[][,,] InitializeKernelOptimizers(
             int depth,

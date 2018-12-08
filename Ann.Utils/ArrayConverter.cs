@@ -3,10 +3,8 @@ using System.Linq;
 
 namespace Ann.Utils
 {
-    public static class ArrayConverter
+    internal static class ArrayConverter
     {
-        public const string SizesDoNotMatch = "Sizes do not match";
-
         public static T[][,,] ConvertToJagged3D<T>(T[] input, int jagged, int[] dimensions)
         {
             var temp = Convert1Dto4D(input, new int[] { jagged, dimensions[0], dimensions[1], dimensions[2] });
@@ -101,7 +99,7 @@ namespace Ann.Utils
         {
             if (input.Length != dimensions.Aggregate((q, w) => q * w))
             {
-                throw new Exception(SizesDoNotMatch);
+                throw new Exception(Consts.SizesDoNotMatch);
             }
         }
     }

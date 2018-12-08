@@ -4,7 +4,7 @@ using System;
 
 namespace Ann.Layers.SoftMax
 {
-    class SoftMaxFullLayer : SoftMaxForwardLayer, IFullLayer
+    internal class SoftMaxFullLayer : SoftMaxForwardLayer, IFullLayer
     {
         private readonly Vector<double> _cache;
 

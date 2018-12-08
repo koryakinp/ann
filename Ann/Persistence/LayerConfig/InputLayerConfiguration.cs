@@ -3,7 +3,7 @@
 namespace Ann.Persistence.LayerConfig
 {
     [Serializable]
-    class InputLayerConfiguration : LayerConfiguration
+    internal class InputLayerConfiguration : LayerConfiguration
     {
         public InputLayerConfiguration(MessageShape inputMessageShape) 
             : base(inputMessageShape)

@@ -2,7 +2,7 @@
 
 namespace Ann.LossFunctions
 {
-    public static class LossFunctionFactory
+    internal static class LossFunctionFactory
     {
         public static LossFunction Produce(LossFunctionType type)
         {

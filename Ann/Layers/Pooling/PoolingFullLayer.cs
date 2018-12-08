@@ -3,7 +3,7 @@ using Ann.Utils;
 
 namespace Ann.Layers.Pooling
 {
-    class PoolingFullLayer : PoolingForwardLayer, IFullLayer
+    internal class PoolingFullLayer : PoolingForwardLayer, IFullLayer
     {
         private readonly bool[,,] _cache;
 

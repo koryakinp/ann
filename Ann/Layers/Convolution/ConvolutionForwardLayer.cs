@@ -5,7 +5,7 @@ using System;
 
 namespace Ann.Layers.Convolution
 {
-    class ConvolutionForwardLayer : BaseLayer, IForwardLayer
+    internal class ConvolutionForwardLayer : BaseLayer, IForwardLayer
     {
         protected readonly int KernelSize;
         protected readonly int NumberOfKernels;

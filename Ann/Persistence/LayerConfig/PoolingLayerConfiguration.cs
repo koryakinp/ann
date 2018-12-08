@@ -3,7 +3,7 @@
 namespace Ann.Persistence.LayerConfig
 {
     [Serializable]
-    class PoolingLayerConfiguration : LayerConfiguration
+    internal class PoolingLayerConfiguration : LayerConfiguration
     {
         public readonly int KernelSize;
 

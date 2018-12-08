@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Ann.Utils
 {
-    public static class ArrayExtensions
+    internal static class ArrayExtensions
     {
         private static void ForEachh<T>(this Array array, Func<T, T> action)
         {

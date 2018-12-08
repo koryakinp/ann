@@ -9,4 +9,10 @@
     <PackageReference Include="MathNet.Numerics" Version="4.7.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>System</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

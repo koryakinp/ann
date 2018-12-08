@@ -5,7 +5,7 @@ using System;
 namespace Ann.Persistence.LayerConfig
 {
     [Serializable]
-    class ConvolutionLayerConfigurtion : LayerConfiguration
+    internal class ConvolutionLayerConfigurtion : LayerConfiguration
     {
         public readonly int NumberOfKernels;
         public readonly int KernelSize;

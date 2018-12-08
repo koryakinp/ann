@@ -3,7 +3,7 @@ using System;
 
 namespace Ann.Layers
 {
-    interface IForwardLayer
+    internal interface IForwardLayer
     {
         Array PassForward(Array input);
         LayerConfiguration GetConfiguration();

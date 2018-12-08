@@ -4,7 +4,7 @@ using System;
 namespace Ann.Persistence.LayerConfig
 {
     [Serializable]
-    class ActivationLayerConfiguration : LayerConfiguration
+    internal class ActivationLayerConfiguration : LayerConfiguration
     {
         public readonly ActivatorType ActivatorType;
 

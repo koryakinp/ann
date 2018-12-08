@@ -4,7 +4,7 @@ using Ann.Utils;
 
 namespace Ann.Layers.Activation
 {
-    class ActivationFullLayer : ActivationForwardLayer, IFullLayer
+    internal class ActivationFullLayer : ActivationForwardLayer, IFullLayer
     {
         private readonly Array _cache;
 

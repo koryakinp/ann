@@ -4,7 +4,7 @@ using System;
 namespace Ann.Persistence.LayerConfig
 {
     [Serializable]
-    class DenseLayerConfiguration : LayerConfiguration
+    internal class DenseLayerConfiguration : LayerConfiguration
     {
         public readonly int NumberOfNeurons;
         public readonly double[,] Weights;

@@ -5,7 +5,7 @@ using System;
 
 namespace Ann.Layers.SoftMax
 {
-    class SoftMaxForwardLayer : BaseLayer, IForwardLayer
+    internal class SoftMaxForwardLayer : BaseLayer, IForwardLayer
     {
         protected readonly SoftmaxActivator Activator = new SoftmaxActivator();
 

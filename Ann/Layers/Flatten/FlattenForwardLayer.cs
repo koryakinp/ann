@@ -4,7 +4,7 @@ using Ann.Persistence.LayerConfig;
 
 namespace Ann.Layers.Flatten
 {
-    class FlattenForwardLayer : BaseLayer, IForwardLayer
+    internal class FlattenForwardLayer : BaseLayer, IForwardLayer
     {
         public FlattenForwardLayer(MessageShape inputMessageShape) 
             : base(inputMessageShape, ComputeOutputMessageShape(inputMessageShape)) {}

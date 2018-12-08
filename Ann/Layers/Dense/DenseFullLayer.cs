@@ -7,7 +7,7 @@ using System;
 
 namespace Ann.Layers.Dense
 {
-    class DenseFullLayer : DenseForwardLayer, IFullLayer, ILearnable
+    internal class DenseFullLayer : DenseForwardLayer, IFullLayer, ILearnable
     {
         private readonly Optimizer[,] _weightOptimizers;
         private readonly Optimizer[] _biasOptimizers;

@@ -7,7 +7,7 @@ using Activator = Ann.Activators.Activator;
 
 namespace Ann.Layers.Activation
 {
-    class ActivationForwardLayer : BaseLayer, IForwardLayer
+    internal class ActivationForwardLayer : BaseLayer, IForwardLayer
     {
         protected readonly Activator Activator;
 

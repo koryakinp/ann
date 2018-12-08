@@ -2,7 +2,7 @@
 
 namespace Ann.Layers.Flatten
 {
-    class FlattenFullLayer : FlattenForwardLayer, IFullLayer
+    internal class FlattenFullLayer : FlattenForwardLayer, IFullLayer
     {
         public FlattenFullLayer(MessageShape inputMessageShape) : base(inputMessageShape) {}
 

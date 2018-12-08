@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Ann.Layers.Convolution
 {
-    class ConvolutionFullLayer : ConvolutionForwardLayer, IFullLayer, ILearnable
+    internal class ConvolutionFullLayer : ConvolutionForwardLayer, IFullLayer, ILearnable
     {
         private readonly double[,,] _cache;
         private readonly Optimizer[][,,] _weightOptimizers;

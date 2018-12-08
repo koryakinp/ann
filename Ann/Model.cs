@@ -42,11 +42,7 @@ namespace Ann
 
         public double[] Predict(Array input)
         {
-            foreach (var layer in _layers)
-            {
-                input = layer.PassForward(input);
-            }
-
+            _layers.ForEach(q => input = q.PassForward(input));
             return input as double[];
         }
 

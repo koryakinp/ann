@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Ann.LossFunctions
 {
-    public class MeanSquaredError : LossFunction
+    internal class MeanSquaredError : LossFunction
     {
         public override double[] ComputeDeriviative(bool[] target, double[] output)
         {

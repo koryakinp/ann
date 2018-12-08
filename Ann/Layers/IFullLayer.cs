@@ -2,7 +2,7 @@
 
 namespace Ann.Layers
 {
-    interface IFullLayer : IForwardLayer
+    internal interface IFullLayer : IForwardLayer
     {
         Array PassBackward(Array error);
         MessageShape GetOutputMessageShape();

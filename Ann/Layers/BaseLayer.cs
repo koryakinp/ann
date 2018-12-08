@@ -1,6 +1,6 @@
 ﻿namespace Ann.Layers
 {
-    class BaseLayer
+    internal class BaseLayer
     {
         private readonly MessageShape _inputMessageShape;
         private readonly MessageShape _outputMessageShape;

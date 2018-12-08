@@ -2,7 +2,7 @@
 
 namespace Ann.Layers.Input
 {
-    class InputFullLayer : InputForwardLayer, IFullLayer
+    internal class InputFullLayer : InputForwardLayer, IFullLayer
     {
         public InputFullLayer(MessageShape inputMessageShape) 
             : base(inputMessageShape) {}

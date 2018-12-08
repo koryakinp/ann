@@ -9,7 +9,7 @@ namespace Ann.Mnist
         public static bool[] CreateTarget(byte value)
         {
             var res = new bool[10];
-            res.ForEach((q, i) => res[i] = i == value);
+            res[value] = true;
             return res;
         }
 

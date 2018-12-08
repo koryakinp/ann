@@ -4,7 +4,7 @@ using Ann.Persistence.LayerConfig;
 
 namespace Ann.Layers.Pooling
 {
-    class PoolingForwardLayer : BaseLayer, IForwardLayer
+    internal class PoolingForwardLayer : BaseLayer, IForwardLayer
     {
         protected readonly int Stride;
 

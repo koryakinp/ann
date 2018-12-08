@@ -2,7 +2,7 @@
 
 namespace Ann.LossFunctions
 {
-    public class CrossEntropyLoss : LossFunction
+    internal class CrossEntropyLoss : LossFunction
     {
         public override double[] ComputeDeriviative(bool[] target, double[] output)
         {

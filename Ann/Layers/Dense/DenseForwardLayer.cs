@@ -7,7 +7,7 @@ using System;
 
 namespace Ann.Layers.Dense
 {
-    class DenseForwardLayer : BaseLayer, IForwardLayer
+    internal class DenseForwardLayer : BaseLayer, IForwardLayer
     {
         protected readonly int NumberOfNeurons;
         protected readonly Matrix<double> Weights;
