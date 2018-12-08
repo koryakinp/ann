@@ -1,5 +1,6 @@
 ﻿using Ann.Layers;
 using Ann.LossFunctions;
+using Ann.Utils;
 using Gdo;
 using System;
 using System.Collections.Generic;
@@ -33,46 +34,38 @@ namespace Ann
 
         private Array PassForward(Array input)
         {
-            for (int i = 0; i < _layers.Count; i++)
-            {
-                input = _layers[i].PassForward(input);
-            }
-
+            _layers.ForEach(q => input = q.PassForward(input));
             return input;
         }
 
         private void PassBackward(Array error)
         {
-            for (int i = _layers.Count - 1; i >= 0; i--)
-            {
-                error = _layers[i].PassBackward(error);
-            }
+            _layers.Reverse<IFullLayer>()
+                .ForEach(q => error = q.PassBackward(error));
         }
 
         private void Learn()
         {
-            foreach (var item in _layers.OfType<ILearnable>())
-            {
-                item.Update();
-            }
+            _layers.OfType<ILearnable>()
+                .ForEach(q => q.Update());
         }
 
         public void RandomizeWeights(double stddev)
         {
-            foreach (var layer in _layers.OfType<ILearnable>())
-            {
-                layer.RandomizeWeights(stddev);
-            }
+            _layers.OfType<ILearnable>()
+                .ForEach(q => q.RandomizeWeights(stddev));
         }
 
         internal void SetWeights(int layerIndex, Array weights)
         {
-            _layers.OfType<ILearnable>().ToArray()[layerIndex].SetWeights(weights);
+            _layers.OfType<ILearnable>()
+                .ToArray()[layerIndex].SetWeights(weights);
         }
 
         internal void SetBiases(int layerIndex, double[] biases)
         {
-            _layers.OfType<ILearnable>().ToArray()[layerIndex].SetBiases(biases);
+            _layers.OfType<ILearnable>()
+                .ToArray()[layerIndex].SetBiases(biases);
         }
 
         public Model BuildModel()
