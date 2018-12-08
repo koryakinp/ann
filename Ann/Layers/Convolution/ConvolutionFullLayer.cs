@@ -44,11 +44,12 @@ namespace Ann.Layers.Convolution
         {
             var dist = new Normal(0, stddev);
             Kernels
-                .ForEach((q, kernel) => q.UpdateForEach<double>((w, idx) => dist.Sample()));
-            Kernels.ForEach((kernel, kernelIndex) =>
-            {
-                kernel.UpdateForEach<double>((q, idx) => ((Optimizer)_weightOptimizers[kernelIndex].GetValue(idx)).Update());
-            });
+                .ForEach((q, kernel) => 
+                    q.UpdateForEach<double>((w, idx) => dist.Sample()));
+
+            Kernels
+                .ForEach((q, kernel) => q.ForEach((w, i, j, k) => 
+                    _weightOptimizers[kernel][i, j, k].SetValue(w)));
         }
 
         public void Update()
@@ -56,7 +57,8 @@ namespace Ann.Layers.Convolution
             _biasOptimizers.ForEach((q, i) => Biases[i] = q.Update());
             Kernels.ForEach((kernel, kernelIndex) =>
             {
-                kernel.UpdateForEach<double>((q, idx) => ((Optimizer)_weightOptimizers[kernelIndex].GetValue(idx)).Update());
+                kernel.UpdateForEach<double>((q, idx) => 
+                    ((Optimizer)_weightOptimizers[kernelIndex].GetValue(idx)).Update());
             });
         }
 
@@ -119,7 +121,8 @@ namespace Ann.Layers.Convolution
         {
             base.SetWeights(weights);
             (weights as double[][,,])
-                .ForEach((q, kernel) => q.ForEach((w, i, j, k) => _weightOptimizers[kernel][i, j, k].SetValue(w)));
+                .ForEach((q, kernel) => q.ForEach((w, i, j, k) => 
+                    _weightOptimizers[kernel][i, j, k].SetValue(w)));
 
         }
     }
