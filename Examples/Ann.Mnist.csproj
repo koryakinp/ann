@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="RevStackCore-ImageSharp" Version="0.9.0" />
-    <PackageReference Include="ShellProgressBar" Version="4.0.0" />
+    <PackageReference Include="ShellProgressBar" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>

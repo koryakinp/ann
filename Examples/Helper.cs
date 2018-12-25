@@ -6,9 +6,9 @@ namespace Ann.Mnist
 {
     public static class Helper
     {
-        public static bool[] CreateTarget(byte value)
+        public static bool[] CreateTarget(byte value, int numberOfClasses)
         {
-            var res = new bool[10];
+            var res = new bool[numberOfClasses];
             res[value] = true;
             return res;
         }

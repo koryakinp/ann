@@ -10,6 +10,8 @@ namespace Ann.Mnist
 {
     class Program
     {
+        private static readonly int NumberOfClasses = 10;
+
         static void Main(string[] args)
         {
             var network = CreateModel();
@@ -22,7 +24,7 @@ namespace Ann.Mnist
 
         private static Network CreateModel()
         {
-            var network = new Network(LossFunctionType.CrossEntropy, new Flat(0.001), 10);
+            var network = new Network(LossFunctionType.CrossEntropy, new Flat(0.001), NumberOfClasses);
 
             network.AddInputLayer(28, 1);
             network.AddConvolutionLayer(16, 5);
@@ -34,7 +36,7 @@ namespace Ann.Mnist
             network.AddFlattenLayer();
             network.AddDenseLayer(1024, true);
             network.AddActivationLayer(ActivatorType.Relu);
-            network.AddDenseLayer(10, false);
+            network.AddDenseLayer(NumberOfClasses, false);
             network.AddSoftMaxLayer();
 
             network.RandomizeWeights(0.1);
@@ -50,7 +52,7 @@ namespace Ann.Mnist
             {
                 foreach (var image in MnistReader.ReadTrainingData(total))
                 {
-                    var target = Helper.CreateTarget(image.Label);
+                    var target = Helper.CreateTarget(image.Label, NumberOfClasses);
                     model.TrainModel(getInput(image), target);
                     pbar.Tick($"Training Model: {++current} of {total}");
                 }

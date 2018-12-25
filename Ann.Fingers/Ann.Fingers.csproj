@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\TestImages.zip" />
+    <None Remove="Images\TrainImages.zip" />
+    <None Remove="model.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\TestImages.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images\TrainImages.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="model.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ShellProgressBar" Version="4.2.0" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0005" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ann.Utils\Ann.Utils.csproj" />
+    <ProjectReference Include="..\Ann\Ann.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Image.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+</Project>
