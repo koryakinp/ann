@@ -4,6 +4,7 @@
     {
         public readonly double[,] Data;
         public readonly byte Label;
+        public readonly byte[] ByteData;
 
         public Image(byte[] data, byte label)
         {
@@ -18,6 +19,7 @@
             }
 
             Label = label;
+            ByteData = data;
         }
     }
 }

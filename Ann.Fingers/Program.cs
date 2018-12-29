@@ -2,6 +2,9 @@
 using Ann.LossFunctions;
 using Gdo.Optimizers;
 using ShellProgressBar;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +19,12 @@ namespace Ann.Fingers
         {
             var network = CreateModel();
             TrainModel(network, q => Helper.Create3DInput(q.Data));
-            //var model = new Model("model.json");
+
             var model = network.BuildModel();
-            network.BuildModel();
 
             var ratio = TestModel(model, q => Helper.Create3DInput(q.Data));
             Console.WriteLine($"Accuracy: {ratio * 100}% ");
-            Console.ReadLine();
-            //model.Save("model.json");
+            model.Save("model.json");
         }
 
         private static Network CreateModel()
@@ -31,14 +32,14 @@ namespace Ann.Fingers
             var network = new Network(LossFunctionType.CrossEntropy, new Flat(0.001), NumberOfClasses);
 
             network.AddInputLayer(128, 1);
-            network.AddConvolutionLayer(8, 5);
+            network.AddConvolutionLayer(16, 5);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
-            network.AddConvolutionLayer(8, 8);
+            network.AddConvolutionLayer(16, 5);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddPoolingLayer(2);
             network.AddFlattenLayer();
-            network.AddDenseLayer(64, true);
+            network.AddDenseLayer(256, true);
             network.AddActivationLayer(ActivatorType.Relu);
             network.AddDenseLayer(NumberOfClasses, false);
             network.AddSoftMaxLayer();
@@ -50,7 +51,7 @@ namespace Ann.Fingers
 
         private static void TrainModel(Network model, Func<Image, Array> getInput)
         {
-            int total = 1200;
+            int total = 2400;
             int current = 0;
             using (var pbar = new ProgressBar(total, "Training Model"))
             {
@@ -67,7 +68,7 @@ namespace Ann.Fingers
         private static double TestModel(Model model, Func<Image, Array> getInput)
         {
             var results = new List<double>();
-            int total = 600;
+            int total = 1200;
             int current = 0;
             using (var pbar = new ProgressBar(total, "Testing Model"))
             {
@@ -80,6 +81,45 @@ namespace Ann.Fingers
             }
 
             return results.Average();
+        }
+
+        private static double UseModel(Model model, Func<Image, Array> getInput)
+        {
+            var results = new List<double>();
+            int total = 1058;
+            int current = 0;
+            using (var pbar = new ProgressBar(total, "Using Model"))
+            {
+                foreach (var image in ImageReader.ReadMovieData(total))
+                {
+                    var res = model.Predict(getInput(image));
+                    var img = LoadImage(image.ByteData);
+                    img.Resize(512);
+                    img.DrawPredictions(res);
+                    img.SaveImage($@"C:\Users\pavelkoryakin\Desktop\converted\{current}.jpeg");
+                    results.Add(Helper.IntegerFromOutput(res) == image.Label ? 1 : 0);
+                    pbar.Tick($"Using Model: {++current} of {total}");
+                }
+            }
+
+            return results.Average();
+        }
+
+        private static Image<Rgba32> LoadImage(byte[] arr)
+        {
+            var image = new Image<Rgba32>(128, 128);
+            image.Mutate(q => q.Fill(Rgba32.Black));
+
+            for (int i = 0; i < image.Height; i++)
+            {
+                for (int j = 0; j < image.Width; j++)
+                {
+                    var val = arr[j + i * image.Width];
+                    image[i, j] = new Rgba32(val, val, val);
+                }
+            }
+
+            return image;
         }
     }
 }

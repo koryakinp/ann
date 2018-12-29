@@ -29,6 +29,17 @@ namespace Ann.Fingers
             }
         }
 
+        public static IEnumerable<Image> ReadMovieData(int max)
+        {
+            var stream = GetStream("ValidateImages");
+
+            var reader = new BinaryReader(stream);
+            foreach (var item in Read(reader, max))
+            {
+                yield return item;
+            }
+        }
+
         private static Stream GetStream(string entry)
         {
             return ZipFile

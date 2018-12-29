@@ -19,7 +19,7 @@ namespace Ann.Fingers
             writer1.Write(d.GetFiles().Length);
             writer1.Write(128);
 
-            foreach (var file in d.GetFiles("*.jpeg").OrderByDescending(q => q.Name))
+            foreach (var file in d.GetFiles("*.png").OrderByDescending(q => q.Name))
             {
                 Image<Rgba32> image = SixLabors.ImageSharp.Image.Load(file.OpenRead());
                 for (int i = 0; i < 128; i++)
@@ -29,6 +29,7 @@ namespace Ann.Fingers
                         writer1.Write(image[i, j].B);
                     }
                 }
+
                 writer1.Write(byte.Parse(file.Name[37].ToString()));
 
                 Console.WriteLine(file.Name);
