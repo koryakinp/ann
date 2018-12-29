@@ -63,7 +63,6 @@ There are two sample projects:
 
 ![](demo.gif)
 
-For further customization you can provide custom implementation of the `ILearningRateDecayer` interface.
 ## Authors
 Pavel koryakin <koryakinp@koryakinp.com>
 ## License
