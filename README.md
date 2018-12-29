@@ -2,6 +2,10 @@
 
 Machine Learning library for .NET Core.
 
+### Demo
+
+![](demo.gif)
+
 ## Installation
 ```
 PM> Install-Package Ann.koryakinp
@@ -59,9 +63,6 @@ There are two sample projects:
 1. Ann.Mnist
 2. Ann.Fingers
 
-### Demo
-
-![](demo.gif)
 
 ## Authors
 Pavel koryakin <koryakinp@koryakinp.com>
