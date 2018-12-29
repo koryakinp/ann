@@ -8,59 +8,61 @@ PM> Install-Package Ann.koryakinp
 ```
 ## Basic Usage
 ### Configure a Network by defining the structure and meta-parametres
+
 ```
-var layerConfig = new LayerConfiguration()
-  .AddInputLayer(2)
-  .AddHiddenLayer(5)
-  .AddHiddenLayer(5)
-  .AddOutputLayer(1);
+var network = new Network(LossFunctionType.CrossEntropy, new Flat(0.001), 5);
 ```
-`AddInputLayer()`,`AddOutputLayer()` and `AddHiddenLayer()`  add layers to the network configuration with specified number of neurons.
-A network must have one input, one output and any number of hidden layers.
+Creates a neural network object with a Cross-Entropy loss function, flat learning rate 0.001 and 5 output classes
+
+Add layers to network configuration:
 ```
-var networkConfig = new NetworkConfiguration(layerConfig);
-var model = new Network(networkConfig);
+network.AddInputLayer(128, 1); 
+network.AddConvolutionLayer(16, 5);
+network.AddActivationLayer(ActivatorType.Relu); 
+network.AddPoolingLayer(2); 
+network.AddFlattenLayer();
+network.AddDenseLayer(256, true);
+network.AddSoftMaxLayer();
 ```
+`AddInputLayer(128, 1)` input layer, which expect input with dimensions 128x128x1
+`AddConvolutionLayer(16, 5)` convolution layer with 16 filters of size 5x5xD where D is a depth of the output of a previose layer 
+`AddActivationLayer(ActivatorType.Relu)` activation layer with ReLU activation function
+`AddPoolingLayer(2)` pooling layer with a vertical and horizontal stride equals 2
+`AddFlattenLayer()` flattens the result
+`AddDenseLayer(256, true)` fully connected layer with biases
+`AddSoftMaxLayer()` SoftMax activation
+
 ### Train Model
 ```
-double err1 = model.TrainModel(new List<double> { 0.25, 0.50 }, new List<double> { 1 });
-double err2 = model.TrainModel(new List<double> { 0.75, 0.15 }, new List<double> { 0 });
-double err3 = model.TrainModel(new List<double> { 0.60, 0.40 }, new List<double> { 1 });
+model.TrainModel(input, target);
 ```
-First argument of the `TrainModel` method accepts input values.
-Second argument accepts output target values for a given training example.
-Weights and biases will be adjasted using Stochastic Gradient Descent with Back Propagation alghorith.
+First argument of the `TrainModel()` method accepts System.Array. The dimensions of the array must match with a input layer configuration.
+Second argument accepts bool[]. The length of the array must match number of classes provided to `Network` constructor.
+
+Weights and biases will be adjasted using Stochastic Gradient Descent with backpropagation.
+### Save Model
+After you are done with trainig you can save the model in JSON file for a later use:
+```
+var model = network.BuildModel();
+model.Save("model.json");
+```
 ### Use Model
 ```
-List<double> output = model.UseModel(new List<double> { 0.35, 0.45 });
+var model = new Model("model.json");
+double[] prediction = model.Predict(input);
 ```
-`UseModel()` accepts input values and performs forward-only pass, returns prediction of the model.
-### Save Model
-After you done with trainig you can save the model in JSON file for a later use:
-```
-model.SaveModelToJson("network-configuration.json");
-var model2 = new Network("network-configuration.json");
-```
-## Advanced Configuration
-### Customizing activation function
-`AddHiddenLayer()` and `AddOutputLayer()` have usefull overloads which allow for customization of the Activation function. Out of the box following activation functions supported: Logistic Sigmoid, Hyperbolic Tangent and Rectified Linear Unit.
-`AddHiddenLayer(10, ActivatorType.ReluActivator)` adds hidden layer with 10 neurons and Rectified Linear Unit activation function. If activation type is not provided the layer will use Logistic Sigmoid by default.
-For further customization an implementation of the `IActivator` interface can be provided.
-### Customizing Learning Rate, Momentum and Learning Rate Decay
-If no custom configuration was provided a Network will fallback to 0.1 flat learning rate, with no momentum.
-There are two learning rate decay strategy supported out of the box: Exponential decay and Step decay.
-Step decay reduces the learning rate by some factor every few epochs.
-Exponential decay gradually reduces the learning rate in an exponential fashion. 
-More info regarding the learning rate decy can be found here: http://cs231n.github.io/neural-networks-3/#anneal
+`TrainModel()` method accepts System.Array, the dimensions of the array must match with a input layer configuration.
 
-An example of custom Network Configuration:
-```
-NetworkConfiguration nc = new NetworkConfiguration(lc)
-{
-    Momentum = 0.9
-    LearningRateDecayer = new StepDecayer(0.1, 0.8, 1000),
-};
-```
+### Examples
+There are two sample projects:
+
+1. Ann.Mnist
+2. Ann.Fingers
+
+### Demo
+
+![](demo.gif)
+
 For further customization you can provide custom implementation of the `ILearningRateDecayer` interface.
 ## Authors
 Pavel koryakin <koryakinp@koryakinp.com>
