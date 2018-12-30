@@ -8,7 +8,7 @@ Machine Learning library for .NET Core.
 
 ## Installation
 ```
-PM> Install-Package Ann.koryakinp
+PM> Install-Package Ann
 ```
 ## Basic Usage
 ### Configure a Network by defining the structure and meta-parametres
