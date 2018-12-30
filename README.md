@@ -30,11 +30,11 @@ network.AddSoftMaxLayer();
 ```
 `AddInputLayer(128, 1)` input layer, which expect input with dimensions 128x128x1
 
-`AddConvolutionLayer(16, 5)` convolution layer with 16 filters of size 5x5xD where D is the depth of the output of a previous layer 
+`AddConvolutionLayer(16, 5)` convolution layer with 16 filters of size 5x5xD, where D is the depth of the output from a previous layer 
 
 `AddActivationLayer(ActivatorType.Relu)` activation layer with ReLU activation function
 
-`AddPoolingLayer(2)` pooling layer with a vertical and horizontal stride equals 2
+`AddPoolingLayer(2)` pooling layer with a vertical and horizontal stride 2
 
 `AddFlattenLayer()` flattens the result
 
