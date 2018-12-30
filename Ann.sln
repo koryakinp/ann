@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{41E75F15
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{915082DA-9931-4103-BB81-1582AA80A367}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann.Mnist", "Examples\Ann.Mnist.csproj", "{604E78F9-9D54-442A-B141-1E401C56DCC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann.Mnist", "Examples\Ann.Mnist\Ann.Mnist.csproj", "{604E78F9-9D54-442A-B141-1E401C56DCC5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann", "Ann\Ann.csproj", "{B6181135-9EB7-4E88-B566-97B74E5F3343}"
 EndProject
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann.Utils", "Ann.Utils\Ann.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ann.Tests", "Ann.Tests\Ann.Tests.csproj", "{7DA3458E-8E74-4382-9FBB-69AB95FBEBD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ann.Fingers", "Ann.Fingers\Ann.Fingers.csproj", "{5D37B89D-C884-40D2-B4CB-317ACBD05B01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ann.Fingers", "Examples\Ann.Fingers\Ann.Fingers.csproj", "{5D37B89D-C884-40D2-B4CB-317ACBD05B01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
